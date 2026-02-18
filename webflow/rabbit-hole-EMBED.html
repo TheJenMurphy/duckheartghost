@@ -1,0 +1,93 @@
+<!-- RABBIT HOLE NAVIGATION - Webflow Embed Guide -->
+
+<!--
+  This creates cross-links between Ingredients, Regulators, and Research pages.
+
+  SETUP:
+  1. Upload rabbit-hole-nav.js to your GitHub or CDN
+  2. Add the script tags to your page's custom code (before </body>)
+  3. Add the container divs where you want navigation to appear
+-->
+
+<!-- ============================================================
+     INGREDIENT PAGE TEMPLATE
+     Add to: Ingredients CMS Template page
+============================================================ -->
+
+<!-- In Page Settings > Custom Code > Before </body> tag: -->
+<script src="https://cdn.jsdelivr.net/gh/TheJenMurphy/iheartclean-automation@hwk-data/how-we-know-data.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/TheJenMurphy/iheartclean-automation@main/webflow/rabbit-hole-nav.js"></script>
+
+<!-- Add these containers in your page design where you want the links to appear: -->
+
+<!-- Container for regulatory flags (shows which regulators have flagged this ingredient) -->
+<div class="rh-regulators"></div>
+
+<!-- Container for research sources (shows PubMed, CIR, EWG data) -->
+<div class="rh-research-sources"></div>
+
+
+<!-- ============================================================
+     REGULATOR PAGE TEMPLATE
+     Add to: Regulators CMS Template page
+============================================================ -->
+
+<!-- In Page Settings > Custom Code > Before </body> tag: -->
+<script src="https://cdn.jsdelivr.net/gh/TheJenMurphy/iheartclean-automation@hwk-data/how-we-know-data.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/TheJenMurphy/iheartclean-automation@main/webflow/rabbit-hole-nav.js"></script>
+
+<!-- Container for ingredients on this regulator's list -->
+<div class="rh-ingredients"></div>
+
+
+<!-- ============================================================
+     MANUAL INITIALIZATION (if auto-detect doesn't work)
+============================================================ -->
+
+<script>
+// If the page URL doesn't follow /ingredients/{slug} or /regulators/{slug} pattern,
+// you can manually init:
+
+document.addEventListener('DOMContentLoaded', function() {
+  // For ingredient page - get slug from CMS field or URL
+  var ingredientSlug = 'retinol'; // Replace with actual slug
+  var regContainer = document.querySelector('.rh-regulators');
+  var resContainer = document.querySelector('.rh-research-sources');
+
+  if (regContainer) RabbitHoleNav.renderRegulatorLinks(regContainer, ingredientSlug);
+  if (resContainer) RabbitHoleNav.renderResearchLinks(resContainer, ingredientSlug);
+
+  // For regulator page
+  var regulatorSlug = 'ewg'; // Replace with actual slug
+  var ingContainer = document.querySelector('.rh-ingredients');
+
+  if (ingContainer) RabbitHoleNav.renderIngredientLinks(ingContainer, regulatorSlug, 30);
+});
+</script>
+
+
+<!-- ============================================================
+     STYLING NOTES
+============================================================ -->
+
+<!--
+  The navigation injects its own styles, but you can override:
+
+  - .rh-section: Container for each nav section
+  - .rh-header: Section header text
+  - .rh-links: Flex container for link items
+  - .rh-link: Individual link item
+  - .rh-badge: Status badge (prohibited/restricted/flagged)
+  - .rh-name: Item name
+
+  Status classes:
+  - .rh-prohibited (red)
+  - .rh-restricted (orange)
+  - .rh-excluded (yellow)
+  - .rh-flagged (purple)
+
+  Research styles:
+  - .rh-research-item: Research source card
+  - .rh-ewg-score: EWG score circle
+  - .rh-ewg-low / .rh-ewg-moderate / .rh-ewg-high
+-->

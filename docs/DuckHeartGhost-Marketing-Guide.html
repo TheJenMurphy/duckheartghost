@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duck Heart Ghost — Marketing Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --surface: #141416;
+            --surface-raised: #1c1c1f;
+            --surface-glow: #242428;
+            --text: #f4f4f5;
+            --text-muted: #71717a;
+            --duck: #fbbf24;
+            --heart: #f43f5e;
+            --ghost: #a855f7;
+            --teal: #2dd4bf;
+            --blue: #60a5fa;
+            --green: #4ade80;
+            --gradient-warm: linear-gradient(135deg, #f43f5e 0%, #fbbf24 100%);
+            --gradient-cool: linear-gradient(135deg, #a855f7 0%, #2dd4bf 100%);
+            --gradient-full: linear-gradient(90deg, #f43f5e 0%, #fbbf24 25%, #4ade80 50%, #2dd4bf 75%, #a855f7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: var(--surface);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-full);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        header h1 .duck { color: var(--duck); }
+        header h1 .heart { color: var(--heart); }
+        header h1 .ghost { color: var(--ghost); }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .tagline {
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--surface-raised);
+            border-radius: 100px;
+            display: inline-block;
+            font-size: 0.95rem;
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Quick Jump */
+        .quick-jump {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border-radius: 16px;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .quick-jump a {
+            padding: 0.5rem 1rem;
+            background: var(--surface-raised);
+            border-radius: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .quick-jump a:hover {
+            color: var(--text);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Section Cards */
+        .section {
+            margin-bottom: 1.5rem;
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: var(--surface-raised);
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            flex: 1;
+        }
+
+        .section-title h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .section.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+        }
+
+        .section.open .section-content {
+            display: block;
+        }
+
+        /* Section Colors */
+        .section-core .section-icon { background: linear-gradient(135deg, var(--duck), var(--heart)); }
+        .section-cards .section-icon { background: linear-gradient(135deg, var(--teal), var(--blue)); }
+        .section-tags .section-icon { background: linear-gradient(135deg, var(--heart), var(--ghost)); }
+        .section-personas .section-icon { background: linear-gradient(135deg, var(--ghost), var(--teal)); }
+        .section-playbook .section-icon { background: linear-gradient(135deg, var(--green), var(--duck)); }
+        .section-cms .section-icon { background: linear-gradient(135deg, var(--blue), var(--ghost)); }
+
+        /* 411 */
+        .fouroneone {
+            background: var(--surface-raised);
+            border-left: 3px solid var(--teal);
+            padding: 1rem 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .fouroneone-label {
+            font-weight: 700;
+            color: var(--teal);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.35rem;
+        }
+
+        .fouroneone p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* The Big Three */
+        .dhg-trio {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .dhg-card {
+            background: var(--surface-raised);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .dhg-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .dhg-card.duck { border-color: var(--duck); }
+        .dhg-card.heart { border-color: var(--heart); }
+        .dhg-card.ghost { border-color: var(--ghost); }
+
+        .dhg-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dhg-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .dhg-card.duck h3 { color: var(--duck); }
+        .dhg-card.heart h3 { color: var(--heart); }
+        .dhg-card.ghost h3 { color: var(--ghost); }
+
+        .dhg-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .dhg-card .subtext {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Card Framework */
+        .card-framework {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .framework-card {
+            background: var(--surface-raised);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .framework-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .framework-card.front h4 { color: var(--duck); }
+        .framework-card.back h4 { color: var(--teal); }
+
+        .framework-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .framework-card ul {
+            list-style: none;
+        }
+
+        .framework-card li {
+            padding: 0.3rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        .framework-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .flip-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .flip-indicator span {
+            padding: 0.5rem 1rem;
+            background: var(--surface-raised);
+            border-radius: 8px;
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        /* Real Talk Tags */
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .tag-card {
+            background: var(--surface-raised);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .tag-card .emoji {
+            font-size: 1.4rem;
+        }
+
+        .tag-card .info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+
+        .tag-card .info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Personas */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .persona-card {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-full);
+            opacity: 0.7;
+        }
+
+        .persona-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .persona-card .question {
+            font-size: 0.85rem;
+            color: var(--teal);
+            font-style: italic;
+        }
+
+        /* Weekly Playbook */
+        .week-grid {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .day-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--surface-raised);
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        .day-row.header {
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .day-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .day-content {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .day-format {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .day-row.sunday { border-left: 3px solid var(--ghost); }
+        .day-row.monday { border-left: 3px solid var(--heart); }
+        .day-row.tuesday { border-left: 3px solid var(--duck); }
+        .day-row.wednesday { border-left: 3px solid var(--teal); }
+        .day-row.thursday { border-left: 3px solid var(--blue); }
+        .day-row.friday { border-left: 3px solid var(--green); }
+        .day-row.saturday { border-left: 3px solid var(--heart); }
+
+        /* Time Blocks */
+        .time-blocks {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .time-block {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .time-block .hours {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .time-block .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .time-block .when {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* CMS Collections */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .collection-item {
+            background: var(--surface-raised);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .collection-item .count {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        .collection-item .name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Rabbit Hole */
+        .rabbit-hole {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .rabbit-hole h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--ghost);
+            margin-bottom: 1rem;
+        }
+
+        .hole-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .hole-step {
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .hole-step .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .hole-step .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .hole-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* Command Block */
+        .command-block {
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .command-label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: var(--teal);
+            color: var(--bg);
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .command-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--green);
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Caption Templates */
+        .template-box {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .template-box h4 {
+            color: var(--heart);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .template-box pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text);
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .template-box .var {
+            color: var(--ghost);
+        }
+
+        /* Tips */
+        .tip {
+            background: rgba(45, 212, 191, 0.08);
+            border-left: 3px solid var(--teal);
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+
+        .tip-label {
+            font-weight: 700;
+            color: var(--teal);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .tip p, .tip li {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        /* Quick Ref Footer */
+        .quick-ref {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 2px solid var(--surface-glow);
+        }
+
+        /* Oracle Rules */
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .rule-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: 1rem;
+            background: var(--surface-raised);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .rule-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .rule-text strong {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .rule-text span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Types */
+        .content-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .content-type {
+            background: var(--surface-raised);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 2px solid;
+        }
+
+        .content-type.yes {
+            border-color: var(--green);
+        }
+
+        .content-type.no {
+            border-color: var(--heart);
+        }
+
+        .content-header {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .content-type.yes .content-header {
+            color: var(--green);
+        }
+
+        .content-type.no .content-header {
+            color: var(--heart);
+        }
+
+        .content-type ul {
+            list-style: none;
+        }
+
+        .content-type li {
+            padding: 0.3rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Voice Examples */
+        .voice-examples {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 0.75rem 0;
+        }
+
+        .voice-card {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .voice-card.dont {
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        .voice-card.do {
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .voice-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .voice-card.dont .voice-label {
+            color: var(--heart);
+        }
+
+        .voice-card.do .voice-label {
+            color: var(--green);
+        }
+
+        .voice-card p {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--text);
+        }
+
+        /* Reel Rules */
+        .reel-rules {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .quick-ref h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .quick-ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-ref-item h4 {
+            color: var(--teal);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.05em;
+        }
+
+        .quick-ref-item code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--green);
+            background: var(--bg);
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer .emerge {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            header h1 { font-size: 1.6rem; }
+            .logo { font-size: 2.5rem; }
+            .dhg-trio { grid-template-columns: 1fr; }
+            .card-framework { grid-template-columns: 1fr; }
+            .time-blocks { grid-template-columns: 1fr; }
+            .day-row { grid-template-columns: 80px 1fr; }
+            .day-format { display: none; }
+            .quick-jump { position: relative; top: 0; }
+            .hole-flow { flex-direction: column; }
+            .hole-arrow { transform: rotate(90deg); }
+            .content-types { grid-template-columns: 1fr; }
+            .voice-examples { grid-template-columns: 1fr; }
+            .rule-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🦆❤️👻</div>
+            <h1><span class="duck">DUCK</span> <span class="heart">HEART</span> <span class="ghost">GHOST</span></h1>
+            <p>Marketing Guide</p>
+            <div class="tagline">✨ The Looking Glass for Clean Beauty ✨</div>
+        </header>
+
+        <nav class="quick-jump">
+            <a href="#core">The Game</a>
+            <a href="#cards">Card System</a>
+            <a href="#tags">Real Talk Tags</a>
+            <a href="#personas">9 Personas</a>
+            <a href="#playbook">Weekly Playbook</a>
+            <a href="#cms">CMS</a>
+        </nav>
+
+        <!-- Section: The Core Game -->
+        <section class="section section-core open" id="core">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🎮</div>
+                <div class="section-title">
+                    <h2>The Game</h2>
+                    <p>Three piles. Your clean beauty identity.</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>Swipe cards into three piles. Your choices build your profile. Change anytime. Learn as you go.</p>
+                </div>
+
+                <div class="dhg-trio">
+                    <div class="dhg-card duck">
+                        <div class="emoji">🦆</div>
+                        <h3>DUCK</h3>
+                        <p>Maybe. Undecided. Sitting on it.</p>
+                        <div class="subtext">Duck the decision — or duck the thing entirely</div>
+                    </div>
+                    <div class="dhg-card heart">
+                        <div class="emoji">❤️</div>
+                        <h3>HEART</h3>
+                        <p>Love it. Want it. In my stash.</p>
+                        <div class="subtext">Everything with this ingredient? Yes please.</div>
+                    </div>
+                    <div class="dhg-card ghost">
+                        <div class="emoji">👻</div>
+                        <h3>GHOST</h3>
+                        <p>Hard no. Avoid. Dead to me.</p>
+                        <div class="subtext">Delete everything with this from my world.</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-label">The Looking Glass</div>
+                    <p>Every card flip is an Alice moment. Front = what they want you to see. Back = what's actually there. You thought you knew. <strong>Now you see.</strong></p>
+                </div>
+
+                <div class="rabbit-hole">
+                    <h4>🐇 The Rabbit Hole</h4>
+                    <div class="hole-flow">
+                        <div class="hole-step">
+                            <div class="icon">📦</div>
+                            <div class="label">Product</div>
+                        </div>
+                        <div class="hole-arrow">→</div>
+                        <div class="hole-step">
+                            <div class="icon">💧</div>
+                            <div class="label">Ingredient</div>
+                        </div>
+                        <div class="hole-arrow">→</div>
+                        <div class="hole-step">
+                            <div class="icon">🏪</div>
+                            <div class="label">Retailer/App</div>
+                        </div>
+                        <div class="hole-arrow">→</div>
+                        <div class="hole-step">
+                            <div class="icon">🔬</div>
+                            <div class="label">Research</div>
+                        </div>
+                        <div class="hole-arrow">→</div>
+                        <div class="hole-step">
+                            <div class="icon">⚖️</div>
+                            <div class="label">Regulator</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Card System -->
+        <section class="section section-cards" id="cards">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🃏</div>
+                <div class="section-title">
+                    <h2>The Card System</h2>
+                    <p>Baseball Card front. Nutrition Facts back.</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>Two formats everyone already knows. Zero learning curve. Flip to reveal the truth.</p>
+                </div>
+
+                <div class="card-framework">
+                    <div class="framework-card front">
+                        <h4>⚾ Front: Baseball Card</h4>
+                        <p>The player. The stats. The vibe.</p>
+                        <ul>
+                            <li>Photo / gallery</li>
+                            <li>Name + brand</li>
+                            <li>3 key stats</li>
+                            <li>Real Talk tags</li>
+                            <li>Community DHG %</li>
+                        </ul>
+                    </div>
+                    <div class="framework-card back">
+                        <h4>🏷️ Back: Nutrition Facts</h4>
+                        <p>The composition. The receipts.</p>
+                        <ul>
+                            <li>Structured ingredient data</li>
+                            <li>Hierarchy with dividers</li>
+                            <li>The fine print</li>
+                            <li>Links to go deeper</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flip-indicator">
+                    <span>✨ FLIP = The Looking Glass moment ✨</span>
+                </div>
+
+                <h4 style="margin: 1.5rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">7 CARD TYPES</h4>
+
+                <div class="tags-grid">
+                    <div class="tag-card">
+                        <div class="emoji">⚪</div>
+                        <div class="info">
+                            <h4>Ingredient</h4>
+                            <p>Circle — the atom</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🔺</div>
+                        <div class="info">
+                            <h4>Product</h4>
+                            <p>Triangle — the point</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">💎</div>
+                        <div class="info">
+                            <h4>Brand</h4>
+                            <p>Diamond — the mark</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">⬠</div>
+                        <div class="info">
+                            <h4>Retailer</h4>
+                            <p>Pentagon — the storefront</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🔬</div>
+                        <div class="info">
+                            <h4>Research</h4>
+                            <p>Hexagon — molecular</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">📱</div>
+                        <div class="info">
+                            <h4>App</h4>
+                            <p>Heptagon — the lens</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🛑</div>
+                        <div class="info">
+                            <h4>Regulator</h4>
+                            <p>Octagon — stop sign</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="margin: 1.5rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">GENERATING CARDS</h4>
+
+                <div class="command-block">
+                    <span class="command-label">Report Card</span>
+                    <code>python3 automation/content_generator.py --type report-card --slug <span style="color: var(--ghost);">PRODUCT-SLUG</span></code>
+                </div>
+
+                <div class="command-block">
+                    <span class="command-label">Ingredient</span>
+                    <code>python3 automation/content_generator.py --type ingredient-spotlight --slug <span style="color: var(--ghost);">INGREDIENT-SLUG</span></code>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-label">Output</div>
+                    <p>HTML files land in <code style="background: var(--bg); padding: 0.2rem 0.4rem; border-radius: 4px;">content_output/</code> → Screenshot at 1080×1080 for Instagram</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Real Talk Tags -->
+        <section class="section section-tags" id="tags">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🏷️</div>
+                <div class="section-title">
+                    <h2>Real Talk Tags</h2>
+                    <p>The vibe check. Community-voted.</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>Tags appear when 50%+ of community agrees. One word. An opinion. Separate from YOUR Duck/Heart/Ghost choices.</p>
+                </div>
+
+                <div class="tags-grid">
+                    <div class="tag-card">
+                        <div class="emoji">🔥</div>
+                        <div class="info">
+                            <h4>Viral</h4>
+                            <p>Blowing up rn</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">⚔️</div>
+                        <div class="info">
+                            <h4>Slays</h4>
+                            <p>Actually excellent</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">😐</div>
+                        <div class="info">
+                            <h4>Mid</h4>
+                            <p>Mediocre, meh</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">💨</div>
+                        <div class="info">
+                            <h4>Smoke</h4>
+                            <p>Marketing BS</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🧢</div>
+                        <div class="info">
+                            <h4>No Cap</h4>
+                            <p>Verified legit</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🥸</div>
+                        <div class="info">
+                            <h4>Sus</h4>
+                            <p>Something's sketchy</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">💸</div>
+                        <div class="info">
+                            <h4>Bougie</h4>
+                            <p>Luxury / pricey</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🔀</div>
+                        <div class="info">
+                            <h4>Dupe</h4>
+                            <p>Cheaper alt exists</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🦨</div>
+                        <div class="info">
+                            <h4>Stank</h4>
+                            <p>Smells bad</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">🧂</div>
+                        <div class="info">
+                            <h4>Salty</h4>
+                            <p>Conflict of interest</p>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="emoji">✂️</div>
+                        <div class="info">
+                            <h4>Snip</h4>
+                            <p>Skip this, useless</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-label">The Separation</div>
+                    <p><strong>Duck/Heart/Ghost</strong> = YOUR judgment (builds your profile)<br>
+                    <strong>Real Talk Tags</strong> = THE CARD's judgment (community consensus)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: 9 Personas -->
+        <section class="section section-personas" id="personas">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">👥</div>
+                <div class="section-title">
+                    <h2>The 9 Personas</h2>
+                    <p>Pick one. It glows for you.</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>User picks a persona in the header. Their triad of categories glows brighter in the gradient bar.</p>
+                </div>
+
+                <div class="persona-grid">
+                    <div class="persona-card">
+                        <h4>🔍 Ingredient Sleuth</h4>
+                        <div class="question">"What's actually in this?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>🌱 Eco Warrior</h4>
+                        <div class="question">"Is this hurting the planet?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>🪶 Sensitive Soul</h4>
+                        <div class="question">"Will this hurt my skin?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>💵 Savvy Shopper</h4>
+                        <div class="question">"Is this worth the money?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>🧐 Skeptic</h4>
+                        <div class="question">"Where's the proof?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>👨‍👩‍👧 Family First</h4>
+                        <div class="question">"Is this safe for pregnancy/kids?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>✨ Antiaging Pro</h4>
+                        <div class="question">"Will this actually work?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>🌈 Inclusive</h4>
+                        <div class="question">"Is this made for people like me?"</div>
+                    </div>
+                    <div class="persona-card">
+                        <h4>🔥 Trendsetter</h4>
+                        <div class="question">"What's everyone talking about?"</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-label">Content Series Ideas</div>
+                    <p>Pick a persona → create a recurring series:<br>
+                    <strong>"Sleuth Saturdays"</strong> — Deep ingredient dives<br>
+                    <strong>"Eco Edit"</strong> — Weekly sustainable picks<br>
+                    <strong>"Savvy Swaps"</strong> — Dupe discoveries<br>
+                    <strong>"Skeptic's Lab"</strong> — Fact-checking viral claims</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: The Voice Playbook -->
+        <section class="section section-playbook" id="playbook">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">👻</div>
+                <div class="section-title">
+                    <h2>The Voice Playbook</h2>
+                    <p>The oracle speaks. The cards reveal. You decide.</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>Instagram only. Infographics. No face. The ghost speaks through the cards.</p>
+                </div>
+
+                <div class="oracle-rules">
+                    <h4 style="color: var(--ghost); margin-bottom: 1rem; font-size: 1rem;">THE ORACLE RULES</h4>
+                    
+                    <div class="rule-grid">
+                        <div class="rule-card">
+                            <div class="rule-icon">👻</div>
+                            <div class="rule-text">
+                                <strong>No face. Ever.</strong>
+                                <span>The voice has no body. The ghost doesn't selfie.</span>
+                            </div>
+                        </div>
+                        <div class="rule-card">
+                            <div class="rule-icon">🪞</div>
+                            <div class="rule-text">
+                                <strong>The cards speak.</strong>
+                                <span>Not "I tested this" → "This was tested." The data talks.</span>
+                            </div>
+                        </div>
+                        <div class="rule-card">
+                            <div class="rule-icon">🤫</div>
+                            <div class="rule-text">
+                                <strong>Nunya.</strong>
+                                <span>Who's behind this? The receipts. That's who.</span>
+                            </div>
+                        </div>
+                        <div class="rule-card">
+                            <div class="rule-icon">🎯</div>
+                            <div class="rule-text">
+                                <strong>You decide.</strong>
+                                <span>No opinions. No "my fave." Just truth. They choose.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">WHAT YOU MAKE</h4>
+
+                <div class="content-types">
+                    <div class="content-type yes">
+                        <div class="content-header">✓ THIS</div>
+                        <ul>
+                            <li>Static carousels (the cards ARE the content)</li>
+                            <li>Infographics (your happy place)</li>
+                            <li>Voiceover Reels (hands only, product shots, card flips)</li>
+                            <li>Screenshots of the game</li>
+                            <li>Data visualizations</li>
+                            <li>The pretty grid</li>
+                        </ul>
+                    </div>
+                    <div class="content-type no">
+                        <div class="content-header">✗ NOT THIS</div>
+                        <ul>
+                            <li>Talking head videos</li>
+                            <li>Get ready with me</li>
+                            <li>Day in my life</li>
+                            <li>Personal stories</li>
+                            <li>Trending audio lip syncs</li>
+                            <li>Any face. Any.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">TIME BLOCKS (ADHD-FRIENDLY)</h4>
+
+                <div class="time-blocks">
+                    <div class="time-block">
+                        <div class="hours">2-3h</div>
+                        <div class="label">Batch create</div>
+                        <div class="when">Sunday</div>
+                    </div>
+                    <div class="time-block">
+                        <div class="hours">1h</div>
+                        <div class="label">Schedule all</div>
+                        <div class="when">Sunday</div>
+                    </div>
+                    <div class="time-block">
+                        <div class="hours">0</div>
+                        <div class="label">Touch the app</div>
+                        <div class="when">Mon-Sat</div>
+                    </div>
+                </div>
+
+                <div class="tip" style="margin-top: 1rem;">
+                    <div class="tip-label">The Point</div>
+                    <p>Batch it. Schedule it. Walk away. The ghost doesn't doom scroll. The ghost has a life.</p>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">WEEKLY RHYTHM</h4>
+
+                <div class="week-grid">
+                    <div class="day-row header">
+                        <div>Day</div>
+                        <div>What Drops</div>
+                        <div>Format</div>
+                    </div>
+                    <div class="day-row monday">
+                        <div class="day-name">Monday</div>
+                        <div class="day-content">THE CARD — Product reveal</div>
+                        <div class="day-format">Carousel</div>
+                    </div>
+                    <div class="day-row wednesday">
+                        <div class="day-name">Wednesday</div>
+                        <div class="day-content">THE FLIP — Nutrition Facts deep dive</div>
+                        <div class="day-format">Carousel</div>
+                    </div>
+                    <div class="day-row friday">
+                        <div class="day-name">Friday</div>
+                        <div class="day-content">THE VERDICT — Duck Heart Ghost vote</div>
+                        <div class="day-format">Interactive</div>
+                    </div>
+                </div>
+
+                <div class="tip" style="margin-top: 1rem;">
+                    <div class="tip-label">That's It</div>
+                    <p>3 posts. One product. The oracle speaks on Monday, reveals on Wednesday, asks on Friday. Done.</p>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">THE VOICE (HOW IT SOUNDS)</h4>
+
+                <div class="voice-examples">
+                    <div class="voice-card dont">
+                        <div class="voice-label">NOT THIS (influencer voice)</div>
+                        <p>"OMG you guys I've been using this for a week and I'm OBSESSED 😍"</p>
+                    </div>
+                    <div class="voice-card do">
+                        <div class="voice-label">THIS (oracle voice)</div>
+                        <p>"Tested for 7 days. Here's what the ingredients say."</p>
+                    </div>
+                </div>
+
+                <div class="voice-examples">
+                    <div class="voice-card dont">
+                        <div class="voice-label">NOT THIS</div>
+                        <p>"In my opinion, this is a little sus..."</p>
+                    </div>
+                    <div class="voice-card do">
+                        <div class="voice-label">THIS</div>
+                        <p>"🥸 Sus. Here's why."</p>
+                    </div>
+                </div>
+
+                <div class="voice-examples">
+                    <div class="voice-card dont">
+                        <div class="voice-label">NOT THIS</div>
+                        <p>"Let me know in the comments what YOU think! 💕"</p>
+                    </div>
+                    <div class="voice-card do">
+                        <div class="voice-label">THIS</div>
+                        <p>"You decide. 🦆❤️👻"</p>
+                    </div>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">CAPTION TEMPLATES</h4>
+
+                <div class="template-box">
+                    <h4>The Card (Monday)</h4>
+                    <pre><span class="var">[Tag emoji]</span> <span class="var">[TAG]</span>
+
+<span class="var">[Product]</span> — <span class="var">[Brand]</span>
+
+<span class="var">[One line: what the data shows]</span>
+
+Flip Wednesday.
+
+#duckheartghost #cleanbeauty</pre>
+                </div>
+
+                <div class="template-box">
+                    <h4>The Flip (Wednesday)</h4>
+                    <pre>The Nutrition Facts on <span class="var">[Product]</span>.
+
+<span class="var">[Key ingredient callout]</span>
+<span class="var">[Key ingredient callout]</span>
+<span class="var">[Key ingredient callout]</span>
+
+Full breakdown: DuckHeartGhost.com
+
+Verdict Friday.</pre>
+                </div>
+
+                <div class="template-box">
+                    <h4>The Verdict (Friday)</h4>
+                    <pre>🦆❤️👻
+
+<span class="var">[Product]</span>
+
+The card has been flipped.
+The facts are in.
+
+Where does it land?
+
+🦆 Duck
+❤️ Heart  
+👻 Ghost
+
+You decide.</pre>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; font-size: 0.9rem; color: var(--text-muted);">VOICEOVER REELS (WHEN NEEDED)</h4>
+
+                <div class="reel-rules">
+                    <div class="rule-card">
+                        <div class="rule-icon">👐</div>
+                        <div class="rule-text">
+                            <strong>Hands only.</strong>
+                            <span>Holding the product. Flipping the card. Pointing at ingredients.</span>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🎙️</div>
+                        <div class="rule-text">
+                            <strong>Voice over visuals.</strong>
+                            <span>The card flips. The voice explains. That's it.</span>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">⏱️</div>
+                        <div class="rule-text">
+                            <strong>Keep it short.</strong>
+                            <span>15-30 seconds. The oracle doesn't ramble.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section: CMS -->
+        <section class="section section-cms" id="cms">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">📁</div>
+                <div class="section-title">
+                    <h2>CMS Collections</h2>
+                    <p>What lives where in Webflow</p>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="fouroneone">
+                    <div class="fouroneone-label">411</div>
+                    <p>9 collections, all cross-referenced. The rabbit hole infrastructure.</p>
+                </div>
+
+                <div class="collection-grid">
+                    <div class="collection-item">
+                        <div class="count">6,933</div>
+                        <div class="name">Ingredients</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">540+</div>
+                        <div class="name">Makeup</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">443+</div>
+                        <div class="name">Skincare</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">77</div>
+                        <div class="name">Tools</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">24</div>
+                        <div class="name">Brands</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">30</div>
+                        <div class="name">Research</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">16</div>
+                        <div class="name">Regulators</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">12</div>
+                        <div class="name">Retailers</div>
+                    </div>
+                    <div class="collection-item">
+                        <div class="count">0</div>
+                        <div class="name">Apps</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-label">Finding Slugs</div>
+                    <p>Webflow CMS → Open item → Slug is in URL or Slug field<br>
+                    Example: <code style="background: var(--bg); padding: 0.2rem 0.4rem; border-radius: 4px;">kosas-revealer-concealer</code></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Reference -->
+        <div class="quick-ref">
+            <h3>⚡ QUICK REFERENCE</h3>
+            <div class="quick-ref-grid">
+                <div class="quick-ref-item">
+                    <h4>Report Card</h4>
+                    <code>python3 automation/content_generator.py --type report-card --slug SLUG</code>
+                </div>
+                <div class="quick-ref-item">
+                    <h4>Ingredient</h4>
+                    <code>python3 automation/content_generator.py --type ingredient-spotlight --slug SLUG</code>
+                </div>
+                <div class="quick-ref-item">
+                    <h4>Output</h4>
+                    <code>content_output/</code>
+                </div>
+                <div class="quick-ref-item">
+                    <h4>Image Size</h4>
+                    <code>1080 × 1080px</code>
+                </div>
+                <div class="quick-ref-item">
+                    <h4>Website</h4>
+                    <code>DuckHeartGhost.com</code>
+                </div>
+                <div class="quick-ref-item">
+                    <h4>Hashtags</h4>
+                    <code>#duckheartghost #cleanbeauty</code>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="emerge">"I am emergent from the rabbit hole."</div>
+            <div>Now go play. 🦆❤️👻</div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

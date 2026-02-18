@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duck Heart Ghost — The Card Universe Mind Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --card: #1c1c1f;
+            --card-hover: #252528;
+            --text: #f4f4f5;
+            --text-muted: #71717a;
+            
+            --duck: #fbbf24;
+            --heart: #f43f5e;
+            --ghost: #a855f7;
+            --glass: #2dd4bf;
+            
+            --gradient-9s: linear-gradient(90deg, #ed8435, #e35e2e, #e9455c, #d94d85, #bf5cc9, #886de1, #3f8def, #79c2ef, #59c2d5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Mind Map Container */
+        .mind-map {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Central Node */
+        .center-node {
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-card {
+            background: var(--gradient-9s);
+            padding: 4px;
+            border-radius: 24px;
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.3);
+        }
+
+        .main-card-inner {
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 2rem 3rem;
+            text-align: center;
+        }
+
+        .main-card h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .main-card .tagline {
+            color: var(--glass);
+            font-size: 1.1rem;
+        }
+
+        .dhg-trio {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 2rem;
+        }
+
+        /* Branch Sections */
+        .branch-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Mini Cards */
+        .mini-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.25rem;
+            min-width: 160px;
+            max-width: 200px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .mini-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .mini-card.product { border-color: rgba(244, 63, 94, 0.3); }
+        .mini-card.product:hover { border-color: var(--heart); }
+        
+        .mini-card.ingredient { border-color: rgba(45, 212, 191, 0.3); }
+        .mini-card.ingredient:hover { border-color: var(--glass); }
+        
+        .mini-card.entity { border-color: rgba(168, 85, 247, 0.3); }
+        .mini-card.entity:hover { border-color: var(--ghost); }
+        
+        .mini-card.system { border-color: rgba(251, 191, 36, 0.3); }
+        .mini-card.system:hover { border-color: var(--duck); }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .card-format {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .format-baseball {
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--heart);
+        }
+
+        .format-nutrition {
+            background: rgba(45, 212, 191, 0.2);
+            color: var(--glass);
+        }
+
+        /* Sub-items */
+        .sub-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sub-item {
+            padding: 0.2rem 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* The 9S Grid */
+        .nine-s-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 0.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 800px) {
+            .nine-s-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .nine-s-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nine-s-item span {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* 5 Drawers */
+        .drawers-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .drawer-chip {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .drawer-chip .icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .drawer-chip .desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 0.25rem;
+        }
+
+        /* Personas */
+        .persona-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .persona-chip {
+            background: var(--card);
+            border-radius: 100px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .persona-chip span {
+            margin-right: 0.4rem;
+        }
+
+        /* Ingredient Icons Grid */
+        .ingredient-icons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 600px) {
+            .ingredient-icons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .ingredient-icon-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(45, 212, 191, 0.2);
+        }
+
+        .ingredient-icon-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ingredient-icon-card .name {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.heart { background: var(--heart); }
+        .legend-dot.glass { background: var(--glass); }
+        .legend-dot.ghost { background: var(--ghost); }
+        .legend-dot.duck { background: var(--duck); }
+
+        /* COI Box */
+        .coi-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(168, 85, 247, 0.1));
+            border: 2px solid var(--duck);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .coi-box h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--duck);
+        }
+
+        .coi-box p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🦆❤️👻 The Card Universe</h1>
+    <p class="subtitle">Everything is a card. Everything links to everything else.</p>
+
+    <div class="mind-map">
+
+        <!-- ========== CENTER: DHG ========== -->
+        <div class="center-node">
+            <div class="main-card">
+                <div class="main-card-inner">
+                    <h2>Duck Heart Ghost</h2>
+                    <div class="tagline">The Looking Glass for Clean Beauty</div>
+                    <div class="dhg-trio">
+                        <span>🦆</span>
+                        <span>❤️</span>
+                        <span>👻</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 9 CARD TYPES ========== -->
+        <div class="branch-section">
+            <div class="section-header">
+                <h3>📇 9 Card Types</h3>
+                <p>Every entity in the beauty ecosystem gets a card</p>
+            </div>
+
+            <div class="card-grid">
+                
+                <!-- Products -->
+                <div class="mini-card product">
+                    <div class="card-icon">🧴</div>
+                    <div class="card-name">Products</div>
+                    <div class="card-desc">Makeup & Skincare</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                    <div class="sub-items">
+                        <span class="sub-item">💄 Lipstick</span>
+                        <span class="sub-item">🫙 Jar</span>
+                        <span class="sub-item">💧 Dropper</span>
+                        <span class="sub-item">📦 Compact</span>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="mini-card product">
+                    <div class="card-icon">🖌️</div>
+                    <div class="card-name">Tools</div>
+                    <div class="card-desc">Brushes, sponges, etc.</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                    <div class="sub-items">
+                        <span class="sub-item">🖌️ Brush</span>
+                        <span class="sub-item">🧽 Sponge</span>
+                        <span class="sub-item">🦋 Curler</span>
+                    </div>
+                </div>
+
+                <!-- Ingredients -->
+                <div class="mini-card ingredient">
+                    <div class="card-icon">🌿</div>
+                    <div class="card-name">Ingredients</div>
+                    <div class="card-desc">What's actually in it</div>
+                    <div class="card-format format-nutrition">📋 Nutrition Facts</div>
+                    <div class="sub-items">
+                        <span class="sub-item">🌿 Extract</span>
+                        <span class="sub-item">💎 Mineral</span>
+                        <span class="sub-item">⚗️ Synthetic</span>
+                    </div>
+                </div>
+
+                <!-- Brands -->
+                <div class="mini-card entity">
+                    <div class="card-icon">🏷️</div>
+                    <div class="card-name">Brands</div>
+                    <div class="card-desc">Who makes it</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                </div>
+
+                <!-- Retailers -->
+                <div class="mini-card entity">
+                    <div class="card-icon">🏪</div>
+                    <div class="card-name">Retailers</div>
+                    <div class="card-desc">Where you buy it</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                </div>
+
+                <!-- Apps -->
+                <div class="mini-card entity">
+                    <div class="card-icon">📱</div>
+                    <div class="card-name">Apps</div>
+                    <div class="card-desc">Other rating tools</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                </div>
+
+                <!-- Research -->
+                <div class="mini-card ingredient">
+                    <div class="card-icon">📄</div>
+                    <div class="card-name">Research</div>
+                    <div class="card-desc">Studies & evidence</div>
+                    <div class="card-format format-nutrition">📋 Nutrition Facts</div>
+                </div>
+
+                <!-- Regulators -->
+                <div class="mini-card entity">
+                    <div class="card-icon">⚖️</div>
+                    <div class="card-name">Regulators</div>
+                    <div class="card-desc">Who makes the rules</div>
+                    <div class="card-format format-baseball">⚾ Baseball Card</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========== INGREDIENT ICONS ========== -->
+        <div class="branch-section">
+            <div class="section-header">
+                <h3>🧪 Ingredient Icons by Kind</h3>
+                <p>Instantly recognizable at a glance</p>
+            </div>
+
+            <div class="ingredient-icons">
+                <div class="ingredient-icon-card">
+                    <div class="icon">🌿</div>
+                    <div class="name">Extract</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">🌸</div>
+                    <div class="name">Essential Oil</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">💎</div>
+                    <div class="name">Mineral</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">⚗️</div>
+                    <div class="name">Synthetic</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">💊</div>
+                    <div class="name">Vitamin</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">🧬</div>
+                    <div class="name">Peptide</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">🫒</div>
+                    <div class="name">Fatty Acid</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">🕯️</div>
+                    <div class="name">Wax</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">⚡</div>
+                    <div class="name">Acid</div>
+                </div>
+                <div class="ingredient-icon-card">
+                    <div class="icon">🔗</div>
+                    <div class="name">Protein</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== THE 9S ========== -->
+        <div class="branch-section">
+            <div class="section-header">
+                <h3>🌈 The 9S Framework</h3>
+                <p>Every card scored on 9 dimensions — tags + deep dive details</p>
+            </div>
+
+            <div class="nine-s-grid">
+                <div class="nine-s-item"><span>⭐</span>Stars</div>
+                <div class="nine-s-item"><span>🌱</span>Source</div>
+                <div class="nine-s-item"><span>🛡️</span>Safety</div>
+                <div class="nine-s-item"><span>🤝</span>Support</div>
+                <div class="nine-s-item"><span>🎯</span>Suitability</div>
+                <div class="nine-s-item"><span>📦</span>Structure</div>
+                <div class="nine-s-item"><span>🧪</span>Substance</div>
+                <div class="nine-s-item"><span>♻️</span>Sustain</div>
+                <div class="nine-s-item"><span>💰</span>Spend</div>
+            </div>
+        </div>
+
+        <!-- ========== 5 DRAWERS ========== -->
+        <div class="branch-section">
+            <div class="section-header">
+                <h3>🗄️ 5 Drawers</h3>
+                <p>Tap to expand — the deep dive on every card</p>
+            </div>
+
+            <div class="drawers-row">
+                <div class="drawer-chip">
+                    <span class="icon">🧾</span>
+                    Receipts
+                    <div class="desc">Who profits, the money trail</div>
+                </div>
+                <div class="drawer-chip">
+                    <span class="icon">🔬</span>
+                    Science
+                    <div class="desc">Studies, proof it works</div>
+                </div>
+                <div class="drawer-chip">
+                    <span class="icon">🎯</span>
+                    Match
+                    <div class="desc">Is it for you?</div>
+                </div>
+                <div class="drawer-chip">
+                    <span class="icon">🌍</span>
+                    Impact
+                    <div class="desc">Planet, sustainability</div>
+                </div>
+                <div class="drawer-chip">
+                    <span class="icon">🛒</span>
+                    Deal
+                    <div class="desc">Shop links, buy it</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 9 PERSONAS ========== -->
+        <div class="branch-section">
+            <div class="section-header">
+                <h3>👤 9 Personas</h3>
+                <p>Pick your lens — cards glow based on match score (0-100)</p>
+            </div>
+
+            <div class="persona-grid">
+                <div class="persona-chip"><span>🔍</span>Sleuth</div>
+                <div class="persona-chip"><span>🌱</span>Eco</div>
+                <div class="persona-chip"><span>🌸</span>Sensitive</div>
+                <div class="persona-chip"><span>💡</span>Savvy</div>
+                <div class="persona-chip"><span>🤨</span>Skeptic</div>
+                <div class="persona-chip"><span>👶</span>Family</div>
+                <div class="persona-chip"><span>✨</span>Anti-Aging</div>
+                <div class="persona-chip"><span>🌈</span>Inclusive</div>
+                <div class="persona-chip"><span>🔥</span>Trendsetter</div>
+            </div>
+        </div>
+
+        <!-- ========== COI: THE SECRET SAUCE ========== -->
+        <div class="branch-section">
+            <div class="coi-box">
+                <h4>🧂 Conflict of Interest — The Whole Point</h4>
+                <p>
+                    Apps funded by the brands they rate. Retailers certifying their own products as "clean." 
+                    Studies funded by ingredient manufacturers. Trade groups pretending to be independent.
+                    <br><br>
+                    <strong>Every single card has a COI field.</strong><br>
+                    🧂 Grain of Salt badge = declared conflict.
+                </p>
+            </div>
+        </div>
+
+        <!-- ========== LEGEND ========== -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot heart"></div>
+                <span>Products & Tools</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot glass"></div>
+                <span>Ingredients & Research (Nutrition Facts)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot ghost"></div>
+                <span>Entities (Brands, Retailers, Apps, Regulators)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot duck"></div>
+                <span>🧂 Has Conflict of Interest</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

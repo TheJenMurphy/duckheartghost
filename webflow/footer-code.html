@@ -1,0 +1,170 @@
+<script>
+// Supabase Init
+const sb = window.supabase.createClient(
+  'https://thenbtfaohxzgvpjwjat.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoZW5idGZhb2h4emd2cGp3amF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY3MTU0ODAsImV4cCI6MjA1MjI5MTQ4MH0.8s046dOsE3uSQoSLBxbj0A14feeUFqMYHk6dqYHKbPA'
+);
+
+// Section Expand/Collapse
+document.querySelectorAll('[data-x]').forEach(el => {
+  el.addEventListener('click', () => el.classList.toggle('open'));
+});
+
+// Card Flip - Flip Hint
+document.querySelectorAll('.flip-hint').forEach(el => {
+  el.addEventListener('click', () => {
+    el.closest('.card-wrap').classList.add('flipped');
+  });
+});
+
+// Card Flip - Flip Button (toggle both ways)
+document.querySelectorAll('.flip-btn').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    el.closest('.card-wrap').classList.toggle('flipped');
+  });
+});
+
+// DHG Buttons - Bounce & Toggle
+document.querySelectorAll('.dhg').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const card = btn.closest('.card-wrap');
+    const slug = card?.dataset.slug;
+    const action = btn.dataset.a;
+    const wasOn = btn.classList.contains('on');
+
+    // Clear all buttons in this toggle
+    btn.parentElement.querySelectorAll('.dhg').forEach(b => b.classList.remove('on'));
+
+    // Toggle this one (unless clicking same one to turn off)
+    if (!wasOn) {
+      btn.classList.add('on');
+    }
+
+    // Save to Supabase if logged in
+    const { data: { user } } = await sb.auth.getUser();
+    if (user && slug) {
+      if (wasOn) {
+        await sb.from('votes').delete().match({ user_id: user.id, product_slug: slug });
+      } else {
+        await sb.from('votes').upsert({
+          user_id: user.id,
+          product_slug: slug,
+          vote_type: action
+        }, { onConflict: 'user_id,product_slug' });
+      }
+    }
+  });
+});
+
+// Gallery Swipe
+document.querySelectorAll('.gallery-hero').forEach(gallery => {
+  const track = gallery.querySelector('.gallery-hero-track');
+  if (!track) return;
+
+  let startX = 0;
+  let scrollLeft = 0;
+  let currentSlide = 0;
+  const slideWidth = 268;
+  const slides = track.querySelectorAll('.gallery-hero-slide');
+  const maxSlide = slides.length - 1;
+
+  track.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+    scrollLeft = currentSlide * slideWidth;
+    track.style.transition = 'none';
+  });
+
+  track.addEventListener('touchmove', (e) => {
+    const x = e.touches[0].pageX;
+    const diff = startX - x;
+    track.style.transform = `translateX(-${scrollLeft + diff}px)`;
+  });
+
+  track.addEventListener('touchend', (e) => {
+    const x = e.changedTouches[0].pageX;
+    const diff = startX - x;
+    track.style.transition = 'transform .3s cubic-bezier(.25,.46,.45,.94)';
+
+    if (diff > 50 && currentSlide < maxSlide) {
+      currentSlide++;
+    } else if (diff < -50 && currentSlide > 0) {
+      currentSlide--;
+    }
+
+    track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+  });
+
+  let isDragging = false;
+
+  track.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX;
+    scrollLeft = currentSlide * slideWidth;
+    track.style.transition = 'none';
+    track.style.cursor = 'grabbing';
+  });
+
+  track.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const x = e.pageX;
+    const diff = startX - x;
+    track.style.transform = `translateX(-${scrollLeft + diff}px)`;
+  });
+
+  track.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = startX - e.pageX;
+    track.style.transition = 'transform .3s cubic-bezier(.25,.46,.45,.94)';
+    track.style.cursor = 'grab';
+
+    if (diff > 50 && currentSlide < maxSlide) {
+      currentSlide++;
+    } else if (diff < -50 && currentSlide > 0) {
+      currentSlide--;
+    }
+
+    track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+  });
+
+  track.addEventListener('mouseleave', () => {
+    if (isDragging) {
+      isDragging = false;
+      track.style.transition = 'transform .3s cubic-bezier(.25,.46,.45,.94)';
+      track.style.cursor = 'grab';
+      track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    }
+  });
+
+  track.style.cursor = 'grab';
+});
+
+// Google OAuth
+document.querySelectorAll('.sign-in-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    await sb.auth.signInWithOAuth({ provider: 'google' });
+  });
+});
+
+document.querySelectorAll('.sign-out-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    await sb.auth.signOut();
+    location.reload();
+  });
+});
+
+// Auth State Listener
+sb.auth.onAuthStateChange((event, session) => {
+  const signInBtns = document.querySelectorAll('.sign-in-btn');
+  const signOutBtns = document.querySelectorAll('.sign-out-btn');
+
+  if (session) {
+    signInBtns.forEach(btn => btn.style.display = 'none');
+    signOutBtns.forEach(btn => btn.style.display = 'block');
+  } else {
+    signInBtns.forEach(btn => btn.style.display = 'block');
+    signOutBtns.forEach(btn => btn.style.display = 'none');
+  }
+});
+</script>

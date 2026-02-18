@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHG Card Preview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+        .cards-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .card-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        /* DHG CARD STYLES */
+        .dhg-card {
+            width: 360px;
+            height: 580px;
+            perspective: 1000px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .dhg-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .dhg-card.flipped .dhg-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .dhg-card-front,
+        .dhg-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dhg-card-front { background: #1a1a1a; }
+        .dhg-card-back { background: #1a1a1a; transform: rotateY(180deg); }
+
+        .dhg-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: transparent;
+        }
+
+        .dhg-rainbow-bar {
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 3px;
+            border-radius: 0 0 2px 2px;
+            background: linear-gradient(
+                90deg,
+                #ff6b6b 0%,
+                #ffa94d 15%,
+                #ffd93d 30%,
+                #69db7c 50%,
+                #4dabf7 65%,
+                #9775fa 80%,
+                #da77f2 100%
+            );
+            z-index: 10;
+        }
+
+        .dhg-category {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dhg-category-icon { font-size: 16px; }
+        .dhg-top-actions { display: flex; gap: 8px; }
+
+        .dhg-icon-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            filter: grayscale(100%);
+        }
+
+        .dhg-icon-btn:hover,
+        .dhg-heart-active { opacity: 1; filter: none; }
+
+        .dhg-image-area {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 240px;
+        }
+
+        .dhg-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f0ff 0%, #fff5f5 50%, #f0fff5 100%);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .dhg-product-image {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .dhg-rainbow-edge {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            background: linear-gradient(to bottom, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b9d);
+        }
+
+        .dhg-monitor-badge {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(30, 30, 30, 0.95);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #ff6b6b;
+        }
+
+        .dhg-product-info { padding: 16px 20px 12px; }
+
+        .dhg-product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .dhg-brand-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff6b9d;
+            text-decoration: none;
+        }
+
+        .dhg-front-panels {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dhg-panel { border-radius: 8px; overflow: hidden; }
+
+        .dhg-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+
+        .dhg-panel-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+        .dhg-panel-chevron { font-size: 14px; transition: transform 0.3s; }
+        .dhg-panel.expanded .dhg-panel-chevron { transform: rotate(90deg); }
+
+        .dhg-panel-content {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px 12px;
+            flex-wrap: wrap;
+        }
+
+        .dhg-panel.expanded .dhg-panel-content { display: flex; }
+
+        .dhg-panel-hype {
+            background: linear-gradient(135deg, rgba(255, 159, 67, 0.15) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border: 1px solid rgba(255, 159, 67, 0.4);
+        }
+        .dhg-panel-hype .dhg-panel-title { color: #ff9f43; }
+        .dhg-panel-hype .dhg-panel-chevron { color: #ff9f43; }
+
+        .dhg-panel-deal {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(255, 159, 67, 0.1) 100%);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+        .dhg-panel-deal .dhg-panel-title { color: #ff6b6b; }
+        .dhg-panel-deal .dhg-panel-chevron { color: #ff6b6b; }
+
+        .dhg-stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dhg-stat-love { color: #ff6b6b; }
+        .dhg-stat-influencer { color: #a78bfa; }
+        .dhg-stat-rating { color: #ffd93d; }
+
+        .dhg-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: white;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+        }
+
+        .dhg-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ccc;
+        }
+
+        .dhg-tag-dupe { background: rgba(107, 203, 119, 0.2); color: #6bcb77; }
+
+        .dhg-flip-btn {
+            margin: auto 16px 16px;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .dhg-flip-btn:hover { color: #999; }
+
+        /* BACK */
+        .dhg-facts-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dhg-facts-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 8px 0;
+            font-style: italic;
+        }
+
+        .dhg-facts-product { font-size: 14px; color: #999; margin-bottom: 2px; }
+
+        .dhg-facts-panels {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dhg-facts-panel { border-radius: 8px; overflow: hidden; }
+
+        .dhg-facts-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .dhg-facts-panel-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+
+        .dhg-facts-panel-content { display: none; padding: 0 14px 12px; }
+
+        .dhg-facts-panel.expanded .dhg-facts-panel-content { display: block; }
+        .dhg-facts-panel.expanded .dhg-panel-chevron { transform: rotate(90deg); }
+
+        .dhg-panel-benefits {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(190, 24, 93, 0.08) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+        }
+        .dhg-panel-benefits .dhg-facts-panel-title,
+        .dhg-panel-benefits .dhg-panel-chevron { color: #ec4899; }
+        .dhg-panel-benefits .dhg-tag { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+
+        .dhg-panel-skin {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+            border: 1px solid rgba(34, 211, 238, 0.4);
+        }
+        .dhg-panel-skin .dhg-facts-panel-title,
+        .dhg-panel-skin .dhg-panel-chevron { color: #22d3ee; }
+        .dhg-panel-skin .dhg-tag { background: rgba(34, 211, 238, 0.2); color: #67e8f9; }
+
+        .dhg-panel-ethics {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+        .dhg-panel-ethics .dhg-facts-panel-title,
+        .dhg-panel-ethics .dhg-panel-chevron { color: #a855f7; }
+        .dhg-panel-ethics .dhg-tag { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+
+        .dhg-panel-ingredients {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.12) 0%, rgba(13, 148, 136, 0.08) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.4);
+        }
+        .dhg-panel-ingredients .dhg-facts-panel-title,
+        .dhg-panel-ingredients .dhg-panel-chevron { color: #14b8a6; }
+        .dhg-panel-ingredients .dhg-tag { background: rgba(20, 184, 166, 0.2); color: #5eead4; }
+
+        .dhg-panel-safety {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+        .dhg-panel-safety .dhg-facts-panel-title,
+        .dhg-panel-safety .dhg-panel-chevron { color: #fbbf24; }
+
+        .dhg-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .dhg-safety-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+        .dhg-safety-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        .dhg-safety-label { font-size: 12px; color: #999; }
+        .dhg-safety-value { font-size: 13px; font-weight: 600; color: #6bcb77; }
+
+        .dhg-ewg-score {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6bcb77;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <h1>🦆❤️👻 DHG Card Preview</h1>
+    <p class="subtitle">Click FLIP or panels to test interaction</p>
+
+    <div class="cards-container">
+        <div>
+            <div class="card-label">FRONT (PERCEPTION)</div>
+            <div class="dhg-card" id="card1">
+                <div class="dhg-card-inner">
+                    <div class="dhg-card-front">
+                        <div class="dhg-top-bar">
+                            <div class="dhg-category">
+                                <span class="dhg-category-icon">🎨</span>
+                                <span class="dhg-category-text">POWDER • BLUSH</span>
+                            </div>
+                            <div class="dhg-top-actions">
+                                <button class="dhg-icon-btn dhg-search-btn">🔍</button>
+                                <button class="dhg-icon-btn dhg-heart-btn">❤️</button>
+                            </div>
+                        </div>
+                        <div class="dhg-rainbow-bar"></div>
+
+                        <div class="dhg-image-area">
+                            <div class="dhg-image-container">
+                                <div style="font-size: 80px;">🎨</div>
+                                <div class="dhg-rainbow-edge"></div>
+                            </div>
+                            <div class="dhg-monitor-badge">
+                                <span class="dhg-badge-icon">🔥</span>
+                                <span class="dhg-badge-text">Viral</span>
+                            </div>
+                        </div>
+
+                        <div class="dhg-product-info">
+                            <h2 class="dhg-product-name">Amazonian Clay 12-Hour Blush</h2>
+                            <a href="#" class="dhg-brand-link">Tarte →</a>
+                        </div>
+
+                        <div class="dhg-front-panels">
+                            <div class="dhg-panel dhg-panel-hype expanded">
+                                <div class="dhg-panel-header">
+                                    <span class="dhg-panel-title">HYPE</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-panel-content">
+                                    <span class="dhg-stat dhg-stat-love">❤️ 74%</span>
+                                    <span class="dhg-stat dhg-stat-influencer">👥 18%</span>
+                                    <span class="dhg-stat dhg-stat-rating">4.5★</span>
+                                </div>
+                            </div>
+
+                            <div class="dhg-panel dhg-panel-deal expanded">
+                                <div class="dhg-panel-header">
+                                    <span class="dhg-panel-title">DEAL</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-panel-content">
+                                    <span class="dhg-price">$32</span>
+                                    <span class="dhg-tag dhg-tag-dupe">Dupe</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="dhg-flip-btn">FLIP</button>
+                    </div>
+
+                    <div class="dhg-card-back">
+                        <div class="dhg-top-bar">
+                            <div class="dhg-category">
+                                <span class="dhg-category-icon">🎨</span>
+                                <span class="dhg-category-text">POWDER • BLUSH</span>
+                            </div>
+                            <div class="dhg-top-actions">
+                                <button class="dhg-icon-btn dhg-search-btn">🔍</button>
+                                <button class="dhg-icon-btn dhg-heart-btn dhg-heart-active">❤️</button>
+                            </div>
+                        </div>
+                        <div class="dhg-rainbow-bar"></div>
+
+                        <div class="dhg-facts-header">
+                            <h3 class="dhg-facts-title">Product Facts</h3>
+                            <div class="dhg-facts-product">Amazonian Clay 12-Hour Blush</div>
+                            <a href="#" class="dhg-brand-link">Tarte →</a>
+                        </div>
+
+                        <div class="dhg-facts-panels">
+                            <div class="dhg-facts-panel dhg-panel-benefits expanded">
+                                <div class="dhg-facts-panel-header">
+                                    <span class="dhg-facts-panel-title">BENEFITS</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-facts-panel-content">
+                                    <div class="dhg-tags">
+                                        <span class="dhg-tag">Moisturizing</span>
+                                        <span class="dhg-tag">Long Wear</span>
+                                        <span class="dhg-tag">Buildable</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dhg-facts-panel dhg-panel-skin expanded">
+                                <div class="dhg-facts-panel-header">
+                                    <span class="dhg-facts-panel-title">SKIN TYPE</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-facts-panel-content">
+                                    <div class="dhg-tags">
+                                        <span class="dhg-tag">All Types</span>
+                                        <span class="dhg-tag">Sensitive</span>
+                                        <span class="dhg-tag">Mature</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dhg-facts-panel dhg-panel-ethics expanded">
+                                <div class="dhg-facts-panel-header">
+                                    <span class="dhg-facts-panel-title">ETHICS</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-facts-panel-content">
+                                    <div class="dhg-tags">
+                                        <span class="dhg-tag">Vegan</span>
+                                        <span class="dhg-tag">Cruelty-Free</span>
+                                        <span class="dhg-tag">Refillable</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dhg-facts-panel dhg-panel-ingredients expanded">
+                                <div class="dhg-facts-panel-header">
+                                    <span class="dhg-facts-panel-title">INGREDIENTS</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-facts-panel-content">
+                                    <div class="dhg-tags">
+                                        <span class="dhg-tag">Amazonian Clay</span>
+                                        <span class="dhg-tag">Vitamin E</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dhg-facts-panel dhg-panel-safety expanded">
+                                <div class="dhg-facts-panel-header">
+                                    <span class="dhg-facts-panel-title">SAFETY & CERTS</span>
+                                    <span class="dhg-panel-chevron">▸</span>
+                                </div>
+                                <div class="dhg-facts-panel-content">
+                                    <div class="dhg-safety-grid">
+                                        <div class="dhg-safety-item">
+                                            <span class="dhg-safety-label">EWG Score</span>
+                                            <span class="dhg-ewg-score">2</span>
+                                        </div>
+                                        <div class="dhg-safety-item">
+                                            <span class="dhg-safety-label">Pregnancy Safe</span>
+                                            <span class="dhg-safety-value">✓</span>
+                                        </div>
+                                        <div class="dhg-safety-item">
+                                            <span class="dhg-safety-label">Derm Tested</span>
+                                            <span class="dhg-safety-value">✓</span>
+                                        </div>
+                                        <div class="dhg-safety-item">
+                                            <span class="dhg-safety-label">Hypoallergenic</span>
+                                            <span class="dhg-safety-value">✓</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="dhg-flip-btn">FLIP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var cards = document.querySelectorAll('.dhg-card');
+        cards.forEach(function(card) {
+            // Flip buttons
+            var flipBtns = card.querySelectorAll('.dhg-flip-btn');
+            flipBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    card.classList.toggle('flipped');
+                });
+            });
+
+            // Front panels
+            var frontPanels = card.querySelectorAll('.dhg-front-panels .dhg-panel');
+            frontPanels.forEach(function(panel) {
+                var header = panel.querySelector('.dhg-panel-header');
+                if (header) {
+                    header.addEventListener('click', function() {
+                        frontPanels.forEach(function(p) {
+                            if (p !== panel) p.classList.remove('expanded');
+                        });
+                        panel.classList.toggle('expanded');
+                    });
+                }
+            });
+
+            // Back panels
+            var factsPanels = card.querySelectorAll('.dhg-facts-panel');
+            factsPanels.forEach(function(panel) {
+                var header = panel.querySelector('.dhg-facts-panel-header');
+                if (header) {
+                    header.addEventListener('click', function() {
+                        factsPanels.forEach(function(p) {
+                            if (p !== panel) p.classList.remove('expanded');
+                        });
+                        panel.classList.toggle('expanded');
+                    });
+                }
+            });
+
+            // Heart toggle
+            var heartBtns = card.querySelectorAll('.dhg-heart-btn');
+            heartBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    heartBtns.forEach(function(hb) {
+                        hb.classList.toggle('dhg-heart-active');
+                    });
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

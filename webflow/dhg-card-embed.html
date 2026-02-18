@@ -1,0 +1,214 @@
+<!--
+    DHG Card - Webflow Embed
+    Baseball Card Front + Nutrition Facts Back
+
+    CMS FIELDS TO CONNECT:
+    - {{Product Name}}
+    - {{Brand Name}}
+    - {{Brand Slug}} - for brand link
+    - {{Category}} - e.g. "Powder • Blush"
+    - {{Product Image}}
+    - {{Price}}
+    - {{Monitor Badge}} - Viral, Trending, New, etc.
+    - {{Star Rating}} - e.g. 4.5
+    - {{Community Love Pct}} - e.g. 74
+    - {{Influencer Pct}} - e.g. 18
+    - {{Is Dupe}} - boolean
+    - {{Benefits}} - multi-ref or text
+    - {{Skin Types}} - multi-ref or text
+    - {{Ethics}} - multi-ref or text
+    - {{Key Ingredients}} - multi-ref or text
+    - {{EWG Score}}
+    - {{Pregnancy Safe}} - boolean
+    - {{Derm Tested}} - boolean
+    - {{Hypoallergenic}} - boolean
+-->
+
+<div class="dhg-card" data-product-slug="{{Slug}}">
+    <div class="dhg-card-inner">
+
+        <!-- ========== FRONT (PERCEPTION) ========== -->
+        <div class="dhg-card-front">
+            <!-- Top Bar -->
+            <div class="dhg-top-bar">
+                <div class="dhg-category">
+                    <span class="dhg-category-icon">🎨</span>
+                    <span class="dhg-category-text">{{Category}}</span>
+                </div>
+                <div class="dhg-top-actions">
+                    <button class="dhg-icon-btn dhg-search-btn">🔍</button>
+                    <button class="dhg-icon-btn dhg-heart-btn">❤️</button>
+                </div>
+            </div>
+
+            <!-- Product Image Area -->
+            <div class="dhg-image-area">
+                <div class="dhg-image-container">
+                    <img src="{{Product Image}}" alt="{{Product Name}}" class="dhg-product-image">
+                    <div class="dhg-rainbow-edge"></div>
+                </div>
+                <!-- Monitor Badge -->
+                <div class="dhg-monitor-badge" data-badge="{{Monitor Badge}}">
+                    <span class="dhg-badge-icon">🔥</span>
+                    <span class="dhg-badge-text">{{Monitor Badge}}</span>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="dhg-product-info">
+                <h2 class="dhg-product-name">{{Product Name}}</h2>
+                <a href="/brands/{{Brand Slug}}" class="dhg-brand-link">{{Brand Name}} →</a>
+            </div>
+
+            <!-- Front Panels -->
+            <div class="dhg-front-panels">
+                <!-- HYPE Panel -->
+                <div class="dhg-panel dhg-panel-hype">
+                    <div class="dhg-panel-header">
+                        <span class="dhg-panel-title">HYPE</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-panel-content">
+                        <span class="dhg-stat dhg-stat-love">❤️ {{Community Love Pct}}%</span>
+                        <span class="dhg-stat dhg-stat-influencer">👥 {{Influencer Pct}}%</span>
+                        <span class="dhg-stat dhg-stat-rating">{{Star Rating}}★</span>
+                    </div>
+                </div>
+
+                <!-- DEAL Panel -->
+                <div class="dhg-panel dhg-panel-deal">
+                    <div class="dhg-panel-header">
+                        <span class="dhg-panel-title">DEAL</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-panel-content">
+                        <span class="dhg-price">{{Price}}</span>
+                        <span class="dhg-tag dhg-tag-dupe">Dupe</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flip Button -->
+            <button class="dhg-flip-btn">FLIP</button>
+        </div>
+
+        <!-- ========== BACK (REALITY / NUTRITION FACTS) ========== -->
+        <div class="dhg-card-back">
+            <!-- Top Bar (same as front) -->
+            <div class="dhg-top-bar">
+                <div class="dhg-category">
+                    <span class="dhg-category-icon">🎨</span>
+                    <span class="dhg-category-text">{{Category}}</span>
+                </div>
+                <div class="dhg-top-actions">
+                    <button class="dhg-icon-btn dhg-search-btn">🔍</button>
+                    <button class="dhg-icon-btn dhg-heart-btn dhg-heart-active">❤️</button>
+                </div>
+            </div>
+
+            <!-- Product Facts Header -->
+            <div class="dhg-facts-header">
+                <h3 class="dhg-facts-title">Product Facts</h3>
+                <div class="dhg-facts-product">{{Product Name}}</div>
+                <a href="/brands/{{Brand Slug}}" class="dhg-brand-link">{{Brand Name}} →</a>
+            </div>
+
+            <!-- Nutrition Facts Panels -->
+            <div class="dhg-facts-panels">
+
+                <!-- BENEFITS -->
+                <div class="dhg-facts-panel dhg-panel-benefits">
+                    <div class="dhg-facts-panel-header">
+                        <span class="dhg-facts-panel-title">BENEFITS</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-facts-panel-content">
+                        <div class="dhg-tags">
+                            <!-- Connect to CMS multi-reference or use Collection List -->
+                            <span class="dhg-tag">Moisturizing</span>
+                            <span class="dhg-tag">Long Wear</span>
+                            <span class="dhg-tag">Buildable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SKIN TYPE -->
+                <div class="dhg-facts-panel dhg-panel-skin">
+                    <div class="dhg-facts-panel-header">
+                        <span class="dhg-facts-panel-title">SKIN TYPE</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-facts-panel-content">
+                        <div class="dhg-tags">
+                            <span class="dhg-tag">All Types</span>
+                            <span class="dhg-tag">Sensitive</span>
+                            <span class="dhg-tag">Mature</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ETHICS -->
+                <div class="dhg-facts-panel dhg-panel-ethics">
+                    <div class="dhg-facts-panel-header">
+                        <span class="dhg-facts-panel-title">ETHICS</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-facts-panel-content">
+                        <div class="dhg-tags">
+                            <span class="dhg-tag">Vegan</span>
+                            <span class="dhg-tag">Cruelty-Free</span>
+                            <span class="dhg-tag">Refillable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INGREDIENTS -->
+                <div class="dhg-facts-panel dhg-panel-ingredients">
+                    <div class="dhg-facts-panel-header">
+                        <span class="dhg-facts-panel-title">INGREDIENTS</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-facts-panel-content">
+                        <div class="dhg-tags">
+                            <span class="dhg-tag">Amazonian Clay</span>
+                            <span class="dhg-tag">Vitamin E</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAFETY & CERTS -->
+                <div class="dhg-facts-panel dhg-panel-safety">
+                    <div class="dhg-facts-panel-header">
+                        <span class="dhg-facts-panel-title">SAFETY & CERTS</span>
+                        <span class="dhg-panel-chevron">▸</span>
+                    </div>
+                    <div class="dhg-facts-panel-content">
+                        <div class="dhg-safety-grid">
+                            <div class="dhg-safety-item">
+                                <span class="dhg-safety-label">EWG Score</span>
+                                <span class="dhg-safety-value dhg-ewg-score">{{EWG Score}}</span>
+                            </div>
+                            <div class="dhg-safety-item">
+                                <span class="dhg-safety-label">Pregnancy Safe</span>
+                                <span class="dhg-safety-value">✓</span>
+                            </div>
+                            <div class="dhg-safety-item">
+                                <span class="dhg-safety-label">Derm Tested</span>
+                                <span class="dhg-safety-value">✓</span>
+                            </div>
+                            <div class="dhg-safety-item">
+                                <span class="dhg-safety-label">Hypoallergenic</span>
+                                <span class="dhg-safety-value">✓</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Flip Button -->
+            <button class="dhg-flip-btn">FLIP</button>
+        </div>
+
+    </div>
+</div>

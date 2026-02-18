@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get PERSONAfied | iHeartClean.beauty</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --font-display: 'ofelia-display', 'Ofelia Display', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --purple: #a855f7;
+      --blue: #4fc3f7;
+      --pink: #e91e63;
+      --coral: #f06449;
+      --bg-dark: #000000;
+      --bg-card: #0d0d0d;
+      --text-white: #ffffff;
+      --text-gray: #9a9a9a;
+      --text-muted: #666666;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-dark);
+      margin: 0;
+      padding: 0;
+      color: var(--text-gray);
+      line-height: 1.6;
+    }
+
+    .quiz-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg-dark);
+      padding: 60px 40px;
+    }
+
+    @media (max-width: 640px) {
+      .quiz-container {
+        padding: 40px 24px;
+      }
+    }
+
+    .quiz-logo {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .quiz-logo img {
+      height: 28px;
+      width: auto;
+    }
+
+    .quiz-screen {
+      display: none;
+    }
+
+    .quiz-screen.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Gradient text utility */
+    .gradient-text {
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink), var(--coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Gradient line utility */
+    .gradient-line {
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink), var(--coral));
+      border: none;
+      margin: 24px 0;
+    }
+
+    .gradient-line-thin {
+      height: 1px;
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink), var(--coral));
+      border: none;
+      margin: 20px 0;
+    }
+
+    /* Welcome Screen */
+    .welcome-screen {
+      text-align: center;
+    }
+
+    .welcome-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--text-white);
+    }
+
+    .welcome-subtitle {
+      color: var(--text-gray);
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .welcome-persona {
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--text-white);
+      margin-bottom: 40px;
+    }
+
+    /* Start Screen */
+    .start-screen {
+      text-align: center;
+    }
+
+    .start-title {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .start-subtitle {
+      font-size: 17px;
+      color: var(--text-gray);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .start-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Progress */
+    .progress-container {
+      margin-bottom: 48px;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .progress-bar {
+      height: 2px;
+      background: var(--border-subtle);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink), var(--coral));
+      background-size: 600px 100%;
+      transition: width 0.5s ease;
+    }
+
+    /* Question */
+    .question-container {
+      min-height: 400px;
+    }
+
+    .question {
+      display: none;
+    }
+
+    .question.active {
+      display: block;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(16px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .question-text {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 36px;
+      line-height: 1.4;
+      color: var(--text-white);
+    }
+
+    @media (max-width: 640px) {
+      .question-text {
+        font-size: 20px;
+      }
+    }
+
+    /* Answers */
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answer-option {
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+      text-align: left;
+      color: var(--text-gray);
+    }
+
+    .answer-option:hover {
+      background: #141414;
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--text-white);
+    }
+
+    .answer-option.selected {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(79, 195, 247, 0.15));
+      border-color: var(--purple);
+      color: var(--text-white);
+    }
+
+    /* Email Screen */
+    .email-screen {
+      text-align: center;
+    }
+
+    .email-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--text-white);
+    }
+
+    .email-subtitle {
+      color: var(--text-gray);
+      font-size: 16px;
+      margin-bottom: 36px;
+    }
+
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .email-input {
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 15px;
+      color: var(--text-white);
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .email-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .email-input:focus {
+      border-color: var(--purple);
+    }
+
+    .email-input.error {
+      border-color: #ff4444;
+    }
+
+    .skip-link {
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: color 0.2s ease;
+    }
+
+    .skip-link:hover {
+      color: var(--text-gray);
+    }
+
+    /* Results Screen */
+    .results-screen {
+      text-align: center;
+    }
+
+    .result-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .result-title {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .result-tagline {
+      font-size: 17px;
+      color: var(--text-gray);
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+
+    .result-description {
+      color: var(--text-gray);
+      margin-bottom: 32px;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .result-priorities {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .priority-tag {
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--text-gray);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink), var(--coral));
+      color: var(--text-white);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-gray);
+      margin-top: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      color: var(--text-white);
+    }
+
+    .button-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 40px;
+    }
+
+    /* Persona Icons */
+    .persona-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 28px;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    }
+
+    .persona-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .persona-icon-small {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 24px;
+    }
+
+    .score-debug {
+      margin-top: 24px;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--text-muted);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+
+  <div class="quiz-logo">
+    <img src="https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/69386f92715fe8596b1c1971_Heart-Logo-Glass-gradient.png" alt="iHeartClean.beauty">
+  </div>
+
+  <!-- Welcome Screen -->
+  <div class="quiz-screen" id="welcomeScreen">
+    <div class="persona-icon persona-icon-small" id="welcomeIcon"></div>
+    <h2 class="welcome-title">Welcome Back</h2>
+    <hr class="gradient-line-thin">
+    <p class="welcome-subtitle">We remember you're a...</p>
+    <div class="welcome-persona" id="welcomePersona">Antiaging Pro</div>
+
+    <div class="button-row">
+      <button class="btn btn-primary" onclick="goToProducts()">See My Products</button>
+      <button class="btn btn-secondary" onclick="retakeQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+
+  <!-- Start Screen -->
+  <div class="quiz-screen active" id="startScreen">
+    <h1 class="start-title gradient-text">Get PERSONAfied</h1>
+    <hr class="gradient-line">
+    <p class="start-subtitle">Discover your clean beauty persona and find products curated just for you.</p>
+
+    <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+
+    <p class="start-meta">6 questions</p>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="progress-container">
+      <div class="progress-text">
+        <span>Question <span id="currentQ">1</span> of 6</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="question-container" id="questionContainer"></div>
+  </div>
+
+  <!-- Email Screen -->
+  <div class="quiz-screen" id="emailScreen">
+    <h2 class="email-title">Almost There</h2>
+    <hr class="gradient-line-thin">
+    <p class="email-subtitle">Where should we send your personalized picks?</p>
+
+    <div class="email-form">
+      <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" onkeypress="handleEmailKeypress(event)">
+      <button class="btn btn-primary" onclick="submitEmail()">Get My Results</button>
+    </div>
+
+    <span class="skip-link" onclick="skipEmail()">Skip for now</span>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="quiz-screen" id="resultsScreen">
+    <div class="persona-icon" id="resultIcon"></div>
+    <div class="result-label">You're a</div>
+    <h2 class="result-title gradient-text" id="resultTitle">Antiaging Pro</h2>
+    <hr class="gradient-line">
+    <p class="result-tagline" id="resultTagline">Science is your skincare language</p>
+    <p class="result-description" id="resultDescription">You want results backed by clinical studies.</p>
+
+    <div class="result-priorities" id="resultPriorities">
+      <span class="priority-tag">Clinically proven</span>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-primary" onclick="goToProducts()">See My Products</button>
+      <button class="btn btn-secondary" onclick="retakeQuiz()">Retake Quiz</button>
+    </div>
+
+    <div class="score-debug" id="scoreDebug"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    id: 1,
+    text: "When you're shopping for beauty products, what matters most to you?",
+    answers: [
+      { text: "Anti-aging results that actually work", scores: { 'antiaging-pro': 3, 'skeptic': 1 } },
+      { text: "Safe ingredients for my whole family", scores: { 'family-mom': 3, 'cancer-sensitive': 1 } },
+      { text: "Gentle formulas for sensitive skin", scores: { 'cancer-sensitive': 3, 'family-mom': 1 } },
+      { text: "Inclusive shades and diverse brands", scores: { 'bipoc-fluid': 3, 'genz': 1 } },
+      { text: "Trending, sustainable, eco-friendly", scores: { 'genz': 3, 'bipoc-fluid': 1 } },
+      { text: "Third-party tested and verified", scores: { 'skeptic': 3, 'antiaging-pro': 1 } }
+    ]
+  },
+  {
+    id: 2,
+    text: "Where do you usually hear about new products?",
+    answers: [
+      { text: "I do my research—clinical studies, reviews, the works", scores: { 'antiaging-pro': 2, 'skeptic': 2 } },
+      { text: "My mom friends always have the best recs", scores: { 'family-mom': 3 } },
+      { text: "I trust my dermatologist or doctor", scores: { 'cancer-sensitive': 3, 'skeptic': 1 } },
+      { text: "Influencers and creators I actually trust", scores: { 'genz': 2, 'bipoc-fluid': 2 } },
+      { text: "TikTok—if it's trending, I'm trying it", scores: { 'genz': 3 } },
+      { text: "EWG ratings and ingredient databases", scores: { 'skeptic': 3 } }
+    ]
+  },
+  {
+    id: 3,
+    text: "Let's talk ingredients. What's your vibe?",
+    answers: [
+      { text: "Give me the good stuff—retinol, vitamin C, peptides", scores: { 'antiaging-pro': 3 } },
+      { text: "Nothing sketchy near my kids, please", scores: { 'family-mom': 3, 'cancer-sensitive': 1 } },
+      { text: "Fragrance-free and hypoallergenic or bust", scores: { 'cancer-sensitive': 3 } },
+      { text: "Clean AND effective—I want both", scores: { 'genz': 2, 'bipoc-fluid': 2 } },
+      { text: "Sustainable sourcing matters to me", scores: { 'genz': 3, 'bipoc-fluid': 1 } },
+      { text: "Show me the certifications first", scores: { 'skeptic': 3 } }
+    ]
+  },
+  {
+    id: 4,
+    text: "Real talk—what do you usually spend on a product?",
+    answers: [
+      { text: "Whatever it takes if it actually works ($50+)", scores: { 'antiaging-pro': 2, 'skeptic': 1 } },
+      { text: "Somewhere in the middle ($20-50)", scores: { 'family-mom': 2, 'bipoc-fluid': 1, 'genz': 1 } },
+      { text: "Drugstore prices all the way (under $20)", scores: { 'family-mom': 2, 'genz': 2 } },
+      { text: "Price doesn't matter if it's safe for me", scores: { 'cancer-sensitive': 2, 'skeptic': 1 } },
+      { text: "I mix it up—some splurges, some steals", scores: { 'antiaging-pro': 1, 'family-mom': 1, 'cancer-sensitive': 1, 'bipoc-fluid': 1, 'genz': 1, 'skeptic': 1 } }
+    ]
+  },
+  {
+    id: 5,
+    text: "What kind of brand do you gravitate toward?",
+    answers: [
+      { text: "Dermatologist-developed, backed by science", scores: { 'antiaging-pro': 3, 'cancer-sensitive': 1 } },
+      { text: "Mom-founded or made with families in mind", scores: { 'family-mom': 3 } },
+      { text: "Brands that understand sensitive skin", scores: { 'cancer-sensitive': 3 } },
+      { text: "BIPOC-owned with an inclusive mission", scores: { 'bipoc-fluid': 3, 'genz': 1 } },
+      { text: "Sustainable and eco-conscious brands", scores: { 'genz': 3 } },
+      { text: "Brands that are fully transparent", scores: { 'skeptic': 3 } }
+    ]
+  },
+  {
+    id: 6,
+    text: "Last one! What's bugging your skin right now?",
+    answers: [
+      { text: "Fine lines and wrinkles—let's fight 'em", scores: { 'antiaging-pro': 2 } },
+      { text: "Nothing major—just want to keep it simple", scores: { 'family-mom': 2 } },
+      { text: "Redness, irritation, or reactions", scores: { 'cancer-sensitive': 2 } },
+      { text: "Dark spots and uneven skin tone", scores: { 'bipoc-fluid': 2 } },
+      { text: "Breakouts, texture, or clogged pores", scores: { 'genz': 2 } },
+      { text: "Honestly? I just want stuff that works", scores: { 'skeptic': 2 } }
+    ]
+  }
+];
+
+const personas = {
+  'antiaging-pro': {
+    slug: 'antiaging-pro',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb6172420eccbf003d94f_Persona-Professional-9S-Icon.png',
+    title: 'Antiaging Pro',
+    tagline: 'Science is your skincare language',
+    description: 'You want results backed by clinical studies. You read the percentages, check for peer-reviewed research, and expect products that deliver visible results. No fluff, just facts.',
+    priorities: ['Clinically proven', 'Dermatologist-recommended', 'Proven actives']
+  },
+  'family-mom': {
+    slug: 'family-mom',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb633b7dfc3c4a9930460_Persona-Family-9S-Icon.png',
+    title: 'Family Mom',
+    tagline: 'Safe for your crew, easy on your wallet',
+    description: "You're shopping for the whole family, not just yourself. You want products that are safe enough for everyone, effective enough to actually work, and priced so you're not breaking the bank.",
+    priorities: ['Family-safe', 'Budget-friendly', 'Multi-purpose']
+  },
+  'cancer-sensitive': {
+    slug: 'cancer-sensitive',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb624180b13d5ed06c2cb_Persona-Gentle-9S-Icon.png',
+    title: 'Sensitive Soul',
+    tagline: 'Gentle is non-negotiable',
+    description: "Whether you're navigating treatment, recovery, or just have reactive skin, you need products that won't cause flare-ups. Clean, gentle, fragrance-free formulas are your friends.",
+    priorities: ['Fragrance-free', 'Hypoallergenic', 'Oncologist-approved']
+  },
+  'bipoc-fluid': {
+    slug: 'bipoc-fluid',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb61ec270b74752bedbf3_Persona-Inclusion-9S-Icon.png',
+    title: 'Inclusive Beauty',
+    tagline: 'Representation matters in your routine',
+    description: "You want brands that see you—with inclusive shade ranges, diverse founders, and products that work for all skin tones and types. Beauty should be for everyone.",
+    priorities: ['Inclusive shades', 'BIPOC-owned', 'Diverse representation']
+  },
+  'genz': {
+    slug: 'genz',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb2d59b2ada3aa2708d39_Persona-Gen-Z-Black-Icon.png',
+    title: 'GenZ Trendsetter',
+    tagline: 'Sustainable, trending, and actually good',
+    description: "You discovered your holy grails on TikTok, you care about the planet, and you want products that are both effective AND ethical. Bonus points if the packaging is cute.",
+    priorities: ['Trending', 'Sustainable', 'Aesthetic packaging']
+  },
+  'skeptic': {
+    slug: 'skeptic',
+    icon: 'https://cdn.prod.website-files.com/6759f0a54f1395fcb6c5b78e/692bb60b682f92c0edf1e806_Persona-Skeptic-9S-Icon.png',
+    title: 'Clean Beauty Skeptic',
+    tagline: 'Trust but verify—actually, just verify',
+    description: "You don't believe marketing claims. You want EWG ratings, third-party certifications, and transparent ingredient lists. If a brand can't prove it, you're not buying it.",
+    priorities: ['EWG verified', 'Third-party tested', 'Full transparency']
+  }
+};
+
+const personaPriority = ['antiaging-pro', 'cancer-sensitive', 'family-mom', 'skeptic', 'bipoc-fluid', 'genz'];
+
+let state = {
+  currentQuestion: 0,
+  answers: [],
+  scores: { 'antiaging-pro': 0, 'family-mom': 0, 'cancer-sensitive': 0, 'bipoc-fluid': 0, 'genz': 0, 'skeptic': 0 },
+  email: null,
+  result: null
+};
+
+const STORAGE_KEY = 'iheartclean_quiz';
+
+function saveToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ persona: state.result, scores: state.scores, email: state.email, completedAt: new Date().toISOString(), answers: state.answers }));
+}
+
+function loadFromStorage() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) { try { return JSON.parse(saved); } catch (e) { return null; } }
+  return null;
+}
+
+function clearStorage() { localStorage.removeItem(STORAGE_KEY); }
+
+function showScreen(screenId) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function init() {
+  const saved = loadFromStorage();
+  if (saved && saved.persona) {
+    const persona = personas[saved.persona];
+    const iconEl = document.getElementById('welcomeIcon');
+    iconEl.innerHTML = `<img src="${persona.icon}" alt="${persona.title}">`;
+    document.getElementById('welcomePersona').textContent = persona.title;
+    showScreen('welcomeScreen');
+  } else {
+    showScreen('startScreen');
+  }
+}
+
+function startQuiz() {
+  state = { currentQuestion: 0, answers: [], scores: { 'antiaging-pro': 0, 'family-mom': 0, 'cancer-sensitive': 0, 'bipoc-fluid': 0, 'genz': 0, 'skeptic': 0 }, email: null, result: null };
+  showScreen('quizScreen');
+  renderQuestion(0);
+}
+
+function retakeQuiz() { clearStorage(); startQuiz(); }
+
+function renderQuestion(index) {
+  const question = questions[index];
+  const container = document.getElementById('questionContainer');
+  document.getElementById('currentQ').textContent = index + 1;
+  const percent = Math.round((index / questions.length) * 100);
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressFill').style.width = percent + '%';
+  let html = `<div class="question active"><h2 class="question-text">${question.text}</h2><div class="answers">`;
+  question.answers.forEach((answer, i) => { html += `<div class="answer-option" onclick="selectAnswer(${index}, ${i})">${answer.text}</div>`; });
+  html += `</div></div>`;
+  container.innerHTML = html;
+}
+
+function selectAnswer(questionIndex, answerIndex) {
+  const answer = questions[questionIndex].answers[answerIndex];
+  document.querySelectorAll('.answer-option').forEach((opt, i) => { if (i === answerIndex) opt.classList.add('selected'); });
+  if (answer.scores) { Object.keys(answer.scores).forEach(p => { state.scores[p] += answer.scores[p]; }); }
+  state.answers[questionIndex] = answerIndex;
+  state.currentQuestion = questionIndex + 1;
+  const percent = Math.round(((questionIndex + 1) / questions.length) * 100);
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressFill').style.width = percent + '%';
+  setTimeout(() => { if (questionIndex < questions.length - 1) { renderQuestion(questionIndex + 1); } else { showScreen('emailScreen'); document.getElementById('emailInput').focus(); } }, 400);
+}
+
+function handleEmailKeypress(event) { if (event.key === 'Enter') submitEmail(); }
+
+function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
+function submitEmail() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim();
+  if (email && !validateEmail(email)) { input.classList.add('error'); return; }
+  input.classList.remove('error');
+  state.email = email || null;
+  state.result = calculateResult();
+  if (email) sendToKlaviyo(email, state.result);
+  saveToStorage();
+  showResults(state.result);
+}
+
+const KLAVIYO_COMPANY_ID = 'UYH3eZ';
+
+function sendToKlaviyo(email, personaSlug) {
+  const persona = personas[personaSlug];
+  fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+    body: JSON.stringify({ data: { type: "subscription", attributes: { profile: { data: { type: "profile", attributes: { email: email, properties: { "Quiz Persona": persona.title, "Quiz Persona Slug": personaSlug, "Quiz Completed": new Date().toISOString(), "Quiz Scores": state.scores } } } }, custom_source: "iHeartClean Quiz" }, relationships: { list: { data: { type: "list", id: "R9Cf3p" } } } } })
+  }).catch(err => console.log('Klaviyo error:', err));
+  fetch(`https://a.klaviyo.com/client/events/?company_id=${KLAVIYO_COMPANY_ID}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+    body: JSON.stringify({ data: { type: "event", attributes: { metric: { data: { type: "metric", attributes: { name: "Completed Quiz" } } }, profile: { data: { type: "profile", attributes: { email: email } } }, properties: { "Persona": persona.title, "Persona Slug": personaSlug, "Scores": state.scores } } } })
+  }).catch(err => console.log('Klaviyo error:', err));
+}
+
+function skipEmail() { state.email = null; state.result = calculateResult(); saveToStorage(); showResults(state.result); }
+
+function calculateResult() {
+  let maxScore = 0, winners = [];
+  Object.keys(state.scores).forEach(p => { const score = state.scores[p]; if (score > maxScore) { maxScore = score; winners = [p]; } else if (score === maxScore) { winners.push(p); } });
+  if (winners.length > 1) { for (const p of personaPriority) { if (winners.includes(p)) return p; } }
+  return winners[0];
+}
+
+function showResults(personaSlug) {
+  const persona = personas[personaSlug];
+  document.getElementById('resultIcon').innerHTML = `<img src="${persona.icon}" alt="${persona.title}">`;
+  document.getElementById('resultTitle').textContent = persona.title;
+  document.getElementById('resultTagline').textContent = persona.tagline;
+  document.getElementById('resultDescription').textContent = persona.description;
+  document.getElementById('resultPriorities').innerHTML = persona.priorities.map(p => `<span class="priority-tag">${p}</span>`).join('');
+  showScreen('resultsScreen');
+}
+
+function goToProducts() {
+  const persona = state.result || loadFromStorage()?.persona;
+  if (persona) window.location.href = `/products?persona=${persona}`;
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

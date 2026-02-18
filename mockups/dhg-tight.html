@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦆❤️👻 Product Facts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --gradient: linear-gradient(90deg,#ed8435,#e35e2e,#e9455c,#d94d85,#bf5cc9,#886de1,#3f8def,#79c2ef,#59c2d5);
+  --pink:#d94d85;--purple:#8B5CF6;--teal:#14b8a6;--cyan:#06b6d4;--amber:#f59e0b;
+  --charcoal:#2a2a2a;--gray:#6b7280;--green:#16a34a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Outfit',sans-serif}
+.card{width:100%;max-width:380px}
+
+/* Header */
+.header{border-radius:12px 12px 0 0;overflow:hidden}
+.bar{height:8px;background:var(--gradient)}
+.header-inner{background:var(--charcoal);padding:12px 16px;display:flex;justify-content:flex-end;gap:12px}
+.header-inner button{font-size:1.5rem;background:0;border:0;cursor:pointer}
+.header-inner button:first-child{opacity:.6}
+.header-inner button:first-child:hover{opacity:1}
+
+/* Body */
+.body{background:#fff;border-left:2px solid #000;border-right:2px solid #000;padding:16px}
+.title{font-size:2.25rem;font-weight:900;letter-spacing:-.025em;line-height:1}
+.d8{border-bottom:8px solid #000;margin:4px 0 8px}
+.d4{border-bottom:4px solid #000;margin:8px 0}
+.name{font-size:1.25rem;font-weight:700}
+.brand{font-size:.875rem;color:var(--gray);cursor:pointer}
+.brand:hover{text-decoration:underline}
+.meta{display:flex;justify-content:space-between;font-size:.75rem;color:var(--gray);border-bottom:1px solid #d1d5db;padding-bottom:8px;margin-top:4px}
+
+/* Sections */
+.section{width:calc(100% + 16px);margin-left:-16px;padding-left:12px;border-left:4px solid var(--c);cursor:pointer;transition:background .2s}
+.section:hover{background:rgba(0,0,0,.02)}
+.section.open{background:var(--tint)}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray)}
+.arrow{font-size:.875rem;color:var(--c);transition:transform .2s;padding-right:4px}
+.section.open .arrow{transform:rotate(90deg)}
+.pink{--c:var(--pink);--tint:rgba(217,77,133,.08)}
+.purple{--c:var(--purple);--tint:rgba(139,92,246,.08)}
+.teal{--c:var(--teal);--tint:rgba(20,184,166,.08)}
+.cyan{--c:var(--cyan);--tint:rgba(6,182,212,.08)}
+.amber{--c:var(--amber);--tint:rgba(245,158,11,.08)}
+.static{width:calc(100% + 16px);margin-left:-16px;padding-left:12px;border-left:4px solid var(--c)}
+
+/* Rows */
+.row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e5e7eb;font-size:.875rem}
+.row:last-child{border-bottom:0}
+.val{font-weight:600;padding-right:4px}
+.val.g{color:var(--green);font-size:.75rem}
+
+/* Pills */
+.pills{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.pill{font-size:.75rem;border:1px solid #9ca3af;padding:2px 8px;border-radius:9999px}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:.875rem}
+.grid span{display:flex;align-items:center;gap:4px}
+.check{color:var(--green)}
+
+/* Expanded */
+.more{display:none;padding:8px 0;font-size:.75rem;color:var(--gray);border-top:1px solid #e5e7eb;margin-top:8px}
+.section.open .more{display:block}
+.link{margin-top:4px;font-weight:500;color:var(--c)}
+.see{font-size:.75rem;color:var(--gray);margin-top:4px}
+
+/* Price */
+.price{display:flex;justify-content:space-between;align-items:center}
+.price-big{font-size:1.5rem;font-weight:900}
+.price-sm{font-size:.75rem;color:var(--gray)}
+.verified{border-top:1px solid #d1d5db;margin-top:12px;padding-top:8px;font-size:.75rem;color:var(--gray);text-align:center}
+
+/* Footer */
+.footer{background:var(--charcoal);border-radius:0 0 12px 12px;padding:16px}
+.toggle{display:flex;justify-content:center;margin-bottom:12px}
+.toggle-pill{background:#e5e5e5;border-radius:9999px;padding:6px;display:flex;gap:4px}
+.dhg{width:56px;height:56px;border-radius:50%;border:2px solid #d1d5db;background:#fff;font-size:1.5rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.dhg:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.dhg.on{transform:scale(1.08);box-shadow:0 4px 12px rgba(0,0,0,.2);border-color:#9ca3af}
+.shop{width:100%;padding:12px;border-radius:12px;border:0;color:#fff;font-weight:600;font-size:1rem;font-family:'Outfit',sans-serif;cursor:pointer;background:var(--gradient);box-shadow:inset 0 1px 2px rgba(255,255,255,.3),inset 0 -1px 2px rgba(0,0,0,.15),0 2px 8px rgba(0,0,0,.2);transition:transform .1s}
+.shop:hover{transform:scale(1.01)}
+.shop:active{transform:scale(.98)}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="bar"></div>
+      <div class="header-inner">
+        <button>🔍</button>
+        <button>❤️</button>
+      </div>
+    </div>
+    <div class="body">
+      <h2 class="title">Product Facts</h2>
+      <div class="d8"></div>
+      <h3 class="name">Amazonian Clay 12-Hour Blush</h3>
+      <p class="brand">Tarte →</p>
+      <div class="meta"><span>Powder • Blush</span><span>0.2 oz / 5.6g</span></div>
+      <div class="d4"></div>
+      <div class="section pink" data-x>
+        <div class="section-head"><p class="label">What It Does</p><span class="arrow">▶</span></div>
+        <div class="row"><span>Type</span><span class="val">Blush</span></div>
+        <div class="row"><span>Finish</span><span class="val">Matte</span></div>
+        <div class="row"><span>Coverage</span><span class="val">Buildable</span></div>
+        <div class="row"><span>Longevity</span><span class="val">12 hours</span></div>
+        <div class="more">Amazonian clay balances oil for long-lasting color...<div class="link">See formulation →</div></div>
+      </div>
+      <div class="d4"></div>
+      <div class="section purple" data-x>
+        <div class="section-head"><p class="label">Who It's For</p><span class="arrow">▶</span></div>
+        <div class="pills"><span class="pill">All Skin Types</span><span class="pill">Sensitive</span><span class="pill">Mature</span></div>
+        <div class="more">Non-comedogenic. Free of common irritants...<div class="link">See suitability →</div></div>
+      </div>
+      <div class="d4"></div>
+      <div class="section teal" data-x>
+        <div class="section-head"><p class="label">Key Ingredients</p><span class="arrow">▶</span></div>
+        <div class="row"><span>Amazonian Clay</span><span class="val g">●</span></div>
+        <div class="row"><span>Vitamin E</span><span class="val g">●</span></div>
+        <div class="row"><span>Mineral Pigments</span><span class="val g">●</span></div>
+        <p class="see">See all 18 ingredients →</p>
+        <div class="more">
+          <div class="row"><span>Mica</span><span class="val g">●</span></div>
+          <div class="row"><span>Kaolin</span><span class="val g">●</span></div>
+          <div class="row"><span>Silica</span><span class="val g">●</span></div>
+          <div class="link">View ingredient cards →</div>
+        </div>
+      </div>
+      <div class="d4"></div>
+      <div class="section cyan" data-x>
+        <div class="section-head"><p class="label">Certifications</p><span class="arrow">▶</span></div>
+        <div class="grid"><span><span class="check">✓</span>Vegan</span><span><span class="check">✓</span>Cruelty-Free</span><span><span class="check">✓</span>Gluten-Free</span><span><span class="check">✓</span>Derm Tested</span></div>
+        <div class="more">Leaping Bunny certified. Refill pods reduce waste 70%...<div class="link">See certifications →</div></div>
+      </div>
+      <div class="d8"></div>
+      <div class="static amber">
+        <p class="label">Price</p>
+        <div class="price"><span class="price-big">$32</span><span class="price-sm">$5.71/g</span></div>
+      </div>
+      <div class="verified">Last verified: Feb 2026</div>
+    </div>
+    <div class="footer">
+      <div class="toggle"><div class="toggle-pill">
+        <button class="dhg" data-a="duck">🦆</button>
+        <button class="dhg" data-a="heart">❤️</button>
+        <button class="dhg" data-a="ghost">👻</button>
+      </div></div>
+      <button class="shop">Shop & Support 🤍</button>
+    </div>
+  </div>
+  <script>
+document.querySelectorAll('[data-x]').forEach(e=>e.onclick=()=>e.classList.toggle('open'));
+document.querySelectorAll('.dhg').forEach(b=>b.onclick=function(){const on=this.classList.contains('on');document.querySelectorAll('.dhg').forEach(x=>x.classList.remove('on'));if(!on)this.classList.add('on')});
+  </script>
+</body>
+</html>
