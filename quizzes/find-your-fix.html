@@ -371,60 +371,60 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════════════════════
+// ==============================================
 // QUESTION BANK
 // Each question: { id, section, emoji, text, sub, duck, heart, ghost, key, ghostLabel, heartLabel }
 // key = what gets saved to profile
-// ══════════════════════════════════════════════
+// ==============================================
 const QUESTIONS = [
 
-  // ── WHAT CAUGHT YOUR EYE ──
+  // -- WHAT CAUGHT YOUR EYE --
   {
     id: 'cat-skincare',
-    section: "What's pulling you down the rabbit hole?",
+    section: `What's pulling you down the rabbit hole?`,
     emoji: '🧴',
     text: 'Curious about skincare?',
-    sub: 'Serums, moisturizers, cleansers, SPF — the whole world',
+    sub: 'Serums, moisturizers, cleansers, SPF -- the whole world',
     duck:  'Could be interesting',
-    heart: 'Yes — rabbit hole me',
+    heart: 'Yes -- rabbit hole me',
     ghost: 'Not what I came for',
     key: 'skincare',
     heartLabel: 'Skincare',
   },
   {
     id: 'cat-makeup',
-    section: "What's pulling you down the rabbit hole?",
+    section: `What's pulling you down the rabbit hole?`,
     emoji: '💄',
     text: 'Into clean makeup right now?',
     sub: 'Foundation, lip, eye, blush, primer...',
     duck:  'Sometimes, yeah',
-    heart: 'Yes — show me everything',
+    heart: 'Yes -- show me everything',
     ghost: 'Not really my thing',
     key: 'makeup',
     heartLabel: 'Makeup',
   },
   {
     id: 'cat-body',
-    section: "What's pulling you down the rabbit hole?",
+    section: `What's pulling you down the rabbit hole?`,
     emoji: '🛁',
     text: 'What about body?',
     sub: 'Lotions, washes, deodorant, body SPF, treatments...',
     duck:  'Sometimes',
-    heart: 'Yes — body care matters',
+    heart: 'Yes -- body care matters',
     ghost: 'Not this time',
     key: 'body',
     heartLabel: 'Body',
   },
 
-  // ── SKIN STORY ──
+  // -- SKIN STORY --
   {
     id: 'concern-acne',
     section: 'Tell me about your skin',
     emoji: '🎯',
     text: 'Are breakouts part of your story?',
-    sub: 'Salicylic acid, niacinamide, zinc — this is their territory',
+    sub: 'Salicylic acid, niacinamide, zinc -- this is their territory',
     duck:  'Here and there',
-    heart: 'Ugh yes — always',
+    heart: 'Ugh yes -- always',
     ghost: 'Nope, not my skin',
     key: 'acne',
     heartLabel: 'Acne-prone',
@@ -434,10 +434,10 @@ const QUESTIONS = [
     section: 'Tell me about your skin',
     emoji: '⏳',
     text: 'Thinking about the long game?',
-    sub: 'Peptides, bakuchiol, firming — playing the long game',
+    sub: 'Peptides, bakuchiol, firming -- playing the long game',
     duck:  'Starting to think about it',
-    heart: 'Yes — it's on my mind',
-    ghost: 'Not where I'm at',
+    heart: `Yes -- it's on my mind`,
+    ghost: `Not where I'm at`,
     key: 'antiaging',
     heartLabel: 'Anti-aging',
   },
@@ -448,7 +448,7 @@ const QUESTIONS = [
     text: 'Chasing glow or fighting dark spots?',
     sub: 'Vitamin C, alpha arbutin, tranexamic acid territory',
     duck:  'A little uneven',
-    heart: 'Yes — this is the goal',
+    heart: 'Yes -- this is the goal',
     ghost: 'Not really a concern',
     key: 'brightening',
     heartLabel: 'Brightening',
@@ -458,9 +458,9 @@ const QUESTIONS = [
     section: 'Tell me about your skin',
     emoji: '🌹',
     text: 'Does your skin protest a lot?',
-    sub: 'Redness, reactivity, rosacea — ceramides and centella are your friends',
+    sub: 'Redness, reactivity, rosacea -- ceramides and centella are your friends',
     duck:  'Sometimes it complains',
-    heart: 'Yes — very reactive',
+    heart: 'Yes -- very reactive',
     ghost: 'Skin is pretty chill',
     key: 'sensitivity',
     heartLabel: 'Sensitive skin',
@@ -470,86 +470,86 @@ const QUESTIONS = [
     section: 'Tell me about your skin',
     emoji: '💧',
     text: 'Dry, tight, thirsty?',
-    sub: 'Hyaluronic acid, glycerin, squalane — hydration first',
+    sub: 'Hyaluronic acid, glycerin, squalane -- hydration first',
     duck:  'Seasonal dry patches',
-    heart: 'Yes — chronically parched',
-    ghost: 'Oily — opposite problem',
+    heart: 'Yes -- chronically parched',
+    ghost: 'Oily -- opposite problem',
     key: 'dryness',
     heartLabel: 'Dry skin',
     ghostLabel: 'Oily skin',
   },
 
-  // ── FILTERS ──
+  // -- FILTERS --
   {
     id: 'avoid-fragrance',
-    section: "Let's build your ghost list",
+    section: `Let's build your ghost list`,
     emoji: '🌸',
-    text: 'Synthetic fragrance — friend or foe?',
-    sub: 'Shows up as "fragrance" or "parfum" — polarizing ingredient',
+    text: 'Synthetic fragrance -- friend or foe?',
+    sub: 'Shows up as "fragrance" or "parfum" -- polarizing ingredient',
     duck:  'Depends on the product',
     heart: 'Love a scented product',
-    ghost: 'Ghost it — always avoid',
+    ghost: 'Ghost it -- always avoid',
     key: 'fragrance',
     ghostLabel: 'Fragrance',
   },
   {
     id: 'avoid-retinol',
-    section: "Let's build your ghost list",
+    section: `Let's build your ghost list`,
     emoji: '🧪',
-    text: 'Retinol — in or out?',
-    sub: 'Powerful but not for everyone — pregnancy, sensitivity, preference',
+    text: 'Retinol -- in or out?',
+    sub: 'Powerful but not for everyone -- pregnancy, sensitivity, preference',
     duck:  'Curious but cautious',
     heart: 'On the retinol train',
-    ghost: 'Ghost it — not for me',
+    ghost: 'Ghost it -- not for me',
     key: 'retinol',
     ghostLabel: 'Retinol',
   },
   {
     id: 'avoid-essentialoils',
-    section: "Let's build your ghost list",
+    section: `Let's build your ghost list`,
     emoji: '🌿',
     text: 'Essential oils in formulas?',
-    sub: 'Tea tree, lavender, citrus — beloved by some, irritating to others',
+    sub: 'Tea tree, lavender, citrus -- beloved by some, irritating to others',
     duck:  'Some yes, some no',
     heart: 'I actually love them',
-    ghost: 'Ghost them — skin hates it',
+    ghost: 'Ghost them -- skin hates it',
     key: 'essentialoils',
     ghostLabel: 'Essential oils',
   },
   {
     id: 'avoid-silicones',
-    section: "Let's build your ghost list",
+    section: `Let's build your ghost list`,
     emoji: '💎',
-    text: 'Silicones — slip or skip?',
-    sub: 'Dimethicone, cyclomethicone — smoothing agents, controversial in clean beauty',
-    duck:  'Don't really care',
-    heart: 'Love the slip — keep them',
-    ghost: 'Ghost them — clean only',
+    text: 'Silicones -- slip or skip?',
+    sub: 'Dimethicone, cyclomethicone -- smoothing agents, controversial in clean beauty',
+    duck:  `Don't really care`,
+    heart: `Love the slip -- keep them`,
+    ghost: 'Ghost them -- clean only',
     key: 'silicones',
     ghostLabel: 'Silicones',
   },
   {
     id: 'avoid-gluten',
-    section: "Let's build your ghost list",
+    section: `Let's build your ghost list`,
     emoji: '🌾',
     text: 'Gluten-derived ingredients?',
-    sub: 'Hydrolyzed wheat protein, wheat germ oil — matters to some',
+    sub: 'Hydrolyzed wheat protein, wheat germ oil -- matters to some',
     duck:  'Not sure if it affects me',
-    heart: 'No issue, doesn't matter',
-    ghost: 'Ghost it — I avoid gluten',
+    heart: `No issue, doesn't matter`,
+    ghost: 'Ghost it -- I avoid gluten',
     key: 'gluten',
     ghostLabel: 'Gluten',
   },
 
-  // ── LIFESTYLE ──
+  // -- LIFESTYLE --
   {
     id: 'life-vegan',
     section: 'A little about you',
     emoji: '🌱',
     text: 'Vegan formulas a must?',
-    sub: 'No beeswax, lanolin, collagen, carmine — 100% plant-derived',
+    sub: 'No beeswax, lanolin, collagen, carmine -- 100% plant-derived',
     duck:  'I prefer it but not strict',
-    heart: 'Yes — vegan only',
+    heart: 'Yes -- vegan only',
     ghost: 'Not something I track',
     key: 'vegan',
     heartLabel: 'Vegan',
@@ -561,30 +561,30 @@ const QUESTIONS = [
     text: 'Need pregnancy or nursing safe?',
     sub: 'Filters out retinoids, high-dose salicylic, certain essential oils',
     duck:  'Not right now',
-    heart: 'Yes — filter for safety',
+    heart: 'Yes -- filter for safety',
     ghost: 'Not relevant to me',
     key: 'pregnancy',
     heartLabel: 'Pregnancy safe',
   },
 
-  // ── BUDGET ──
+  // -- BUDGET --
   {
     id: 'budget',
     section: 'Last one',
     emoji: '💸',
     text: 'How do you feel about splurging?',
     sub: 'Ghost products over $60 and they disappear from your results entirely',
-    duck:  'If it's really worth it',
-    heart: 'No limit — show me everything',
-    ghost: 'Ghost anything over $60',
+    duck:  `If it's really worth it`,
+    heart: 'No limit -- show me everything',
+    ghost: "Ghost anything over $60",
     key: 'over60',
     ghostLabel: 'Over $60',
   },
 ];
-// ══════════════════════════════════════════════
+// ==============================================
 // STATE
-// ══════════════════════════════════════════════
-let answers = {};       // key → 'duck' | 'heart' | 'ghost'
+// ==============================================
+let answers = {};       // key -> 'duck' | 'heart' | 'ghost'
 let currentIdx = 0;
 let history = [];
 
@@ -673,9 +673,9 @@ function restart() {
   document.getElementById('s-open').classList.add('active');
 }
 
-// ══════════════════════════════════════════════
+// ==============================================
 // BUILD RESULT
-// ══════════════════════════════════════════════
+// ==============================================
 function buildResult() {
   document.getElementById('s-question').classList.remove('active');
   document.getElementById('s-result').classList.add('active');
@@ -752,7 +752,7 @@ function buildResult() {
   if (explore.length === 0) explore = [...(catExplore.default || [])];
   explore = [...new Set(explore)].slice(0, 4);
 
-  desc = `Based on your 🦆❤️👻 answers — filtered to what works for you.`;
+  desc = `Based on your 🦆❤️👻 answers -- filtered to what works for you.`;
   if (answers.pregnancy === 'heart') desc = 'Pregnancy-safe formulas, filtered and sorted by 9S score.';
   if (answers.vegan === 'heart') desc = 'Vegan-friendly picks, clean ingredients only.';
 
@@ -774,7 +774,7 @@ function buildResult() {
 
   // CTA
   const budgetPrefix = answers.over60 === 'ghost' ? 'Under $60 ' : '';
-  document.getElementById('r-cta').textContent = `${budgetPrefix}Explore Products →`;
+  document.getElementById('r-cta').textContent = `${budgetPrefix}Explore Products ->`;
 }
 </script>
 </body>
