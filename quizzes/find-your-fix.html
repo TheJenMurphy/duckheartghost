@@ -35,7 +35,8 @@ body {
   padding: 10px 16px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.hdr-brand { font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.hdr-brand { font-size: .65rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.hdr-rainbow { background: linear-gradient(90deg,#ff8c2a,#ff4466,#d946ef,#9955ff,#3399ff,#44ddee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; }
 .hdr-step { font-size: .62rem; font-weight: 700; color: rgba(255,255,255,.25); }
 
 /* Progress */
@@ -245,14 +246,14 @@ body {
   border-radius: 0 0 20px 20px;
   padding: 8px 18px; text-align: center;
 }
-.ftr span { font-size: .58rem; color: rgba(255,255,255,.2); font-weight: 600; letter-spacing: .06em; }
+.ftr-text { font-size: .8rem; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; }
 </style>
 </head>
 <body>
 <div class="card">
   <div class="rainbow"></div>
   <div class="hdr">
-    <span class="hdr-brand">🦆❤️👻 Duck Heart Ghost</span>
+    <span class="hdr-brand">🦆❤️👻 &nbsp; Find your <span class="hdr-rainbow">Clean Fix</span></span>
     <span class="hdr-step" id="hdr-step"></span>
   </div>
 
@@ -367,7 +368,7 @@ body {
     </div>
 
   </div>
-  <div class="ftr"><span>🦆❤️👻 · Clean beauty, sorted. 🐇</span></div>
+  <div class="ftr"><span class="ftr-text">Clean beauty, sorted.</span></div>
 </div>
 
 <script>
