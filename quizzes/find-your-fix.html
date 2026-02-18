@@ -2,654 +2,988 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Duck Heart Ghost — Find My Fix</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Duck Heart Ghost — Find Your Fix</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gradient: linear-gradient(90deg,#ff8c2a,#ff5533,#ff4466,#ff4d8a,#d946ef,#9955ff,#3399ff,#66d4ff,#44ddee);
-  --pink:#ff4d8a; --purple:#a855f7; --teal:#00d4aa;
-  --duck:#ffaa00; --heart:#ff4d8a; --ghost:#a855f7;
-  --charcoal:#1e1e1e; --gray:#6b7280;
-  --border:#e5e7eb; --light:#f9fafb; --red:#dc2626;
+  --duck: #ffaa00;
+  --heart: #ff4d8a;
+  --ghost: #a855f7;
+  --teal: #00d4aa;
+  --bg: #0d0d0f;
+  --surface: #18181b;
+  --surface2: #222226;
+  --border: rgba(255,255,255,.07);
+  --text: #f4f4f5;
+  --muted: #71717a;
+  --gradient: linear-gradient(90deg,#ff8c2a,#ff4466,#ff4d8a,#d946ef,#9955ff,#3399ff,#44ddee);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+html,body {
+  height: 100%;
+  background: var(--bg);
   font-family: 'Outfit', sans-serif;
-  background: #111;
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
+  color: var(--text);
+  overflow: hidden;
 }
 
-/* ── CARD ── */
-.card {
-  width: 100%; max-width: 390px;
-  border-radius: 20px; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,.5);
-  display: flex; flex-direction: column;
-}
-.rainbow { height: 6px; background: var(--gradient); }
-.hdr {
-  background: var(--charcoal);
-  padding: 10px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.hdr-brand { font-size: .65rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-.hdr-rainbow { background: linear-gradient(90deg,#ff8c2a,#ff4466,#d946ef,#9955ff,#3399ff,#44ddee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; }
-.hdr-step { font-size: .62rem; font-weight: 700; color: rgba(255,255,255,.25); }
-
-/* Progress */
-.prog {
-  background: #fff;
-  border-left: 2px solid #000; border-right: 2px solid #000;
-  padding: 10px 18px 0;
-}
-.prog-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.prog-fill { height: 100%; background: var(--gradient); border-radius: 2px; transition: width .5s cubic-bezier(.4,0,.2,1); }
-.prog-labels { display: flex; justify-content: space-between; margin-top: 5px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-.prog-label { font-size: .62rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; }
-.prog-pct { font-size: .62rem; font-weight: 700; color: var(--pink); }
-
-/* Body */
-.body {
-  background: #fff;
-  border-left: 2px solid #000; border-right: 2px solid #000;
-  padding: 24px 20px 20px;
-  display: flex; flex-direction: column;
-  min-height: 420px;
+/* ── SHELL ── */
+.shell {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  max-height: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Screens */
-.screen { display: none; flex-direction: column; flex: 1; }
-.screen.active { display: flex; }
-
-/* ── OPENING SCREEN ── */
-.opener {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: center; text-align: center;
-}
-.opener-rabbit {
-  font-size: 3.5rem; display: block; margin-bottom: 12px;
-  animation: bob 2.5s ease-in-out infinite;
-}
-@keyframes bob { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-8px) rotate(3deg)} }
-.opener-title {
-  font-size: 1.6rem; font-weight: 900; letter-spacing: -.03em;
-  line-height: 1.1; color: var(--charcoal); margin-bottom: 8px;
-}
-.opener-title em {
-  font-style: normal;
+/* rainbow top bar */
+.rainbow-bar {
+  height: 5px;
   background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  flex-shrink: 0;
+}
+
+/* header */
+.top-bar {
+  background: #111113;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.top-brand {
+  font-size: .6rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.top-dots {
+  display: flex;
+  gap: 5px;
+}
+.top-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background .3s;
+}
+.top-dot.active { background: var(--heart); }
+.top-dot.done { background: rgba(255,255,255,.2); }
+
+/* ── SCREENS CONTAINER ── */
+.screens {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 24px;
+  transform: translateX(100%);
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+  opacity: 0;
+  transition: transform .45s cubic-bezier(.4,0,.2,1), opacity .45s ease;
+}
+.screen.active {
+  transform: translateX(0);
+  opacity: 1;
+}
+.screen.exited {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* ── SCREEN 0: WELCOME ── */
+#s0 {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.console-wrap {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+/* Game console illustration */
+.console {
+  width: 180px;
+  height: 120px;
+  background: linear-gradient(160deg, #2a2a2f 0%, #1a1a1e 100%);
+  border-radius: 24px;
+  position: relative;
+  margin: 0 auto;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.06),
+    0 20px 60px rgba(0,0,0,.8),
+    inset 0 1px 0 rgba(255,255,255,.1);
+}
+.console-screen {
+  position: absolute;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 56px;
+  background: #0a0a0c;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.console-screen-glow {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient);
+  opacity: .15;
+}
+.console-screen-content {
+  font-size: 1.4rem;
+  position: relative;
+  z-index: 1;
+  animation: screen-cycle 3s ease-in-out infinite;
+}
+@keyframes screen-cycle {
+  0%,25%  { content: ''; }
+  0%   { opacity: 1; }
+  20%  { opacity: 1; transform: scale(1); }
+  25%  { opacity: 0; transform: scale(1.3); }
+  30%  { opacity: 0; }
+  50%  { opacity: 1; transform: scale(1); }
+  70%  { opacity: 1; transform: scale(1); }
+  75%  { opacity: 0; transform: scale(1.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* D-pad left side */
+.console-dpad {
+  position: absolute;
+  left: 14px;
+  bottom: 18px;
+  width: 36px; height: 36px;
+}
+.dpad-h, .dpad-v {
+  position: absolute;
+  background: #333338;
+  border-radius: 2px;
+}
+.dpad-h { width: 36px; height: 12px; top: 12px; left: 0; }
+.dpad-v { width: 12px; height: 36px; top: 0; left: 12px; }
+
+/* ABC buttons right side */
+.console-btns {
+  position: absolute;
+  right: 14px;
+  bottom: 18px;
+  width: 44px; height: 36px;
+}
+.cbtn {
+  position: absolute;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .45rem;
+  font-weight: 900;
+}
+.cbtn-duck { background: var(--duck); top: 11px; left: 0; }
+.cbtn-heart { background: var(--heart); top: 0; left: 15px; }
+.cbtn-ghost { background: var(--ghost); top: 11px; right: 0; }
+
+/* Glow under console */
+.console-glow {
+  position: absolute;
+  bottom: -20px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 30px;
+  background: radial-gradient(ellipse, rgba(168,85,247,.4) 0%, transparent 70%);
+  filter: blur(8px);
+}
+
+.s0-title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.s0-title .grd {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.opener-sub { font-size: .82rem; color: var(--gray); line-height: 1.6; margin-bottom: 28px; }
-
-/* Mechanic preview */
-.mechanic {
-  display: flex; gap: 8px; margin-bottom: 24px;
-  background: var(--light); border-radius: 14px;
-  padding: 14px 12px; border: 1.5px solid var(--border);
+.s0-sub {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 300px;
 }
-.mech-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 10px 6px; border-radius: 12px; border: 2px solid;
+.s0-tap {
+  font-family: 'Space Mono', monospace;
+  font-size: .62rem;
+  color: var(--muted);
+  letter-spacing: .1em;
+  animation: blink 1.4s ease-in-out infinite;
 }
-.mech-btn.duck { border-color: var(--duck); background: #fffbf0; }
-.mech-btn.heart { border-color: var(--heart); background: #fff0f5; }
-.mech-btn.ghost { border-color: var(--ghost); background: #faf5ff; }
-.mech-icon { font-size: 1.6rem; }
-.mech-name { font-size: .65rem; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
-.mech-btn.duck .mech-name { color: var(--duck); }
-.mech-btn.heart .mech-name { color: var(--heart); }
-.mech-btn.ghost .mech-name { color: var(--ghost); }
-.mech-meaning { font-size: .6rem; color: var(--gray); font-weight: 500; text-align: center; line-height: 1.3; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-.start-btn {
-  width: 100%; padding: 13px; border-radius: 14px; border: 0;
-  background: var(--gradient); color: #fff;
-  font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1rem;
-  cursor: pointer; letter-spacing: -.01em;
-  box-shadow: 0 4px 16px rgba(255,77,138,.35);
+/* ── SCREEN 1: THE MECHANIC ── */
+#s1 { gap: 0; }
+
+.s1-label {
+  font-family: 'Space Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.s1-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.s1-sub {
+  font-size: .78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* The three buttons demo */
+.mechanic-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.mech-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.mech-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+.mech-row.duck::before { background: var(--duck); }
+.mech-row.heart::before { background: var(--heart); }
+.mech-row.ghost::before { background: var(--ghost); }
+
+.mech-row:hover { transform: translateX(4px); }
+.mech-row.duck:hover { border-color: rgba(255,170,0,.3); box-shadow: 0 0 20px rgba(255,170,0,.1); }
+.mech-row.heart:hover { border-color: rgba(255,77,138,.3); box-shadow: 0 0 20px rgba(255,77,138,.1); }
+.mech-row.ghost:hover { border-color: rgba(168,85,247,.3); box-shadow: 0 0 20px rgba(168,85,247,.1); }
+
+/* animate in with stagger */
+.mech-row { animation: row-in .5s cubic-bezier(.17,.67,.35,1.5) both; }
+.mech-row:nth-child(1) { animation-delay: .1s; }
+.mech-row:nth-child(2) { animation-delay: .22s; }
+.mech-row:nth-child(3) { animation-delay: .34s; }
+@keyframes row-in {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.mech-emoji { font-size: 1.6rem; flex-shrink: 0; }
+.mech-text { flex: 1; }
+.mech-name {
+  font-size: .68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 1px;
+}
+.mech-row.duck .mech-name { color: var(--duck); }
+.mech-row.heart .mech-name { color: var(--heart); }
+.mech-row.ghost .mech-name { color: var(--ghost); }
+.mech-desc { font-size: .72rem; color: var(--muted); line-height: 1.3; }
+
+/* ── SCREEN 2: THE RABBIT HOLE ── */
+#s2 { gap: 0; }
+
+.s2-label {
+  font-family: 'Space Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ghost);
+  margin-bottom: 10px;
+}
+.s2-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.s2-sub {
+  font-size: .76rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.hole-trail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.trail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  position: relative;
+  animation: trail-in .4s ease both;
+}
+.trail-item:nth-child(1) { animation-delay: .05s; margin-left: 0; }
+.trail-item:nth-child(2) { animation-delay: .15s; margin-left: 0; }
+.trail-item:nth-child(3) { animation-delay: .25s; margin-left: 0; }
+.trail-item:nth-child(4) { animation-delay: .35s; margin-left: 0; }
+@keyframes trail-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.trail-icon { font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
+.trail-text { flex: 1; }
+.trail-type { font-size: .5rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 1px; }
+.trail-name { font-size: .75rem; font-weight: 700; color: var(--text); }
+.trail-tap { font-size: .58rem; color: var(--ghost); font-weight: 600; white-space: nowrap; }
+
+.trail-lost {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(168,85,247,.08);
+  border: 1px dashed rgba(168,85,247,.3);
+  border-radius: 10px;
+  animation: trail-in .4s ease .45s both;
+}
+.trail-lost-text {
+  font-size: .7rem;
+  color: rgba(168,85,247,.8);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* ── QUIZ SCREENS (injected from existing quiz) ── */
+#s-quiz {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform .5s cubic-bezier(.4,0,.2,1), opacity .5s ease;
+}
+#s-quiz.active {
+  transform: translateX(0);
+  opacity: 1;
+}
+#s-quiz.exited {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* quiz inner lives here - full width, no extra padding */
+#dhg-quiz-inner {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  background: #111113;
+  padding: 12px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+}
+
+.nav-back {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+}
+.nav-back:hover { color: var(--text); }
+.nav-back:disabled { opacity: 0; pointer-events: none; }
+
+.nav-next {
+  padding: 11px 24px;
+  border-radius: 14px;
+  border: 0;
+  background: var(--gradient);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: .88rem;
+  cursor: pointer;
+  letter-spacing: -.01em;
+  box-shadow: 0 4px 20px rgba(255,77,138,.3);
   transition: transform .15s, box-shadow .15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.start-btn:hover { transform: scale(1.02); box-shadow: 0 6px 24px rgba(255,77,138,.45); }
-.start-btn:active { transform: scale(.98); }
+.nav-next:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(255,77,138,.45); }
+.nav-next:active { transform: scale(.97); }
 
-/* ── DHG QUESTION SCREEN ── */
-.q-screen { flex: 1; display: flex; flex-direction: column; }
-.q-section { font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gray); margin-bottom: 14px; }
-.q-emoji { font-size: 2.2rem; display: block; margin-bottom: 10px; }
-.q-text { font-size: 1.1rem; font-weight: 900; color: var(--charcoal); line-height: 1.3; margin-bottom: 4px; letter-spacing: -.02em; }
-.q-sub { font-size: .76rem; color: var(--gray); line-height: 1.5; margin-bottom: 24px; }
+.nav-steps {
+  display: flex;
+  gap: 5px;
+}
+.nav-step {
+  width: 20px; height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: all .3s;
+}
+.nav-step.active { background: var(--heart); width: 28px; }
+.nav-step.done { background: rgba(255,255,255,.25); }
 
-/* THE THREE BUTTONS — the whole point */
-.trio { display: flex; gap: 8px; margin-bottom: 14px; }
+/* ── QUIZ EMBEDDED STYLES — DARK ── */
+:root {
+  --pink:#ff4d8a; --purple:#a855f7;
+  --charcoal:#f4f4f5; --gray:#a1a1aa;
+  --quizborder:rgba(255,255,255,.1); --light:#1c1c1f; --red:#f87171;
+}
+#dhg-quiz-inner {
+  background: var(--bg);
+  padding: 20px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.q-prog { margin-bottom: 16px; }
+.q-prog-track { height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.q-prog-fill { height: 100%; background: var(--gradient); border-radius: 2px; transition: width .5s cubic-bezier(.4,0,.2,1); }
+.q-prog-labels { display: flex; justify-content: space-between; }
+.q-prog-label { font-size: .6rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.q-prog-pct { font-size: .6rem; font-weight: 700; color: var(--pink); }
+
+.q-section { font-size: .56rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); margin-bottom: 12px; }
+.q-emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+.q-text { font-size: 1.05rem; font-weight: 900; color: #f4f4f5; line-height: 1.3; margin-bottom: 4px; letter-spacing: -.02em; }
+.q-sub { font-size: .74rem; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+
+.trio { display: flex; gap: 7px; margin-bottom: 10px; }
 .trio-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 16px 8px 14px; border-radius: 16px;
-  border: 2.5px solid var(--border); background: #fff;
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 14px 6px 12px; border-radius: 14px;
+  border: 2px solid rgba(255,255,255,.08); background: var(--surface);
   cursor: pointer; font-family: 'Outfit', sans-serif;
   transition: all .2s cubic-bezier(.4,0,.2,1);
   position: relative; overflow: hidden;
 }
-.trio-btn::before {
-  content: ''; position: absolute; inset: 0; opacity: 0;
-  transition: opacity .2s;
-}
-.trio-btn:hover { transform: translateY(-4px); }
+.trio-btn::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .2s; }
+.trio-btn:hover { transform: translateY(-3px); }
 .trio-btn:active { transform: translateY(0) scale(.97); }
-
-.trio-btn.duck-btn { border-color: #fde68a; }
-.trio-btn.duck-btn::before { background: linear-gradient(135deg, #fffbf0, #fff8e0); }
-.trio-btn.duck-btn:hover { border-color: var(--duck); box-shadow: 0 8px 24px rgba(255,170,0,.2); }
-.trio-btn.duck-btn:hover::before { opacity: 1; }
-.trio-btn.duck-btn.selected { border-color: var(--duck); background: var(--duck); box-shadow: 0 0 0 4px rgba(255,170,0,.2); }
-
-.trio-btn.heart-btn { border-color: #fecdd3; }
-.trio-btn.heart-btn::before { background: linear-gradient(135deg, #fff0f5, #ffe4ee); }
-.trio-btn.heart-btn:hover { border-color: var(--heart); box-shadow: 0 8px 24px rgba(255,77,138,.2); }
-.trio-btn.heart-btn:hover::before { opacity: 1; }
-.trio-btn.heart-btn.selected { border-color: var(--heart); background: var(--heart); box-shadow: 0 0 0 4px rgba(255,77,138,.2); }
-
-.trio-btn.ghost-btn { border-color: #e9d5ff; }
-.trio-btn.ghost-btn::before { background: linear-gradient(135deg, #faf5ff, #f3e8ff); }
-.trio-btn.ghost-btn:hover { border-color: var(--ghost); box-shadow: 0 8px 24px rgba(168,85,247,.2); }
-.trio-btn.ghost-btn:hover::before { opacity: 1; }
-.trio-btn.ghost-btn.selected { border-color: var(--ghost); background: var(--ghost); box-shadow: 0 0 0 4px rgba(168,85,247,.2); }
-
-.t-icon { font-size: 2rem; position: relative; z-index: 1; transition: transform .2s; }
-.trio-btn:hover .t-icon { transform: scale(1.2); }
-.t-name { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; position: relative; z-index: 1; transition: color .2s; }
+.trio-btn.duck-btn:hover { border-color: rgba(255,170,0,.5); box-shadow: 0 6px 20px rgba(255,170,0,.15); }
+.trio-btn.duck-btn::before { background: linear-gradient(135deg,rgba(255,170,0,.08),rgba(255,170,0,.04)); }
+.trio-btn.duck-btn:hover::before { opacity:1; }
+.trio-btn.duck-btn.selected { border-color: var(--duck); background: rgba(255,170,0,.15); box-shadow: 0 0 0 3px rgba(255,170,0,.2); }
+.trio-btn.heart-btn:hover { border-color: rgba(255,77,138,.5); box-shadow: 0 6px 20px rgba(255,77,138,.15); }
+.trio-btn.heart-btn::before { background: linear-gradient(135deg,rgba(255,77,138,.08),rgba(255,77,138,.04)); }
+.trio-btn.heart-btn:hover::before { opacity:1; }
+.trio-btn.heart-btn.selected { border-color: var(--heart); background: rgba(255,77,138,.15); box-shadow: 0 0 0 3px rgba(255,77,138,.2); }
+.trio-btn.ghost-btn:hover { border-color: rgba(168,85,247,.5); box-shadow: 0 6px 20px rgba(168,85,247,.15); }
+.trio-btn.ghost-btn::before { background: linear-gradient(135deg,rgba(168,85,247,.08),rgba(168,85,247,.04)); }
+.trio-btn.ghost-btn:hover::before { opacity:1; }
+.trio-btn.ghost-btn.selected { border-color: var(--ghost); background: rgba(168,85,247,.15); box-shadow: 0 0 0 3px rgba(168,85,247,.2); }
+.t-icon { font-size: 1.8rem; position: relative; z-index:1; transition: transform .2s; }
+.trio-btn:hover .t-icon { transform: scale(1.15); }
+.t-name { font-size:.64rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; position:relative; z-index:1; }
 .trio-btn.duck-btn .t-name { color: var(--duck); }
 .trio-btn.heart-btn .t-name { color: var(--heart); }
 .trio-btn.ghost-btn .t-name { color: var(--ghost); }
-.trio-btn.selected .t-name { color: #fff; }
-.t-meaning { font-size: .6rem; color: var(--gray); font-weight: 500; text-align: center; line-height: 1.3; position: relative; z-index: 1; transition: color .2s; }
-.trio-btn.selected .t-meaning { color: rgba(255,255,255,.8); }
+.t-meaning { font-size:.58rem; color:var(--muted); font-weight:500; text-align:center; line-height:1.3; position:relative; z-index:1; }
+.trio-btn.selected .t-meaning { color:rgba(255,255,255,.6); }
 
-/* Ghost confirmation flash */
-.ghost-confirm {
-  background: #faf5ff; border: 1.5px solid var(--ghost);
-  border-radius: 10px; padding: 8px 14px;
-  font-size: .76rem; font-weight: 700; color: var(--ghost);
-  text-align: center; margin-bottom: 12px;
-  display: none; animation: popin .3s ease;
-}
+.ghost-confirm { background:rgba(168,85,247,.1); border:1.5px solid rgba(168,85,247,.4); border-radius:10px; padding:7px 12px; font-size:.73rem; font-weight:700; color:var(--ghost); text-align:center; margin-bottom:10px; display:none; }
+.ghost-confirm.show { display:block; animation: popin .3s ease; }
 @keyframes popin { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
-.ghost-confirm.show { display: block; }
 
-/* Back nav */
-.q-nav { margin-top: auto; padding-top: 8px; }
-.back-btn {
-  background: none; border: none; font-family: 'Outfit', sans-serif;
-  font-size: .75rem; font-weight: 700; color: var(--gray);
-  cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;
-}
-.back-btn:hover { color: var(--charcoal); }
+/* result screen */
+.result { display:flex; flex-direction:column; gap:12px; }
+.r-hero { text-align:center; }
+.r-icon { font-size:2.5rem; display:block; margin-bottom:6px; }
+.r-eyebrow { font-size:.55rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.r-title { font-size:1.3rem; font-weight:900; letter-spacing:-.02em; color:#f4f4f5; }
+.r-desc { font-size:.75rem; color:var(--muted); line-height:1.5; margin-top:5px; }
+.r-div { height:1px; background:rgba(255,255,255,.08); border-radius:2px; }
+.r-sec { display:flex; flex-direction:column; gap:5px; }
+.r-sec-label { font-size:.56rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.r-sec-label.seek { color:var(--teal); }
+.r-sec-label.avoid { color:var(--red); }
+.r-sec-label.explore { color:var(--purple); }
+.r-tags { display:flex; flex-wrap:wrap; gap:4px; }
+.rtag { font-size:.7rem; font-weight:600; padding:3px 9px; border-radius:9999px; border:1.5px solid; }
+.rtag.seek { color:var(--teal); border-color:rgba(0,212,170,.3); background:rgba(0,212,170,.06); }
+.rtag.avoid { color:var(--red); border-color:rgba(248,113,113,.3); background:rgba(248,113,113,.06); }
+.rtag.explore { color:var(--purple); border-color:rgba(168,85,247,.3); background:rgba(168,85,247,.06); }
+.dhg-summary { display:flex; gap:7px; background:var(--surface); border-radius:10px; padding:10px; border:1px solid var(--quizborder); }
+.dhg-sum-col { flex:1; }
+.dhg-sum-label { font-size:.55rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; display:block; }
+.dhg-sum-label.hearts { color:var(--heart); }
+.dhg-sum-label.ghosts { color:var(--ghost); }
+.dhg-sum-items { display:flex; flex-wrap:wrap; gap:3px; }
+.dhg-sum-tag { font-size:.62rem; font-weight:600; padding:2px 6px; border-radius:9999px; }
+.dhg-sum-tag.heart-tag { background:rgba(255,77,138,.1); color:var(--heart); border:1px solid rgba(255,77,138,.3); }
+.dhg-sum-tag.ghost-tag { background:rgba(168,85,247,.1); color:var(--ghost); border:1px solid rgba(168,85,247,.3); }
+.r-cta { width:100%; padding:12px; border-radius:14px; border:0; background:var(--gradient); color:#fff; font-family:'Outfit',sans-serif; font-weight:900; font-size:.9rem; cursor:pointer; box-shadow:0 4px 16px rgba(255,77,138,.3); transition:transform .15s; }
+.r-cta:hover { transform:scale(1.01); }
+.restart-btn { background:none; border:none; font-family:'Outfit',sans-serif; font-size:.7rem; color:var(--muted); cursor:pointer; text-decoration:underline; text-align:center; padding:2px; }
 
-/* ── RESULT SCREEN ── */
-.result { display: flex; flex-direction: column; gap: 14px; }
-.r-hero { text-align: center; }
-.r-icon { font-size: 3rem; display: block; margin-bottom: 8px; animation: popin .4s cubic-bezier(.17,.67,.35,1.5); }
-.r-eyebrow { font-size: .58rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
-.r-title { font-size: 1.4rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; color: var(--charcoal); }
-.r-desc { font-size: .78rem; color: var(--gray); line-height: 1.6; margin-top: 6px; }
-.r-div { height: 3px; background: #000; border-radius: 2px; }
-.r-sec { display: flex; flex-direction: column; gap: 6px; }
-.r-sec-label { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.r-sec-label.seek { color: var(--teal); }
-.r-sec-label.avoid { color: var(--red); }
-.r-sec-label.explore { color: var(--purple); }
-.r-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.rtag { font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 9999px; border: 1.5px solid; }
-.rtag.seek { color: var(--teal); border-color: var(--teal); }
-.rtag.avoid { color: var(--red); border-color: var(--red); }
-.rtag.explore { color: var(--purple); border-color: var(--purple); }
-
-/* Hearts & Ghosts summary */
-.dhg-summary {
-  display: flex; gap: 8px;
-  background: var(--light); border-radius: 12px;
-  padding: 12px; border: 1.5px solid var(--border);
+/* ── FULL PAGE (when embedded as standalone) ── */
+@media (min-height: 600px) {
+  body { display: flex; align-items: center; justify-content: center; }
+  .shell { border-radius: 28px; box-shadow: 0 40px 120px rgba(0,0,0,.8); overflow: hidden; }
 }
-.dhg-sum-col { flex: 1; }
-.dhg-sum-label { font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; display: block; }
-.dhg-sum-label.hearts { color: var(--heart); }
-.dhg-sum-label.ghosts { color: var(--ghost); }
-.dhg-sum-items { display: flex; flex-wrap: wrap; gap: 3px; }
-.dhg-sum-tag { font-size: .65rem; font-weight: 600; padding: 2px 7px; border-radius: 9999px; }
-.dhg-sum-tag.heart-tag { background: #fff0f5; color: var(--heart); border: 1.5px solid var(--heart); }
-.dhg-sum-tag.ghost-tag { background: #faf5ff; color: var(--ghost); border: 1.5px solid var(--ghost); }
-.dhg-sum-tag.duck-tag { background: var(--light); color: var(--gray); border: 1.5px solid var(--border); }
-
-.r-cta {
-  width: 100%; padding: 13px; border-radius: 14px; border: 0;
-  background: var(--gradient); color: #fff;
-  font-family: 'Outfit', sans-serif; font-weight: 900; font-size: .95rem;
-  cursor: pointer; box-shadow: 0 4px 16px rgba(255,77,138,.3);
-  transition: transform .15s;
-}
-.r-cta:hover { transform: scale(1.01); }
-.restart-btn {
-  background: none; border: none; font-family: 'Outfit', sans-serif;
-  font-size: .72rem; color: var(--gray); cursor: pointer;
-  text-decoration: underline; text-align: center; padding: 2px;
-}
-.restart-btn:hover { color: var(--charcoal); }
-
-/* Footer */
-.ftr {
-  background: var(--charcoal);
-  border: 2px solid #000; border-top: 0;
-  border-radius: 0 0 20px 20px;
-  padding: 8px 18px; text-align: center;
-}
-.ftr-text { font-size: .8rem; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; }
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="rainbow"></div>
-  <div class="hdr">
-    <span class="hdr-brand">🦆❤️👻 &nbsp; Find your <span class="hdr-rainbow">Clean Fix</span></span>
-    <span class="hdr-step" id="hdr-step"></span>
-  </div>
 
-  <div class="prog" id="prog" style="display:none;">
-    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="prog-labels">
-      <span class="prog-label" id="prog-label">Question 1</span>
-      <span class="prog-pct" id="prog-pct">0%</span>
+<div class="shell">
+  <div class="rainbow-bar"></div>
+
+  <!-- Top bar with dots -->
+  <div class="top-bar">
+    <span class="top-brand">🦆❤️👻 Duck Heart Ghost</span>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button id="skip-btn" onclick="skipIntro()" style="display:block;background:none;border:1px solid rgba(255,255,255,.12);border-radius:6px;color:rgba(255,255,255,.3);font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;padding:4px 8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(255,255,255,.7)';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='rgba(255,255,255,.3)';this.style.borderColor='rgba(255,255,255,.12)'">[ SKIP ]</button>
+      <div class="top-dots">
+        <div class="top-dot active" id="dot-0"></div>
+        <div class="top-dot" id="dot-1"></div>
+        <div class="top-dot" id="dot-2"></div>
+        <div class="top-dot" id="dot-3"></div>
+      </div>
     </div>
   </div>
 
-  <div class="body">
+  <!-- Screens -->
+  <div class="screens">
 
-    <!-- ══ OPENER ══ -->
-    <div class="screen active" id="s-open">
-      <div class="opener">
-        <span class="opener-rabbit">🐇</span>
-        <div class="opener-title">Find your<br><em>clean fix.</em></div>
-        <div class="opener-sub">Answer with 🦆❤️👻 and we'll figure out where to point you. No shopping cart. Just curiosity.</div>
-
-        <div class="mechanic">
-          <div class="mech-btn duck">
-            <span class="mech-icon">🦆</span>
-            <span class="mech-name">Duck</span>
-            <span class="mech-meaning">Maybe / not sure yet</span>
+    <!-- SCREEN 0: Welcome -->
+    <div class="screen active" id="s0">
+      <div class="console-wrap">
+        <div class="console">
+          <div class="console-screen">
+            <div class="console-screen-glow"></div>
+            <div class="console-screen-content" id="console-emoji">🦆</div>
           </div>
-          <div class="mech-btn heart">
-            <span class="mech-icon">❤️</span>
-            <span class="mech-name">Heart</span>
-            <span class="mech-meaning">Yes — this is me</span>
+          <div class="console-dpad">
+            <div class="dpad-h"></div>
+            <div class="dpad-v"></div>
           </div>
-          <div class="mech-btn ghost">
-            <span class="mech-icon">👻</span>
-            <span class="mech-name">Ghost</span>
-            <span class="mech-meaning">No — filter it out</span>
+          <div class="console-btns">
+            <div class="cbtn cbtn-duck">🦆</div>
+            <div class="cbtn cbtn-heart">❤️</div>
+            <div class="cbtn cbtn-ghost">👻</div>
           </div>
         </div>
+        <div class="console-glow"></div>
+      </div>
 
-        <button class="start-btn" onclick="startQuiz()">I'm curious 🐇</button>
+      <div class="s0-title">
+        Clean beauty.<br>
+        <span class="grd">You sort it.</span>
+      </div>
+      <div class="s0-sub" style="margin-top:10px;">
+        Swipe through products. Duck the maybes. Heart the ones you love. Ghost everything else.
+      </div>
+      <div class="s0-tap">TAP NEXT TO LEARN HOW →</div>
+    </div>
+
+    <!-- SCREEN 1: The Mechanic -->
+    <div class="screen" id="s1">
+      <div class="s1-label">// HOW IT WORKS</div>
+      <div class="s1-title">Three buttons.<br>All the power.</div>
+      <div class="s1-sub">Every card gets a verdict. No star ratings. No complicated scores. Just your vote — informed.</div>
+
+      <div class="mechanic-demo">
+        <div class="mech-row duck">
+          <div class="mech-emoji">🦆</div>
+          <div class="mech-text">
+            <div class="mech-name">Duck it</div>
+            <div class="mech-desc">Maybe later. Not sure yet. Quietly waddles into your Meh pile.</div>
+          </div>
+        </div>
+        <div class="mech-row heart">
+          <div class="mech-emoji">❤️</div>
+          <div class="mech-text">
+            <div class="mech-name">Heart it</div>
+            <div class="mech-desc">This is the one. Goes straight into your stash for keeps.</div>
+          </div>
+        </div>
+        <div class="mech-row ghost">
+          <div class="mech-emoji">👻</div>
+          <div class="mech-text">
+            <div class="mech-name">Ghost it</div>
+            <div class="mech-desc">You banished it. Gone — until you change your mind.</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Questions are rendered dynamically -->
-    <div class="screen" id="s-question">
-      <div class="q-screen">
-        <div class="q-section" id="q-section"></div>
-        <span class="q-emoji" id="q-emoji"></span>
-        <div class="q-text" id="q-text"></div>
-        <div class="q-sub" id="q-sub"></div>
-        <div class="ghost-confirm" id="ghost-confirm">👻 Ghosted — filtered from your results forever</div>
-        <div class="trio">
-          <button class="trio-btn duck-btn" id="btn-duck" onclick="answer('duck')">
-            <span class="t-icon">🦆</span>
-            <span class="t-name">Duck</span>
-            <span class="t-meaning" id="duck-meaning">Maybe</span>
-          </button>
-          <button class="trio-btn heart-btn" id="btn-heart" onclick="answer('heart')">
-            <span class="t-icon">❤️</span>
-            <span class="t-name">Heart</span>
-            <span class="t-meaning" id="heart-meaning">Yes!</span>
-          </button>
-          <button class="trio-btn ghost-btn" id="btn-ghost" onclick="answer('ghost')">
-            <span class="t-icon">👻</span>
-            <span class="t-name">Ghost</span>
-            <span class="t-meaning" id="ghost-meaning">Nope</span>
-          </button>
+    <!-- SCREEN 2: The Rabbit Hole -->
+    <div class="screen" id="s2">
+      <div class="s2-label">// THE RABBIT HOLE</div>
+      <div class="s2-title">Tap anything.<br>Fall deeper.</div>
+      <div class="s2-sub">Every card connects to more. Tap the brand. Tap an ingredient. End up somewhere you didn't expect.</div>
+
+      <div class="hole-trail">
+        <div class="trail-item">
+          <div class="trail-icon">🧴</div>
+          <div class="trail-text">
+            <div class="trail-type">Product</div>
+            <div class="trail-name">Retinol Serum</div>
+          </div>
+          <div class="trail-tap">tap ingredient →</div>
         </div>
-        <div class="q-nav">
-          <button class="back-btn" id="back-btn" onclick="goBack()">← Back</button>
+        <div style="height:8px;"></div>
+        <div class="trail-item">
+          <div class="trail-icon">🔬</div>
+          <div class="trail-text">
+            <div class="trail-type">Ingredient</div>
+            <div class="trail-name">Retinol</div>
+          </div>
+          <div class="trail-tap">also in →</div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="trail-item">
+          <div class="trail-icon">💊</div>
+          <div class="trail-text">
+            <div class="trail-type">Product</div>
+            <div class="trail-name">Eye Cream SPF 30</div>
+          </div>
+          <div class="trail-tap">tap ingredient →</div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="trail-item">
+          <div class="trail-icon">🔬</div>
+          <div class="trail-text">
+            <div class="trail-type">Ingredient</div>
+            <div class="trail-name">Niacinamide</div>
+          </div>
+          <div class="trail-tap">6,933 more →</div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="trail-lost">
+          <div style="font-size:1rem;">🐇</div>
+          <div class="trail-lost-text">...you are now deep in ingredient land. This is fine.</div>
         </div>
       </div>
     </div>
 
-    <!-- ══ RESULT ══ -->
-    <div class="screen" id="s-result">
-      <div class="result">
-        <div class="r-hero">
-          <span class="r-icon" id="r-icon">🎯</span>
-          <div class="r-eyebrow">Your clean beauty fix</div>
-          <div class="r-title" id="r-title"></div>
-          <div class="r-desc" id="r-desc"></div>
+    <!-- SCREEN 3: Find Your Clean Fix Opener -->
+    <div class="screen" id="s3">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:0;">
+        <span style="font-size:3rem;display:block;margin-bottom:12px;animation:bob 2.5s ease-in-out infinite;">🐇</span>
+        <div style="font-size:1.55rem;font-weight:900;letter-spacing:-.03em;line-height:1.1;color:#f4f4f5;margin-bottom:8px;">
+          Find your<br>
+          <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">clean fix.</span>
         </div>
-
-        <div class="dhg-summary">
-          <div class="dhg-sum-col">
-            <span class="dhg-sum-label hearts">❤️ Hearted</span>
-            <div class="dhg-sum-items" id="sum-hearts"></div>
+        <div style="font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:24px;">
+          Answer with 🦆❤️👻 and we'll point you in the right direction.<br>No shopping cart. Just curiosity.
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:24px;background:var(--surface);border-radius:14px;padding:12px;border:1px solid var(--border);">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(255,170,0,.3);background:rgba(255,170,0,.05);">
+            <span style="font-size:1.5rem;">🦆</span>
+            <span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--duck);">Duck</span>
+            <span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Maybe / meh</span>
           </div>
-          <div class="dhg-sum-col">
-            <span class="dhg-sum-label ghosts">👻 Ghosted</span>
-            <div class="dhg-sum-items" id="sum-ghosts"></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(255,77,138,.3);background:rgba(255,77,138,.05);">
+            <span style="font-size:1.5rem;">❤️</span>
+            <span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--heart);">Heart</span>
+            <span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Yes — this is me</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(168,85,247,.3);background:rgba(168,85,247,.05);">
+            <span style="font-size:1.5rem;">👻</span>
+            <span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--ghost);">Ghost</span>
+            <span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Filter it out</span>
           </div>
         </div>
-
-        <div class="r-div"></div>
-        <div class="r-sec">
-          <div class="r-sec-label seek">🌿 Ingredients to seek</div>
-          <div class="r-tags" id="r-seek"></div>
-        </div>
-        <div class="r-sec">
-          <div class="r-sec-label avoid">🚫 Filtered from your results</div>
-          <div class="r-tags" id="r-avoid"></div>
-        </div>
-        <div class="r-sec">
-          <div class="r-sec-label explore">🐇 What to explore</div>
-          <div class="r-tags" id="r-explore"></div>
-        </div>
-        <div class="r-div"></div>
-        <button class="r-cta" id="r-cta">Explore Products →</button>
-        <button class="restart-btn" onclick="restart()">Start over ↩</button>
       </div>
     </div>
 
+    <!-- QUIZ SCREEN -->
+    <div class="screen" id="s-quiz">
+      <div id="dhg-quiz-inner">
+        <!-- quiz rendered here by JS -->
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav" id="bottom-nav">
+    <button class="nav-back" id="nav-back" onclick="goBack()" disabled>← Back</button>
+    <div class="nav-steps">
+      <div class="nav-step active" id="step-0"></div>
+      <div class="nav-step" id="step-1"></div>
+      <div class="nav-step" id="step-2"></div>
+      <div class="nav-step" id="step-3"></div>
+    </div>
+    <button class="nav-next" id="nav-next" onclick="goNext()">
+      <span id="next-label">Next</span> <span id="next-arrow">→</span>
+    </button>
   </div>
-  <div class="ftr"><span class="ftr-text">Clean beauty, sorted.</span></div>
 </div>
 
 <script>
-// ==============================================
-// QUESTION BANK
-// Each question: { id, section, emoji, text, sub, duck, heart, ghost, key, ghostLabel, heartLabel }
-// key = what gets saved to profile
-// ==============================================
+// ── INTRO NAVIGATION ──
+let introStep = 0;
+const INTRO_SCREENS = ['s0','s1','s2','s3'];
+const TOTAL_INTRO = 4;
+
+function skipIntro() {
+  launchQuiz();
+}
+
+function goNext() {
+  if (introStep < TOTAL_INTRO - 1) {
+    introStep++;
+    showIntroScreen(introStep);
+  } else {
+    // Launch quiz
+    launchQuiz();
+  }
+}
+
+function goBack() {
+  if (introStep > 0) {
+    introStep--;
+    showIntroScreen(introStep);
+  }
+}
+
+function showIntroScreen(idx) {
+  INTRO_SCREENS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (i === idx) {
+      el.classList.add('active');
+      el.classList.remove('exited');
+    } else if (i < idx) {
+      el.classList.remove('active');
+      el.classList.add('exited');
+    } else {
+      el.classList.remove('active');
+      el.classList.remove('exited');
+    }
+  });
+
+  // Update dots
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (!dot) continue;
+    dot.classList.toggle('active', i === idx);
+    dot.classList.toggle('done', i < idx);
+  }
+
+  // Update steps
+  for (let i = 0; i < 4; i++) {
+    const step = document.getElementById('step-' + i);
+    if (!step) continue;
+    step.classList.toggle('active', i === idx);
+    step.classList.toggle('done', i < idx);
+  }
+
+  // Back button
+  document.getElementById('nav-back').disabled = idx === 0;
+
+  // Next button label
+  const nextLabel = document.getElementById('next-label');
+  const nextArrow = document.getElementById('next-arrow');
+  if (idx === TOTAL_INTRO - 1) {
+    nextLabel.textContent = "I'm curious";
+    nextArrow.textContent = '🐇';
+  } else {
+    nextLabel.textContent = 'Next';
+    nextArrow.textContent = '→';
+  }
+}
+
+function launchQuiz() {
+  // Hide intro screens, show quiz
+  INTRO_SCREENS.forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('active');
+    el.classList.add('exited');
+  });
+
+  const quizEl = document.getElementById('s-quiz');
+  quizEl.classList.add('active');
+
+  // Hide bottom nav — quiz has its own back button
+  document.getElementById('bottom-nav').style.display = 'none';
+
+  // Update dots to show quiz active
+  document.querySelectorAll('.top-dot').forEach(d => {
+    d.classList.remove('active');
+    d.classList.add('done');
+  });
+
+  // Start quiz
+  startQuiz();
+}
+
+// ── Console emoji cycle ──
+const emojis = ['🦆','❤️','👻','🦆','❤️','👻'];
+let emojiIdx = 0;
+setInterval(() => {
+  emojiIdx = (emojiIdx + 1) % emojis.length;
+  document.getElementById('console-emoji').textContent = emojis[emojiIdx];
+}, 900);
+
+// ══════════════════════════════════════════════
+// QUIZ ENGINE
+// ══════════════════════════════════════════════
 const QUESTIONS = [
-
-  // -- WHAT CAUGHT YOUR EYE --
-  {
-    id: 'cat-skincare',
-    section: `What's pulling you down the rabbit hole?`,
-    emoji: '🧴',
-    text: 'Curious about skincare?',
-    sub: 'Serums, moisturizers, cleansers, SPF -- the whole world',
-    duck:  'Could be interesting',
-    heart: 'Yes -- rabbit hole me',
-    ghost: 'Not what I came for',
-    key: 'skincare',
-    heartLabel: 'Skincare',
-  },
-  {
-    id: 'cat-makeup',
-    section: `What's pulling you down the rabbit hole?`,
-    emoji: '💄',
-    text: 'Into clean makeup right now?',
-    sub: 'Foundation, lip, eye, blush, primer...',
-    duck:  'Sometimes, yeah',
-    heart: 'Yes -- show me everything',
-    ghost: 'Not really my thing',
-    key: 'makeup',
-    heartLabel: 'Makeup',
-  },
-  {
-    id: 'cat-body',
-    section: `What's pulling you down the rabbit hole?`,
-    emoji: '🛁',
-    text: 'What about body?',
-    sub: 'Lotions, washes, deodorant, body SPF, treatments...',
-    duck:  'Sometimes',
-    heart: 'Yes -- body care matters',
-    ghost: 'Not this time',
-    key: 'body',
-    heartLabel: 'Body',
-  },
-
-  // -- SKIN STORY --
-  {
-    id: 'concern-acne',
-    section: 'Tell me about your skin',
-    emoji: '🎯',
-    text: 'Are breakouts part of your story?',
-    sub: 'Salicylic acid, niacinamide, zinc -- this is their territory',
-    duck:  'Here and there',
-    heart: 'Ugh yes -- always',
-    ghost: 'Nope, not my skin',
-    key: 'acne',
-    heartLabel: 'Acne-prone',
-  },
-  {
-    id: 'concern-aging',
-    section: 'Tell me about your skin',
-    emoji: '⏳',
-    text: 'Thinking about the long game?',
-    sub: 'Peptides, bakuchiol, firming -- playing the long game',
-    duck:  'Starting to think about it',
-    heart: `Yes -- it's on my mind`,
-    ghost: `Not where I'm at`,
-    key: 'antiaging',
-    heartLabel: 'Anti-aging',
-  },
-  {
-    id: 'concern-brightening',
-    section: 'Tell me about your skin',
-    emoji: '✨',
-    text: 'Chasing glow or fighting dark spots?',
-    sub: 'Vitamin C, alpha arbutin, tranexamic acid territory',
-    duck:  'A little uneven',
-    heart: 'Yes -- this is the goal',
-    ghost: 'Not really a concern',
-    key: 'brightening',
-    heartLabel: 'Brightening',
-  },
-  {
-    id: 'concern-sensitivity',
-    section: 'Tell me about your skin',
-    emoji: '🌹',
-    text: 'Does your skin protest a lot?',
-    sub: 'Redness, reactivity, rosacea -- ceramides and centella are your friends',
-    duck:  'Sometimes it complains',
-    heart: 'Yes -- very reactive',
-    ghost: 'Skin is pretty chill',
-    key: 'sensitivity',
-    heartLabel: 'Sensitive skin',
-  },
-  {
-    id: 'concern-dryness',
-    section: 'Tell me about your skin',
-    emoji: '💧',
-    text: 'Dry, tight, thirsty?',
-    sub: 'Hyaluronic acid, glycerin, squalane -- hydration first',
-    duck:  'Seasonal dry patches',
-    heart: 'Yes -- chronically parched',
-    ghost: 'Oily -- opposite problem',
-    key: 'dryness',
-    heartLabel: 'Dry skin',
-    ghostLabel: 'Oily skin',
-  },
-
-  // -- FILTERS --
-  {
-    id: 'avoid-fragrance',
-    section: `Let's build your ghost list`,
-    emoji: '🌸',
-    text: 'Synthetic fragrance -- friend or foe?',
-    sub: 'Shows up as "fragrance" or "parfum" -- polarizing ingredient',
-    duck:  'Depends on the product',
-    heart: 'Love a scented product',
-    ghost: 'Ghost it -- always avoid',
-    key: 'fragrance',
-    ghostLabel: 'Fragrance',
-  },
-  {
-    id: 'avoid-retinol',
-    section: `Let's build your ghost list`,
-    emoji: '🧪',
-    text: 'Retinol -- in or out?',
-    sub: 'Powerful but not for everyone -- pregnancy, sensitivity, preference',
-    duck:  'Curious but cautious',
-    heart: 'On the retinol train',
-    ghost: 'Ghost it -- not for me',
-    key: 'retinol',
-    ghostLabel: 'Retinol',
-  },
-  {
-    id: 'avoid-essentialoils',
-    section: `Let's build your ghost list`,
-    emoji: '🌿',
-    text: 'Essential oils in formulas?',
-    sub: 'Tea tree, lavender, citrus -- beloved by some, irritating to others',
-    duck:  'Some yes, some no',
-    heart: 'I actually love them',
-    ghost: 'Ghost them -- skin hates it',
-    key: 'essentialoils',
-    ghostLabel: 'Essential oils',
-  },
-  {
-    id: 'avoid-silicones',
-    section: `Let's build your ghost list`,
-    emoji: '💎',
-    text: 'Silicones -- slip or skip?',
-    sub: 'Dimethicone, cyclomethicone -- smoothing agents, controversial in clean beauty',
-    duck:  `Don't really care`,
-    heart: `Love the slip -- keep them`,
-    ghost: 'Ghost them -- clean only',
-    key: 'silicones',
-    ghostLabel: 'Silicones',
-  },
-  {
-    id: 'avoid-gluten',
-    section: `Let's build your ghost list`,
-    emoji: '🌾',
-    text: 'Gluten-derived ingredients?',
-    sub: 'Hydrolyzed wheat protein, wheat germ oil -- matters to some',
-    duck:  'Not sure if it affects me',
-    heart: `No issue, doesn't matter`,
-    ghost: 'Ghost it -- I avoid gluten',
-    key: 'gluten',
-    ghostLabel: 'Gluten',
-  },
-
-  // -- LIFESTYLE --
-  {
-    id: 'life-vegan',
-    section: 'A little about you',
-    emoji: '🌱',
-    text: 'Vegan formulas a must?',
-    sub: 'No beeswax, lanolin, collagen, carmine -- 100% plant-derived',
-    duck:  'I prefer it but not strict',
-    heart: 'Yes -- vegan only',
-    ghost: 'Not something I track',
-    key: 'vegan',
-    heartLabel: 'Vegan',
-  },
-  {
-    id: 'life-pregnancy',
-    section: 'A little about you',
-    emoji: '🤰',
-    text: 'Need pregnancy or nursing safe?',
-    sub: 'Filters out retinoids, high-dose salicylic, certain essential oils',
-    duck:  'Not right now',
-    heart: 'Yes -- filter for safety',
-    ghost: 'Not relevant to me',
-    key: 'pregnancy',
-    heartLabel: 'Pregnancy safe',
-  },
-
-  // -- BUDGET --
-  {
-    id: 'budget',
-    section: 'Last one',
-    emoji: '💸',
-    text: 'How do you feel about splurging?',
-    sub: 'Ghost products over $60 and they disappear from your results entirely',
-    duck:  `If it's really worth it`,
-    heart: 'No limit -- show me everything',
-    ghost: "Ghost anything over $60",
-    key: 'over60',
-    ghostLabel: 'Over $60',
-  },
+  { id:'cat-skincare', section:'Down the rabbit hole', emoji:'🧴', text:'Curious about skincare?', sub:'Serums, moisturizers, cleansers, SPF...', duck:'Could be interesting', heart:'Yes — rabbit hole me', ghost:'Not what I came for', key:'skincare', heartLabel:'Skincare' },
+  { id:'cat-makeup', section:'Down the rabbit hole', emoji:'💄', text:'Into clean makeup?', sub:'Foundation, lip, eye, blush, primer...', duck:'Sometimes, yeah', heart:'Yes — show me everything', ghost:'Not my thing', key:'makeup', heartLabel:'Makeup' },
+  { id:'cat-body', section:'Down the rabbit hole', emoji:'🛁', text:'What about body?', sub:'Lotions, washes, deodorant, body SPF...', duck:'Sometimes', heart:'Yes — body care matters', ghost:'Not this time', key:'body', heartLabel:'Body' },
+  { id:'concern-acne', section:'Tell me about your skin', emoji:'🎯', text:'Are breakouts part of your story?', sub:'Salicylic acid, niacinamide, zinc territory', duck:'Here and there', heart:'Ugh yes — always', ghost:'Nope, not my skin', key:'acne', heartLabel:'Acne-prone' },
+  { id:'concern-aging', section:'Tell me about your skin', emoji:'⏳', text:'Thinking about the long game?', sub:'Peptides, bakuchiol, firming...', duck:'Starting to think about it', heart:`Yes — it's on my mind`, ghost:`Not where I'm at`, key:'antiaging', heartLabel:'Anti-aging' },
+  { id:'concern-brightening', section:'Tell me about your skin', emoji:'✨', text:'Chasing glow or fighting dark spots?', sub:'Vitamin C, alpha arbutin, tranexamic acid', duck:'A little uneven', heart:'Yes — this is the goal', ghost:'Not a concern', key:'brightening', heartLabel:'Brightening' },
+  { id:'concern-sensitivity', section:'Tell me about your skin', emoji:'🌹', text:'Does your skin protest a lot?', sub:'Redness, reactivity — ceramides and centella', duck:'Sometimes it complains', heart:'Yes — very reactive', ghost:'Skin is pretty chill', key:'sensitivity', heartLabel:'Sensitive skin' },
+  { id:'concern-dryness', section:'Tell me about your skin', emoji:'💧', text:'Dry, tight, thirsty?', sub:'Hyaluronic acid, glycerin, squalane', duck:'Seasonal dry patches', heart:'Yes — chronically parched', ghost:'Oily — opposite problem', key:'dryness', heartLabel:'Dry skin', ghostLabel:'Oily skin' },
+  { id:'avoid-fragrance', section:'Build your ghost list', emoji:'🌸', text:'Synthetic fragrance — friend or foe?', sub:'Listed as fragrance or parfum on labels', duck:'Depends on the product', heart:'Love a scented product', ghost:'Ghost it — always avoid', key:'fragrance', ghostLabel:'Fragrance' },
+  { id:'avoid-retinol', section:'Build your ghost list', emoji:'🧪', text:'Retinol — in or out?', sub:'Strong actives — not for everyone', duck:'Curious but cautious', heart:'On the retinol train', ghost:'Ghost it — not for me', key:'retinol', ghostLabel:'Retinol' },
+  { id:'avoid-essentialoils', section:'Build your ghost list', emoji:'🌿', text:'Essential oils in formulas?', sub:'Tea tree, lavender, citrus — common irritants', duck:'Some yes, some no', heart:'I actually love them', ghost:'Ghost them — skin hates it', key:'essentialoils', ghostLabel:'Essential oils' },
+  { id:'avoid-silicones', section:'Build your ghost list', emoji:'💎', text:'Silicones — slip or skip?', sub:'Dimethicone, cyclomethicone — slip agents', duck:`Don't really care`, heart:'Love the slip — keep them', ghost:'Ghost them — clean only', key:'silicones', ghostLabel:'Silicones' },
+  { id:'avoid-gluten', section:'Build your ghost list', emoji:'🌾', text:'Gluten-derived ingredients?', sub:'Hydrolyzed wheat protein, wheat germ oil', duck:'Not sure if it affects me', heart:`No issue, doesn't matter`, ghost:'Ghost it — I avoid gluten', key:'gluten', ghostLabel:'Gluten' },
+  { id:'life-vegan', section:'A little about you', emoji:'🌱', text:'Vegan formulas a must?', sub:'No beeswax, lanolin, carmine — plant-only', duck:'I prefer it but not strict', heart:'Yes — vegan only', ghost:'Not something I track', key:'vegan', heartLabel:'Vegan' },
+  { id:'life-pregnancy', section:'A little about you', emoji:'🤰', text:'Need pregnancy or nursing safe?', sub:'Filters retinoids, high-dose salicylic', duck:'Not right now', heart:'Yes — filter for safety', ghost:'Not relevant to me', key:'pregnancy', heartLabel:'Pregnancy safe' },
+  { id:'budget', section:'Last one', emoji:'💸', text:'How do you feel about splurging?', sub:'Ghost it and it disappears from results', duck:`If it's really worth it`, heart:'No limit — show me everything', ghost:'Ghost anything over $60', key:'over60', ghostLabel:'Over $60' },
 ];
-// ==============================================
-// STATE
-// ==============================================
-let answers = {};       // key -> 'duck' | 'heart' | 'ghost'
+
+let answers = {};
 let currentIdx = 0;
 let history = [];
+let quizStarted = false;
 
 function startQuiz() {
+  quizStarted = true;
   currentIdx = 0;
   answers = {};
   history = [];
+  renderQuizShell();
   showQuestion(0);
+}
+
+function renderQuizShell() {
+  document.getElementById('dhg-quiz-inner').innerHTML = `
+    <div class="q-prog" id="q-prog">
+      <div class="q-prog-track"><div class="q-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
+      <div class="q-prog-labels">
+        <span class="q-prog-label" id="q-prog-label">Question 1 of ${QUESTIONS.length}</span>
+        <span class="q-prog-pct" id="q-prog-pct">0%</span>
+      </div>
+    </div>
+    <div id="q-content" style="flex:1;display:flex;flex-direction:column;"></div>
+  `;
 }
 
 function showQuestion(idx) {
   const q = QUESTIONS[idx];
-  document.getElementById('s-open').classList.remove('active');
-  document.getElementById('s-result').classList.remove('active');
-  document.getElementById('s-question').classList.add('active');
-
-  // Progress
-  document.getElementById('prog').style.display = 'block';
   const pct = Math.round((idx / QUESTIONS.length) * 100);
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('prog-label').textContent = `Question ${idx + 1} of ${QUESTIONS.length}`;
-  document.getElementById('prog-pct').textContent = pct + '%';
-  document.getElementById('hdr-step').textContent = `${idx + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-prog-fill').style.width = pct + '%';
+  document.getElementById('q-prog-label').textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  document.getElementById('q-prog-pct').textContent = pct + '%';
 
-  // Content
-  document.getElementById('q-section').textContent = q.section;
-  document.getElementById('q-emoji').textContent = q.emoji;
-  document.getElementById('q-text').textContent = q.text;
-  document.getElementById('q-sub').textContent = q.sub;
-  document.getElementById('duck-meaning').textContent = q.duck;
-  document.getElementById('heart-meaning').textContent = q.heart;
-  document.getElementById('ghost-meaning').textContent = q.ghost;
-
-  // Clear selection + ghost confirm
-  ['btn-duck','btn-heart','btn-ghost'].forEach(id => {
-    document.getElementById(id).classList.remove('selected');
-  });
-  document.getElementById('ghost-confirm').classList.remove('show');
-
-  // Back button
-  document.getElementById('back-btn').style.visibility = idx === 0 ? 'hidden' : 'visible';
-
-  // Restore previous answer if going back
   const prev = answers[q.key];
-  if (prev) document.getElementById(`btn-${prev}`).classList.add('selected');
+  document.getElementById('q-content').innerHTML = `
+    <div class="q-section">${q.section}</div>
+    <span class="q-emoji">${q.emoji}</span>
+    <div class="q-text">${q.text}</div>
+    <div class="q-sub">${q.sub}</div>
+    <div class="ghost-confirm" id="ghost-confirm">👻 Ghosted — filtered from your results</div>
+    <div class="trio">
+      <button class="trio-btn duck-btn${prev==='duck'?' selected':''}" onclick="answer('duck')">
+        <span class="t-icon">🦆</span><span class="t-name">Duck</span>
+        <span class="t-meaning">${q.duck}</span>
+      </button>
+      <button class="trio-btn heart-btn${prev==='heart'?' selected':''}" onclick="answer('heart')">
+        <span class="t-icon">❤️</span><span class="t-name">Heart</span>
+        <span class="t-meaning">${q.heart}</span>
+      </button>
+      <button class="trio-btn ghost-btn${prev==='ghost'?' selected':''}" onclick="answer('ghost')">
+        <span class="t-icon">👻</span><span class="t-name">Ghost</span>
+        <span class="t-meaning">${q.ghost}</span>
+      </button>
+    </div>
+    <div style="margin-top:auto;padding-top:8px;">
+      <button class="restart-btn" onclick="quizBack()" style="visibility:${idx===0?'hidden':'visible'}">← Back</button>
+    </div>
+  `;
 }
 
 function answer(choice) {
   const q = QUESTIONS[currentIdx];
   answers[q.key] = choice;
-
-  // Visual feedback
-  ['btn-duck','btn-heart','btn-ghost'].forEach(id => document.getElementById(id).classList.remove('selected'));
-  document.getElementById(`btn-${choice}`).classList.add('selected');
-
+  document.querySelectorAll('.trio-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.${choice}-btn`).classList.add('selected');
   if (choice === 'ghost') {
     document.getElementById('ghost-confirm').classList.add('show');
-    setTimeout(() => advance(), 900);
+    setTimeout(advanceQuiz, 900);
   } else {
-    setTimeout(() => advance(), 400);
+    setTimeout(advanceQuiz, 380);
   }
 }
 
-function advance() {
+function advanceQuiz() {
   history.push(currentIdx);
   if (currentIdx < QUESTIONS.length - 1) {
     currentIdx++;
@@ -659,7 +993,7 @@ function advance() {
   }
 }
 
-function goBack() {
+function quizBack() {
   if (history.length === 0) return;
   currentIdx = history.pop();
   showQuestion(currentIdx);
@@ -667,42 +1001,29 @@ function goBack() {
 
 function restart() {
   answers = {}; currentIdx = 0; history = [];
-  document.getElementById('s-result').classList.remove('active');
-  document.getElementById('s-question').classList.remove('active');
-  document.getElementById('prog').style.display = 'none';
-  document.getElementById('hdr-step').textContent = '';
-  document.getElementById('s-open').classList.add('active');
+  showQuestion(0);
+  document.getElementById('q-prog-fill').style.width = '0%';
 }
 
-// ==============================================
-// BUILD RESULT
-// ==============================================
 function buildResult() {
-  document.getElementById('s-question').classList.remove('active');
-  document.getElementById('s-result').classList.add('active');
-  document.getElementById('prog-fill').style.width = '100%';
-  document.getElementById('prog-label').textContent = 'Done! 🎉';
-  document.getElementById('prog-pct').textContent = '100%';
+  document.getElementById('q-prog-fill').style.width = '100%';
+  document.getElementById('q-prog-label').textContent = 'Done! 🎉';
+  document.getElementById('q-prog-pct').textContent = '100%';
 
-  // Collect hearts and ghosts
-  const hearted = [];
-  const ghosted = [];
+  const hearted = [], ghosted = [];
   QUESTIONS.forEach(q => {
     const a = answers[q.key];
     if (a === 'heart' && q.heartLabel) hearted.push(q.heartLabel);
     if (a === 'ghost' && q.ghostLabel) ghosted.push(q.ghostLabel);
   });
 
-  // Figure out primary category
   const cats = ['skincare','makeup','body'].filter(c => answers[c] === 'heart');
   const primaryCat = cats[0] || (answers['skincare'] !== 'ghost' ? 'skincare' : 'body');
-
-  // Build title & icon
-  let icon = '🎯', title = '', desc = '';
   const concerns = ['acne','antiaging','brightening','sensitivity','dryness'].filter(c => answers[c] === 'heart');
 
+  let icon = '🎯', title = '';
   if (primaryCat === 'skincare') {
-    if (concerns.length === 0) { icon='🌸'; title='Skincare Explorer'; }
+    if (!concerns.length) { icon='🌸'; title='Skincare Explorer'; }
     else if (concerns.includes('acne') && concerns.includes('brightening')) { icon='⚡'; title='Acne + Brightening Fix'; }
     else if (concerns.includes('acne')) { icon='🎯'; title='Acne Fighter'; }
     else if (concerns.includes('antiaging')) { icon='⏳'; title='Anti-Aging Explorer'; }
@@ -710,72 +1031,54 @@ function buildResult() {
     else if (concerns.includes('sensitivity')) { icon='🌿'; title='Calm & Repair'; }
     else if (concerns.includes('dryness')) { icon='💧'; title='Hydration Station'; }
     else { icon='🧴'; title='Skincare Explorer'; }
-  } else if (primaryCat === 'makeup') {
-    icon='💄'; title='Clean Makeup Explorer';
-  } else {
-    icon='🛁'; title='Body Care Explorer';
-  }
+  } else if (primaryCat === 'makeup') { icon='💄'; title='Clean Makeup Explorer'; }
+  else { icon='🛁'; title='Body Care Explorer'; }
 
-  // Seek ingredients
-  const seekMap = {
-    acne: ['Salicylic Acid','Niacinamide','Zinc','Azelaic Acid'],
-    antiaging: ['Peptides','Bakuchiol','Vitamin C','Coenzyme Q10'],
-    brightening: ['Vitamin C','Alpha Arbutin','Tranexamic Acid','Niacinamide'],
-    sensitivity: ['Ceramides','Centella Asiatica','Panthenol','Oat Extract'],
-    dryness: ['Hyaluronic Acid','Glycerin','Squalane','Ceramides'],
-  };
-  let seek = [];
-  concerns.forEach(c => { if (seekMap[c]) seek.push(...seekMap[c]); });
-  if (seek.length === 0) seek = ['Ceramides','Niacinamide','Hyaluronic Acid','Squalane'];
+  const seekMap = { acne:['Salicylic Acid','Niacinamide','Zinc','Azelaic Acid'], antiaging:['Peptides','Bakuchiol','Vitamin C','Coenzyme Q10'], brightening:['Vitamin C','Alpha Arbutin','Tranexamic Acid','Niacinamide'], sensitivity:['Ceramides','Centella Asiatica','Panthenol','Oat Extract'], dryness:['Hyaluronic Acid','Glycerin','Squalane','Ceramides'] };
+  let seek = []; concerns.forEach(c => { if (seekMap[c]) seek.push(...seekMap[c]); });
+  if (!seek.length) seek = ['Ceramides','Niacinamide','Hyaluronic Acid','Squalane'];
   if (answers.vegan === 'heart') seek.push('Plant-based Actives');
-  seek = [...new Set(seek)].slice(0, 5);
+  seek = [...new Set(seek)].slice(0,5);
 
-  // Avoid = ghosted ingredients
-  const avoidMap = {
-    fragrance: 'Synthetic Fragrance',
-    retinol: 'Retinol/Retinoids',
-    essentialoils: 'Essential Oils',
-    gluten: 'Gluten Derivatives',
-    silicones: 'Silicones',
-    over60: 'Products over $60',
-  };
-  const avoid = ghosted.map(g => avoidMap[Object.keys(avoidMap).find(k => avoidMap[k] === g || g === avoidMap[k])] || g).filter(Boolean);
+  const avoidMap = { fragrance:'Synthetic Fragrance', retinol:'Retinol/Retinoids', essentialoils:'Essential Oils', gluten:'Gluten Derivatives', silicones:'Silicones', over60:'Products over $60' };
+  const avoid = ghosted.map(g => Object.values(avoidMap).find(v => v === g) || g).filter(Boolean);
 
-  // Explore
-  const exploreMap = {
-    skincare: { acne:['BHA Serums','Niacinamide Serums','Clay Masks','Spot Treatments'], antiaging:['Peptide Moisturizers','Bakuchiol Serums','Firming Treatments'], brightening:['Vitamin C Serums','Dark Spot Correctors','Brightening Toners'], sensitivity:['Barrier Repair Creams','Calming Serums','Gentle Cleansers'], dryness:['Hydrating Serums','Rich Moisturizers','Face Oils'], default:['Clean Serums','Barrier Moisturizers','Gentle SPF'] },
-    makeup: { default:['Clean Foundations','Tinted Moisturizers','Clean Lip Products','Natural Mascaras'] },
-    body: { default:['Body Moisturizers','Body SPF','Clean Body Washes','Body Treatments'] },
-  };
-  const catExplore = exploreMap[primaryCat] || exploreMap.skincare;
-  let explore = [];
-  concerns.forEach(c => { if (catExplore[c]) explore.push(...catExplore[c]); });
-  if (explore.length === 0) explore = [...(catExplore.default || [])];
-  explore = [...new Set(explore)].slice(0, 4);
+  const exploreMap = { skincare:{ acne:['BHA Serums','Niacinamide Serums','Clay Masks','Spot Treatments'], antiaging:['Peptide Moisturizers','Bakuchiol Serums','Firming Treatments'], brightening:['Vitamin C Serums','Dark Spot Correctors','Brightening Toners'], sensitivity:['Barrier Repair Creams','Calming Serums','Gentle Cleansers'], dryness:['Hydrating Serums','Rich Moisturizers','Face Oils'], default:['Clean Serums','Barrier Moisturizers','Gentle SPF'] }, makeup:{ default:['Clean Foundations','Tinted Moisturizers','Clean Lip Products','Natural Mascaras'] }, body:{ default:['Body Moisturizers','Body SPF','Clean Body Washes','Body Treatments'] } };
+  const catEx = exploreMap[primaryCat] || exploreMap.skincare;
+  let explore = []; concerns.forEach(c => { if (catEx[c]) explore.push(...catEx[c]); });
+  if (!explore.length) explore = [...(catEx.default||[])];
+  explore = [...new Set(explore)].slice(0,4);
 
-  desc = `Based on your 🦆❤️👻 answers -- filtered to what works for you.`;
-  if (answers.pregnancy === 'heart') desc = 'Pregnancy-safe formulas, filtered and sorted by 9S score.';
+  let desc = 'Based on your 🦆❤️👻 answers — filtered to what works for you.';
+  if (answers.pregnancy === 'heart') desc = 'Pregnancy-safe formulas, filtered and sorted.';
   if (answers.vegan === 'heart') desc = 'Vegan-friendly picks, clean ingredients only.';
 
-  // Inject
-  document.getElementById('r-icon').textContent = icon;
-  document.getElementById('r-title').textContent = title;
-  document.getElementById('r-desc').textContent = desc;
-  document.getElementById('r-seek').innerHTML = seek.map(t => `<span class="rtag seek">${t}</span>`).join('');
-  document.getElementById('r-avoid').innerHTML = avoid.length ? avoid.map(t => `<span class="rtag avoid">${t}</span>`).join('') : '<span style="font-size:.72rem;color:var(--gray)">Nothing ghosted yet</span>';
-  document.getElementById('r-explore').innerHTML = explore.map(t => `<span class="rtag explore">${t}</span>`).join('');
-
-  // DHG Summary
-  document.getElementById('sum-hearts').innerHTML = hearted.length
-    ? hearted.map(t => `<span class="dhg-sum-tag heart-tag">${t}</span>`).join('')
-    : '<span style="font-size:.65rem;color:var(--gray)">None yet</span>';
-  document.getElementById('sum-ghosts').innerHTML = ghosted.length
-    ? ghosted.map(t => `<span class="dhg-sum-tag ghost-tag">${t}</span>`).join('')
-    : '<span style="font-size:.65rem;color:var(--gray)">Nothing ghosted</span>';
-
-  // CTA
   const budgetPrefix = answers.over60 === 'ghost' ? 'Under $60 ' : '';
-  document.getElementById('r-cta').textContent = `${budgetPrefix}Explore Products ->`;
+  const heartTags = hearted.length ? hearted.map(t=>`<span class="dhg-sum-tag heart-tag">${t}</span>`).join('') : '<span style="font-size:.62rem;color:var(--gray)">None yet</span>';
+  const ghostTags = ghosted.length ? ghosted.map(t=>`<span class="dhg-sum-tag ghost-tag">${t}</span>`).join('') : '<span style="font-size:.62rem;color:var(--gray)">Nothing ghosted</span>';
+
+  document.getElementById('q-content').innerHTML = `
+    <div class="result">
+      <div class="r-hero">
+        <span class="r-icon">${icon}</span>
+        <div class="r-eyebrow">Your clean beauty fix</div>
+        <div class="r-title">${title}</div>
+        <div class="r-desc">${desc}</div>
+      </div>
+      <div class="dhg-summary">
+        <div class="dhg-sum-col"><span class="dhg-sum-label hearts">❤️ Your Stash</span><div class="dhg-sum-items">${heartTags}</div></div>
+        <div class="dhg-sum-col"><span class="dhg-sum-label ghosts">👻 You Banished</span><div class="dhg-sum-items">${ghostTags}</div></div>
+      </div>
+      <div class="r-div"></div>
+      <div class="r-sec"><div class="r-sec-label seek">🌿 Ingredients to seek</div><div class="r-tags">${seek.map(t=>`<span class="rtag seek">${t}</span>`).join('')}</div></div>
+      <div class="r-sec"><div class="r-sec-label avoid">🚫 Filtered out</div><div class="r-tags">${avoid.length?avoid.map(t=>`<span class="rtag avoid">${t}</span>`).join(''):'<span style="font-size:.7rem;color:var(--gray)">Nothing ghosted yet</span>'}</div></div>
+      <div class="r-sec"><div class="r-sec-label explore">🐇 What to explore</div><div class="r-tags">${explore.map(t=>`<span class="rtag explore">${t}</span>`).join('')}</div></div>
+      <div class="r-div"></div>
+      <button class="r-cta">${budgetPrefix}Explore Products →</button>
+      <button class="restart-btn" onclick="restart()">Start over ↩</button>
+      <div style="text-align:center;margin-top:10px;font-size:.72rem;color:var(--gray);letter-spacing:.04em;">Now go play. 🦆❤️👻</div>
+    </div>
+  `;
 }
 </script>
 </body>
