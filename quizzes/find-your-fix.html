@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duck Heart Ghost — Find My Fix</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gradient: linear-gradient(90deg,#ff8c2a,#ff5533,#ff4466,#ff4d8a,#d946ef,#9955ff,#3399ff,#66d4ff,#44ddee);
+  --pink:#ff4d8a; --purple:#a855f7; --teal:#00d4aa;
+  --duck:#ffaa00; --heart:#ff4d8a; --ghost:#a855f7;
+  --charcoal:#1e1e1e; --gray:#6b7280;
+  --border:#e5e7eb; --light:#f9fafb; --red:#dc2626;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #111;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+/* ── CARD ── */
+.card {
+  width: 100%; max-width: 390px;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  display: flex; flex-direction: column;
+}
+.rainbow { height: 6px; background: var(--gradient); }
+.hdr {
+  background: var(--charcoal);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hdr-brand { font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.hdr-step { font-size: .62rem; font-weight: 700; color: rgba(255,255,255,.25); }
+
+/* Progress */
+.prog {
+  background: #fff;
+  border-left: 2px solid #000; border-right: 2px solid #000;
+  padding: 10px 18px 0;
+}
+.prog-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--gradient); border-radius: 2px; transition: width .5s cubic-bezier(.4,0,.2,1); }
+.prog-labels { display: flex; justify-content: space-between; margin-top: 5px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.prog-label { font-size: .62rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; }
+.prog-pct { font-size: .62rem; font-weight: 700; color: var(--pink); }
+
+/* Body */
+.body {
+  background: #fff;
+  border-left: 2px solid #000; border-right: 2px solid #000;
+  padding: 24px 20px 20px;
+  display: flex; flex-direction: column;
+  min-height: 420px;
+}
+
+/* Screens */
+.screen { display: none; flex-direction: column; flex: 1; }
+.screen.active { display: flex; }
+
+/* ── OPENING SCREEN ── */
+.opener {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; text-align: center;
+}
+.opener-rabbit {
+  font-size: 3.5rem; display: block; margin-bottom: 12px;
+  animation: bob 2.5s ease-in-out infinite;
+}
+@keyframes bob { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-8px) rotate(3deg)} }
+.opener-title {
+  font-size: 1.6rem; font-weight: 900; letter-spacing: -.03em;
+  line-height: 1.1; color: var(--charcoal); margin-bottom: 8px;
+}
+.opener-title em {
+  font-style: normal;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.opener-sub { font-size: .82rem; color: var(--gray); line-height: 1.6; margin-bottom: 28px; }
+
+/* Mechanic preview */
+.mechanic {
+  display: flex; gap: 8px; margin-bottom: 24px;
+  background: var(--light); border-radius: 14px;
+  padding: 14px 12px; border: 1.5px solid var(--border);
+}
+.mech-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px; border-radius: 12px; border: 2px solid;
+}
+.mech-btn.duck { border-color: var(--duck); background: #fffbf0; }
+.mech-btn.heart { border-color: var(--heart); background: #fff0f5; }
+.mech-btn.ghost { border-color: var(--ghost); background: #faf5ff; }
+.mech-icon { font-size: 1.6rem; }
+.mech-name { font-size: .65rem; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+.mech-btn.duck .mech-name { color: var(--duck); }
+.mech-btn.heart .mech-name { color: var(--heart); }
+.mech-btn.ghost .mech-name { color: var(--ghost); }
+.mech-meaning { font-size: .6rem; color: var(--gray); font-weight: 500; text-align: center; line-height: 1.3; }
+
+.start-btn {
+  width: 100%; padding: 13px; border-radius: 14px; border: 0;
+  background: var(--gradient); color: #fff;
+  font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1rem;
+  cursor: pointer; letter-spacing: -.01em;
+  box-shadow: 0 4px 16px rgba(255,77,138,.35);
+  transition: transform .15s, box-shadow .15s;
+}
+.start-btn:hover { transform: scale(1.02); box-shadow: 0 6px 24px rgba(255,77,138,.45); }
+.start-btn:active { transform: scale(.98); }
+
+/* ── DHG QUESTION SCREEN ── */
+.q-screen { flex: 1; display: flex; flex-direction: column; }
+.q-section { font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gray); margin-bottom: 14px; }
+.q-emoji { font-size: 2.2rem; display: block; margin-bottom: 10px; }
+.q-text { font-size: 1.1rem; font-weight: 900; color: var(--charcoal); line-height: 1.3; margin-bottom: 4px; letter-spacing: -.02em; }
+.q-sub { font-size: .76rem; color: var(--gray); line-height: 1.5; margin-bottom: 24px; }
+
+/* THE THREE BUTTONS — the whole point */
+.trio { display: flex; gap: 8px; margin-bottom: 14px; }
+.trio-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 16px 8px 14px; border-radius: 16px;
+  border: 2.5px solid var(--border); background: #fff;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+  position: relative; overflow: hidden;
+}
+.trio-btn::before {
+  content: ''; position: absolute; inset: 0; opacity: 0;
+  transition: opacity .2s;
+}
+.trio-btn:hover { transform: translateY(-4px); }
+.trio-btn:active { transform: translateY(0) scale(.97); }
+
+.trio-btn.duck-btn { border-color: #fde68a; }
+.trio-btn.duck-btn::before { background: linear-gradient(135deg, #fffbf0, #fff8e0); }
+.trio-btn.duck-btn:hover { border-color: var(--duck); box-shadow: 0 8px 24px rgba(255,170,0,.2); }
+.trio-btn.duck-btn:hover::before { opacity: 1; }
+.trio-btn.duck-btn.selected { border-color: var(--duck); background: var(--duck); box-shadow: 0 0 0 4px rgba(255,170,0,.2); }
+
+.trio-btn.heart-btn { border-color: #fecdd3; }
+.trio-btn.heart-btn::before { background: linear-gradient(135deg, #fff0f5, #ffe4ee); }
+.trio-btn.heart-btn:hover { border-color: var(--heart); box-shadow: 0 8px 24px rgba(255,77,138,.2); }
+.trio-btn.heart-btn:hover::before { opacity: 1; }
+.trio-btn.heart-btn.selected { border-color: var(--heart); background: var(--heart); box-shadow: 0 0 0 4px rgba(255,77,138,.2); }
+
+.trio-btn.ghost-btn { border-color: #e9d5ff; }
+.trio-btn.ghost-btn::before { background: linear-gradient(135deg, #faf5ff, #f3e8ff); }
+.trio-btn.ghost-btn:hover { border-color: var(--ghost); box-shadow: 0 8px 24px rgba(168,85,247,.2); }
+.trio-btn.ghost-btn:hover::before { opacity: 1; }
+.trio-btn.ghost-btn.selected { border-color: var(--ghost); background: var(--ghost); box-shadow: 0 0 0 4px rgba(168,85,247,.2); }
+
+.t-icon { font-size: 2rem; position: relative; z-index: 1; transition: transform .2s; }
+.trio-btn:hover .t-icon { transform: scale(1.2); }
+.t-name { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; position: relative; z-index: 1; transition: color .2s; }
+.trio-btn.duck-btn .t-name { color: var(--duck); }
+.trio-btn.heart-btn .t-name { color: var(--heart); }
+.trio-btn.ghost-btn .t-name { color: var(--ghost); }
+.trio-btn.selected .t-name { color: #fff; }
+.t-meaning { font-size: .6rem; color: var(--gray); font-weight: 500; text-align: center; line-height: 1.3; position: relative; z-index: 1; transition: color .2s; }
+.trio-btn.selected .t-meaning { color: rgba(255,255,255,.8); }
+
+/* Ghost confirmation flash */
+.ghost-confirm {
+  background: #faf5ff; border: 1.5px solid var(--ghost);
+  border-radius: 10px; padding: 8px 14px;
+  font-size: .76rem; font-weight: 700; color: var(--ghost);
+  text-align: center; margin-bottom: 12px;
+  display: none; animation: popin .3s ease;
+}
+@keyframes popin { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+.ghost-confirm.show { display: block; }
+
+/* Back nav */
+.q-nav { margin-top: auto; padding-top: 8px; }
+.back-btn {
+  background: none; border: none; font-family: 'Outfit', sans-serif;
+  font-size: .75rem; font-weight: 700; color: var(--gray);
+  cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;
+}
+.back-btn:hover { color: var(--charcoal); }
+
+/* ── RESULT SCREEN ── */
+.result { display: flex; flex-direction: column; gap: 14px; }
+.r-hero { text-align: center; }
+.r-icon { font-size: 3rem; display: block; margin-bottom: 8px; animation: popin .4s cubic-bezier(.17,.67,.35,1.5); }
+.r-eyebrow { font-size: .58rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
+.r-title { font-size: 1.4rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; color: var(--charcoal); }
+.r-desc { font-size: .78rem; color: var(--gray); line-height: 1.6; margin-top: 6px; }
+.r-div { height: 3px; background: #000; border-radius: 2px; }
+.r-sec { display: flex; flex-direction: column; gap: 6px; }
+.r-sec-label { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.r-sec-label.seek { color: var(--teal); }
+.r-sec-label.avoid { color: var(--red); }
+.r-sec-label.explore { color: var(--purple); }
+.r-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.rtag { font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 9999px; border: 1.5px solid; }
+.rtag.seek { color: var(--teal); border-color: var(--teal); }
+.rtag.avoid { color: var(--red); border-color: var(--red); }
+.rtag.explore { color: var(--purple); border-color: var(--purple); }
+
+/* Hearts & Ghosts summary */
+.dhg-summary {
+  display: flex; gap: 8px;
+  background: var(--light); border-radius: 12px;
+  padding: 12px; border: 1.5px solid var(--border);
+}
+.dhg-sum-col { flex: 1; }
+.dhg-sum-label { font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; display: block; }
+.dhg-sum-label.hearts { color: var(--heart); }
+.dhg-sum-label.ghosts { color: var(--ghost); }
+.dhg-sum-items { display: flex; flex-wrap: wrap; gap: 3px; }
+.dhg-sum-tag { font-size: .65rem; font-weight: 600; padding: 2px 7px; border-radius: 9999px; }
+.dhg-sum-tag.heart-tag { background: #fff0f5; color: var(--heart); border: 1.5px solid var(--heart); }
+.dhg-sum-tag.ghost-tag { background: #faf5ff; color: var(--ghost); border: 1.5px solid var(--ghost); }
+.dhg-sum-tag.duck-tag { background: var(--light); color: var(--gray); border: 1.5px solid var(--border); }
+
+.r-cta {
+  width: 100%; padding: 13px; border-radius: 14px; border: 0;
+  background: var(--gradient); color: #fff;
+  font-family: 'Outfit', sans-serif; font-weight: 900; font-size: .95rem;
+  cursor: pointer; box-shadow: 0 4px 16px rgba(255,77,138,.3);
+  transition: transform .15s;
+}
+.r-cta:hover { transform: scale(1.01); }
+.restart-btn {
+  background: none; border: none; font-family: 'Outfit', sans-serif;
+  font-size: .72rem; color: var(--gray); cursor: pointer;
+  text-decoration: underline; text-align: center; padding: 2px;
+}
+.restart-btn:hover { color: var(--charcoal); }
+
+/* Footer */
+.ftr {
+  background: var(--charcoal);
+  border: 2px solid #000; border-top: 0;
+  border-radius: 0 0 20px 20px;
+  padding: 8px 18px; text-align: center;
+}
+.ftr span { font-size: .58rem; color: rgba(255,255,255,.2); font-weight: 600; letter-spacing: .06em; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="rainbow"></div>
+  <div class="hdr">
+    <span class="hdr-brand">🦆❤️👻 Duck Heart Ghost</span>
+    <span class="hdr-step" id="hdr-step"></span>
+  </div>
+
+  <div class="prog" id="prog" style="display:none;">
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-labels">
+      <span class="prog-label" id="prog-label">Question 1</span>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- ══ OPENER ══ -->
+    <div class="screen active" id="s-open">
+      <div class="opener">
+        <span class="opener-rabbit">🐇</span>
+        <div class="opener-title">Find your<br><em>clean fix.</em></div>
+        <div class="opener-sub">Answer with 🦆❤️👻 and we'll figure out where to point you. No shopping cart. Just curiosity.</div>
+
+        <div class="mechanic">
+          <div class="mech-btn duck">
+            <span class="mech-icon">🦆</span>
+            <span class="mech-name">Duck</span>
+            <span class="mech-meaning">Maybe / not sure yet</span>
+          </div>
+          <div class="mech-btn heart">
+            <span class="mech-icon">❤️</span>
+            <span class="mech-name">Heart</span>
+            <span class="mech-meaning">Yes — this is me</span>
+          </div>
+          <div class="mech-btn ghost">
+            <span class="mech-icon">👻</span>
+            <span class="mech-name">Ghost</span>
+            <span class="mech-meaning">No — filter it out</span>
+          </div>
+        </div>
+
+        <button class="start-btn" onclick="startQuiz()">I'm curious 🐇</button>
+      </div>
+    </div>
+
+    <!-- Questions are rendered dynamically -->
+    <div class="screen" id="s-question">
+      <div class="q-screen">
+        <div class="q-section" id="q-section"></div>
+        <span class="q-emoji" id="q-emoji"></span>
+        <div class="q-text" id="q-text"></div>
+        <div class="q-sub" id="q-sub"></div>
+        <div class="ghost-confirm" id="ghost-confirm">👻 Ghosted — filtered from your results forever</div>
+        <div class="trio">
+          <button class="trio-btn duck-btn" id="btn-duck" onclick="answer('duck')">
+            <span class="t-icon">🦆</span>
+            <span class="t-name">Duck</span>
+            <span class="t-meaning" id="duck-meaning">Maybe</span>
+          </button>
+          <button class="trio-btn heart-btn" id="btn-heart" onclick="answer('heart')">
+            <span class="t-icon">❤️</span>
+            <span class="t-name">Heart</span>
+            <span class="t-meaning" id="heart-meaning">Yes!</span>
+          </button>
+          <button class="trio-btn ghost-btn" id="btn-ghost" onclick="answer('ghost')">
+            <span class="t-icon">👻</span>
+            <span class="t-name">Ghost</span>
+            <span class="t-meaning" id="ghost-meaning">Nope</span>
+          </button>
+        </div>
+        <div class="q-nav">
+          <button class="back-btn" id="back-btn" onclick="goBack()">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RESULT ══ -->
+    <div class="screen" id="s-result">
+      <div class="result">
+        <div class="r-hero">
+          <span class="r-icon" id="r-icon">🎯</span>
+          <div class="r-eyebrow">Your clean beauty fix</div>
+          <div class="r-title" id="r-title"></div>
+          <div class="r-desc" id="r-desc"></div>
+        </div>
+
+        <div class="dhg-summary">
+          <div class="dhg-sum-col">
+            <span class="dhg-sum-label hearts">❤️ Hearted</span>
+            <div class="dhg-sum-items" id="sum-hearts"></div>
+          </div>
+          <div class="dhg-sum-col">
+            <span class="dhg-sum-label ghosts">👻 Ghosted</span>
+            <div class="dhg-sum-items" id="sum-ghosts"></div>
+          </div>
+        </div>
+
+        <div class="r-div"></div>
+        <div class="r-sec">
+          <div class="r-sec-label seek">🌿 Ingredients to seek</div>
+          <div class="r-tags" id="r-seek"></div>
+        </div>
+        <div class="r-sec">
+          <div class="r-sec-label avoid">🚫 Filtered from your results</div>
+          <div class="r-tags" id="r-avoid"></div>
+        </div>
+        <div class="r-sec">
+          <div class="r-sec-label explore">🐇 What to explore</div>
+          <div class="r-tags" id="r-explore"></div>
+        </div>
+        <div class="r-div"></div>
+        <button class="r-cta" id="r-cta">Explore Products →</button>
+        <button class="restart-btn" onclick="restart()">Start over ↩</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr"><span>🦆❤️👻 · Clean beauty, sorted. 🐇</span></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// QUESTION BANK
+// Each question: { id, section, emoji, text, sub, duck, heart, ghost, key, ghostLabel, heartLabel }
+// key = what gets saved to profile
+// ══════════════════════════════════════════════
+const QUESTIONS = [
+
+  // ── WHAT CAUGHT YOUR EYE ──
+  {
+    id: 'cat-skincare',
+    section: "What's pulling you down the rabbit hole?",
+    emoji: '🧴',
+    text: 'Curious about skincare?',
+    sub: 'Serums, moisturizers, cleansers, SPF — the whole world',
+    duck:  'Could be interesting',
+    heart: 'Yes — rabbit hole me',
+    ghost: 'Not what I came for',
+    key: 'skincare',
+    heartLabel: 'Skincare',
+  },
+  {
+    id: 'cat-makeup',
+    section: "What's pulling you down the rabbit hole?",
+    emoji: '💄',
+    text: 'Into clean makeup right now?',
+    sub: 'Foundation, lip, eye, blush, primer...',
+    duck:  'Sometimes, yeah',
+    heart: 'Yes — show me everything',
+    ghost: 'Not really my thing',
+    key: 'makeup',
+    heartLabel: 'Makeup',
+  },
+  {
+    id: 'cat-body',
+    section: "What's pulling you down the rabbit hole?",
+    emoji: '🛁',
+    text: 'What about body?',
+    sub: 'Lotions, washes, deodorant, body SPF, treatments...',
+    duck:  'Sometimes',
+    heart: 'Yes — body care matters',
+    ghost: 'Not this time',
+    key: 'body',
+    heartLabel: 'Body',
+  },
+
+  // ── SKIN STORY ──
+  {
+    id: 'concern-acne',
+    section: 'Tell me about your skin',
+    emoji: '🎯',
+    text: 'Are breakouts part of your story?',
+    sub: 'Salicylic acid, niacinamide, zinc — this is their territory',
+    duck:  'Here and there',
+    heart: 'Ugh yes — always',
+    ghost: 'Nope, not my skin',
+    key: 'acne',
+    heartLabel: 'Acne-prone',
+  },
+  {
+    id: 'concern-aging',
+    section: 'Tell me about your skin',
+    emoji: '⏳',
+    text: 'Thinking about the long game?',
+    sub: 'Peptides, bakuchiol, firming — playing the long game',
+    duck:  'Starting to think about it',
+    heart: 'Yes — it's on my mind',
+    ghost: 'Not where I'm at',
+    key: 'antiaging',
+    heartLabel: 'Anti-aging',
+  },
+  {
+    id: 'concern-brightening',
+    section: 'Tell me about your skin',
+    emoji: '✨',
+    text: 'Chasing glow or fighting dark spots?',
+    sub: 'Vitamin C, alpha arbutin, tranexamic acid territory',
+    duck:  'A little uneven',
+    heart: 'Yes — this is the goal',
+    ghost: 'Not really a concern',
+    key: 'brightening',
+    heartLabel: 'Brightening',
+  },
+  {
+    id: 'concern-sensitivity',
+    section: 'Tell me about your skin',
+    emoji: '🌹',
+    text: 'Does your skin protest a lot?',
+    sub: 'Redness, reactivity, rosacea — ceramides and centella are your friends',
+    duck:  'Sometimes it complains',
+    heart: 'Yes — very reactive',
+    ghost: 'Skin is pretty chill',
+    key: 'sensitivity',
+    heartLabel: 'Sensitive skin',
+  },
+  {
+    id: 'concern-dryness',
+    section: 'Tell me about your skin',
+    emoji: '💧',
+    text: 'Dry, tight, thirsty?',
+    sub: 'Hyaluronic acid, glycerin, squalane — hydration first',
+    duck:  'Seasonal dry patches',
+    heart: 'Yes — chronically parched',
+    ghost: 'Oily — opposite problem',
+    key: 'dryness',
+    heartLabel: 'Dry skin',
+    ghostLabel: 'Oily skin',
+  },
+
+  // ── FILTERS ──
+  {
+    id: 'avoid-fragrance',
+    section: "Let's build your ghost list",
+    emoji: '🌸',
+    text: 'Synthetic fragrance — friend or foe?',
+    sub: 'Shows up as "fragrance" or "parfum" — polarizing ingredient',
+    duck:  'Depends on the product',
+    heart: 'Love a scented product',
+    ghost: 'Ghost it — always avoid',
+    key: 'fragrance',
+    ghostLabel: 'Fragrance',
+  },
+  {
+    id: 'avoid-retinol',
+    section: "Let's build your ghost list",
+    emoji: '🧪',
+    text: 'Retinol — in or out?',
+    sub: 'Powerful but not for everyone — pregnancy, sensitivity, preference',
+    duck:  'Curious but cautious',
+    heart: 'On the retinol train',
+    ghost: 'Ghost it — not for me',
+    key: 'retinol',
+    ghostLabel: 'Retinol',
+  },
+  {
+    id: 'avoid-essentialoils',
+    section: "Let's build your ghost list",
+    emoji: '🌿',
+    text: 'Essential oils in formulas?',
+    sub: 'Tea tree, lavender, citrus — beloved by some, irritating to others',
+    duck:  'Some yes, some no',
+    heart: 'I actually love them',
+    ghost: 'Ghost them — skin hates it',
+    key: 'essentialoils',
+    ghostLabel: 'Essential oils',
+  },
+  {
+    id: 'avoid-silicones',
+    section: "Let's build your ghost list",
+    emoji: '💎',
+    text: 'Silicones — slip or skip?',
+    sub: 'Dimethicone, cyclomethicone — smoothing agents, controversial in clean beauty',
+    duck:  'Don't really care',
+    heart: 'Love the slip — keep them',
+    ghost: 'Ghost them — clean only',
+    key: 'silicones',
+    ghostLabel: 'Silicones',
+  },
+  {
+    id: 'avoid-gluten',
+    section: "Let's build your ghost list",
+    emoji: '🌾',
+    text: 'Gluten-derived ingredients?',
+    sub: 'Hydrolyzed wheat protein, wheat germ oil — matters to some',
+    duck:  'Not sure if it affects me',
+    heart: 'No issue, doesn't matter',
+    ghost: 'Ghost it — I avoid gluten',
+    key: 'gluten',
+    ghostLabel: 'Gluten',
+  },
+
+  // ── LIFESTYLE ──
+  {
+    id: 'life-vegan',
+    section: 'A little about you',
+    emoji: '🌱',
+    text: 'Vegan formulas a must?',
+    sub: 'No beeswax, lanolin, collagen, carmine — 100% plant-derived',
+    duck:  'I prefer it but not strict',
+    heart: 'Yes — vegan only',
+    ghost: 'Not something I track',
+    key: 'vegan',
+    heartLabel: 'Vegan',
+  },
+  {
+    id: 'life-pregnancy',
+    section: 'A little about you',
+    emoji: '🤰',
+    text: 'Need pregnancy or nursing safe?',
+    sub: 'Filters out retinoids, high-dose salicylic, certain essential oils',
+    duck:  'Not right now',
+    heart: 'Yes — filter for safety',
+    ghost: 'Not relevant to me',
+    key: 'pregnancy',
+    heartLabel: 'Pregnancy safe',
+  },
+
+  // ── BUDGET ──
+  {
+    id: 'budget',
+    section: 'Last one',
+    emoji: '💸',
+    text: 'How do you feel about splurging?',
+    sub: 'Ghost products over $60 and they disappear from your results entirely',
+    duck:  'If it's really worth it',
+    heart: 'No limit — show me everything',
+    ghost: 'Ghost anything over $60',
+    key: 'over60',
+    ghostLabel: 'Over $60',
+  },
+];
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let answers = {};       // key → 'duck' | 'heart' | 'ghost'
+let currentIdx = 0;
+let history = [];
+
+function startQuiz() {
+  currentIdx = 0;
+  answers = {};
+  history = [];
+  showQuestion(0);
+}
+
+function showQuestion(idx) {
+  const q = QUESTIONS[idx];
+  document.getElementById('s-open').classList.remove('active');
+  document.getElementById('s-result').classList.remove('active');
+  document.getElementById('s-question').classList.add('active');
+
+  // Progress
+  document.getElementById('prog').style.display = 'block';
+  const pct = Math.round((idx / QUESTIONS.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `Question ${idx + 1} of ${QUESTIONS.length}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('hdr-step').textContent = `${idx + 1} / ${QUESTIONS.length}`;
+
+  // Content
+  document.getElementById('q-section').textContent = q.section;
+  document.getElementById('q-emoji').textContent = q.emoji;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-sub').textContent = q.sub;
+  document.getElementById('duck-meaning').textContent = q.duck;
+  document.getElementById('heart-meaning').textContent = q.heart;
+  document.getElementById('ghost-meaning').textContent = q.ghost;
+
+  // Clear selection + ghost confirm
+  ['btn-duck','btn-heart','btn-ghost'].forEach(id => {
+    document.getElementById(id).classList.remove('selected');
+  });
+  document.getElementById('ghost-confirm').classList.remove('show');
+
+  // Back button
+  document.getElementById('back-btn').style.visibility = idx === 0 ? 'hidden' : 'visible';
+
+  // Restore previous answer if going back
+  const prev = answers[q.key];
+  if (prev) document.getElementById(`btn-${prev}`).classList.add('selected');
+}
+
+function answer(choice) {
+  const q = QUESTIONS[currentIdx];
+  answers[q.key] = choice;
+
+  // Visual feedback
+  ['btn-duck','btn-heart','btn-ghost'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  document.getElementById(`btn-${choice}`).classList.add('selected');
+
+  if (choice === 'ghost') {
+    document.getElementById('ghost-confirm').classList.add('show');
+    setTimeout(() => advance(), 900);
+  } else {
+    setTimeout(() => advance(), 400);
+  }
+}
+
+function advance() {
+  history.push(currentIdx);
+  if (currentIdx < QUESTIONS.length - 1) {
+    currentIdx++;
+    showQuestion(currentIdx);
+  } else {
+    buildResult();
+  }
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  currentIdx = history.pop();
+  showQuestion(currentIdx);
+}
+
+function restart() {
+  answers = {}; currentIdx = 0; history = [];
+  document.getElementById('s-result').classList.remove('active');
+  document.getElementById('s-question').classList.remove('active');
+  document.getElementById('prog').style.display = 'none';
+  document.getElementById('hdr-step').textContent = '';
+  document.getElementById('s-open').classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// BUILD RESULT
+// ══════════════════════════════════════════════
+function buildResult() {
+  document.getElementById('s-question').classList.remove('active');
+  document.getElementById('s-result').classList.add('active');
+  document.getElementById('prog-fill').style.width = '100%';
+  document.getElementById('prog-label').textContent = 'Done! 🎉';
+  document.getElementById('prog-pct').textContent = '100%';
+
+  // Collect hearts and ghosts
+  const hearted = [];
+  const ghosted = [];
+  QUESTIONS.forEach(q => {
+    const a = answers[q.key];
+    if (a === 'heart' && q.heartLabel) hearted.push(q.heartLabel);
+    if (a === 'ghost' && q.ghostLabel) ghosted.push(q.ghostLabel);
+  });
+
+  // Figure out primary category
+  const cats = ['skincare','makeup','body'].filter(c => answers[c] === 'heart');
+  const primaryCat = cats[0] || (answers['skincare'] !== 'ghost' ? 'skincare' : 'body');
+
+  // Build title & icon
+  let icon = '🎯', title = '', desc = '';
+  const concerns = ['acne','antiaging','brightening','sensitivity','dryness'].filter(c => answers[c] === 'heart');
+
+  if (primaryCat === 'skincare') {
+    if (concerns.length === 0) { icon='🌸'; title='Skincare Explorer'; }
+    else if (concerns.includes('acne') && concerns.includes('brightening')) { icon='⚡'; title='Acne + Brightening Fix'; }
+    else if (concerns.includes('acne')) { icon='🎯'; title='Acne Fighter'; }
+    else if (concerns.includes('antiaging')) { icon='⏳'; title='Anti-Aging Explorer'; }
+    else if (concerns.includes('brightening')) { icon='✨'; title='Brightening Explorer'; }
+    else if (concerns.includes('sensitivity')) { icon='🌿'; title='Calm & Repair'; }
+    else if (concerns.includes('dryness')) { icon='💧'; title='Hydration Station'; }
+    else { icon='🧴'; title='Skincare Explorer'; }
+  } else if (primaryCat === 'makeup') {
+    icon='💄'; title='Clean Makeup Explorer';
+  } else {
+    icon='🛁'; title='Body Care Explorer';
+  }
+
+  // Seek ingredients
+  const seekMap = {
+    acne: ['Salicylic Acid','Niacinamide','Zinc','Azelaic Acid'],
+    antiaging: ['Peptides','Bakuchiol','Vitamin C','Coenzyme Q10'],
+    brightening: ['Vitamin C','Alpha Arbutin','Tranexamic Acid','Niacinamide'],
+    sensitivity: ['Ceramides','Centella Asiatica','Panthenol','Oat Extract'],
+    dryness: ['Hyaluronic Acid','Glycerin','Squalane','Ceramides'],
+  };
+  let seek = [];
+  concerns.forEach(c => { if (seekMap[c]) seek.push(...seekMap[c]); });
+  if (seek.length === 0) seek = ['Ceramides','Niacinamide','Hyaluronic Acid','Squalane'];
+  if (answers.vegan === 'heart') seek.push('Plant-based Actives');
+  seek = [...new Set(seek)].slice(0, 5);
+
+  // Avoid = ghosted ingredients
+  const avoidMap = {
+    fragrance: 'Synthetic Fragrance',
+    retinol: 'Retinol/Retinoids',
+    essentialoils: 'Essential Oils',
+    gluten: 'Gluten Derivatives',
+    silicones: 'Silicones',
+    over60: 'Products over $60',
+  };
+  const avoid = ghosted.map(g => avoidMap[Object.keys(avoidMap).find(k => avoidMap[k] === g || g === avoidMap[k])] || g).filter(Boolean);
+
+  // Explore
+  const exploreMap = {
+    skincare: { acne:['BHA Serums','Niacinamide Serums','Clay Masks','Spot Treatments'], antiaging:['Peptide Moisturizers','Bakuchiol Serums','Firming Treatments'], brightening:['Vitamin C Serums','Dark Spot Correctors','Brightening Toners'], sensitivity:['Barrier Repair Creams','Calming Serums','Gentle Cleansers'], dryness:['Hydrating Serums','Rich Moisturizers','Face Oils'], default:['Clean Serums','Barrier Moisturizers','Gentle SPF'] },
+    makeup: { default:['Clean Foundations','Tinted Moisturizers','Clean Lip Products','Natural Mascaras'] },
+    body: { default:['Body Moisturizers','Body SPF','Clean Body Washes','Body Treatments'] },
+  };
+  const catExplore = exploreMap[primaryCat] || exploreMap.skincare;
+  let explore = [];
+  concerns.forEach(c => { if (catExplore[c]) explore.push(...catExplore[c]); });
+  if (explore.length === 0) explore = [...(catExplore.default || [])];
+  explore = [...new Set(explore)].slice(0, 4);
+
+  desc = `Based on your 🦆❤️👻 answers — filtered to what works for you.`;
+  if (answers.pregnancy === 'heart') desc = 'Pregnancy-safe formulas, filtered and sorted by 9S score.';
+  if (answers.vegan === 'heart') desc = 'Vegan-friendly picks, clean ingredients only.';
+
+  // Inject
+  document.getElementById('r-icon').textContent = icon;
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-desc').textContent = desc;
+  document.getElementById('r-seek').innerHTML = seek.map(t => `<span class="rtag seek">${t}</span>`).join('');
+  document.getElementById('r-avoid').innerHTML = avoid.length ? avoid.map(t => `<span class="rtag avoid">${t}</span>`).join('') : '<span style="font-size:.72rem;color:var(--gray)">Nothing ghosted yet</span>';
+  document.getElementById('r-explore').innerHTML = explore.map(t => `<span class="rtag explore">${t}</span>`).join('');
+
+  // DHG Summary
+  document.getElementById('sum-hearts').innerHTML = hearted.length
+    ? hearted.map(t => `<span class="dhg-sum-tag heart-tag">${t}</span>`).join('')
+    : '<span style="font-size:.65rem;color:var(--gray)">None yet</span>';
+  document.getElementById('sum-ghosts').innerHTML = ghosted.length
+    ? ghosted.map(t => `<span class="dhg-sum-tag ghost-tag">${t}</span>`).join('')
+    : '<span style="font-size:.65rem;color:var(--gray)">Nothing ghosted</span>';
+
+  // CTA
+  const budgetPrefix = answers.over60 === 'ghost' ? 'Under $60 ' : '';
+  document.getElementById('r-cta').textContent = `${budgetPrefix}Explore Products →`;
+}
+</script>
+</body>
+</html>
