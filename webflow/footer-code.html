@@ -369,8 +369,7 @@ document.querySelectorAll('.sign-out-btn').forEach(btn => {
   });
 });
 
-// Quiz "Explore Products" handler — called by onclick in the inline quiz
-// Maps quiz keys → Finsweet fs-cmsfilter-field values
+// Quiz → Product filter mapping
 const quizToFilter = {
   skincare:    { field: 'category', values: ['Skincare'] },
   makeup:      { field: 'category', values: ['Makeup'] },
@@ -382,21 +381,24 @@ const quizToFilter = {
   dryness:     { field: 'skin-type', values: ['Dry', 'Dehydrated'] },
 };
 
-window.sendResults = function() {
-  // Gather hearted/ghosted from the quiz's global answers + QUESTIONS
+function closeQuizAndShowProducts() {
+  // Gather hearted/ghosted from the quiz's globals (if available)
   const hearted = [], ghosted = [];
-  if (typeof QUESTIONS !== 'undefined' && typeof answers !== 'undefined') {
-    QUESTIONS.forEach(q => {
-      const a = answers[q.key];
-      if (a === 'heart') hearted.push(q.key);
-      if (a === 'ghost') ghosted.push(q.key);
-    });
-  }
+  try {
+    if (typeof QUESTIONS !== 'undefined' && typeof answers !== 'undefined') {
+      QUESTIONS.forEach(q => {
+        const a = answers[q.key];
+        if (a === 'heart') hearted.push(q.key);
+        if (a === 'ghost') ghosted.push(q.key);
+      });
+    }
+  } catch(err) {}
 
   // Save to localStorage
-  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers || {}));
-  localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
-  localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
+  try {
+    localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
+    localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
+  } catch(err) {}
 
   // Close the quiz modal
   const modal = document.querySelector('#dhg-modal-overlay');
@@ -404,6 +406,8 @@ window.sendResults = function() {
     modal.classList.remove('dhg-open');
     modal.style.display = 'none';
   }
+  const overlay = document.querySelector('.filter-overlay');
+  if (overlay) overlay.classList.remove('visible');
 
   // Apply Finsweet filters from hearted answers
   const filtersToApply = {};
@@ -436,7 +440,23 @@ window.sendResults = function() {
       productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 300);
-};
+}
+
+// Method 1: global function (in case button has onclick="sendResults()")
+window.sendResults = closeQuizAndShowProducts;
+
+// Method 2: event delegation (catches clicks regardless of onclick attribute)
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.r-cta');
+  if (!btn) return;
+  if (!btn.closest('#dhg-modal-overlay')) return;
+  closeQuizAndShowProducts();
+});
+
+// Method 3: postMessage listener (in case quiz is ever in an iframe)
+window.addEventListener('message', (e) => {
+  if (e.data?.type === 'dhg-quiz-results') closeQuizAndShowProducts();
+});
 
 // Auth State Listener
 sb.auth.onAuthStateChange((event, session) => {
