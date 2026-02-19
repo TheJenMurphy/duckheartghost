@@ -405,9 +405,22 @@ function closeQuizAndShowProducts() {
   if (modal) {
     modal.classList.remove('dhg-open');
     modal.style.display = 'none';
+    modal.style.pointerEvents = 'none';
   }
   const overlay = document.querySelector('.filter-overlay');
-  if (overlay) overlay.classList.remove('visible');
+  if (overlay) {
+    overlay.classList.remove('visible');
+    overlay.style.display = 'none';
+  }
+
+  // Unlock the page — undo any scroll/pointer locks from modal open
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
+  document.body.classList.remove('no-scroll', 'modal-open', 'overflow-hidden');
 
   // Apply Finsweet filters from hearted answers
   const filtersToApply = {};
@@ -437,9 +450,12 @@ function closeQuizAndShowProducts() {
   setTimeout(() => {
     const productList = document.querySelector('.product-list-wrapper');
     if (productList) {
-      productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.scrollTo({
+        top: productList.getBoundingClientRect().top + window.scrollY - 80,
+        behavior: 'smooth'
+      });
     }
-  }, 300);
+  }, 400);
 }
 
 // Method 1: global function (in case button has onclick="sendResults()")
