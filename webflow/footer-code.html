@@ -370,12 +370,25 @@ document.querySelectorAll('.sign-out-btn').forEach(btn => {
 });
 
 // Quiz Results Listener — receives postMessage from quiz iframe
+// Maps quiz keys → Finsweet fs-cmsfilter-field values
+const quizToFilter = {
+  // Quiz key → { field: 'fs-cmsfilter-field name', values: ['CMS values to select'] }
+  skincare:    { field: 'category', values: ['Skincare'] },
+  makeup:      { field: 'category', values: ['Makeup'] },
+  body:        { field: 'category', values: ['Body'] },
+  acne:        { field: 'skin-concern', values: ['Acne'] },
+  antiaging:   { field: 'skin-concern', values: ['Wrinkles', 'Fine Lines'] },
+  brightening: { field: 'skin-concern', values: ['Dullness', 'Hyperpigmentation'] },
+  sensitivity: { field: 'skin-concern', values: ['Sensitivity', 'Redness'] },
+  dryness:     { field: 'skin-type', values: ['Dry', 'Dehydrated'] },
+};
+
 window.addEventListener('message', (e) => {
   if (e.data?.type !== 'dhg-quiz-results') return;
 
   const { answers, hearted, ghosted } = e.data;
 
-  // Save quiz results to localStorage for Finsweet filtering
+  // Save quiz results to localStorage
   localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers));
   localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
   localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
@@ -384,17 +397,33 @@ window.addEventListener('message', (e) => {
   const overlay = document.querySelector('.filter-overlay');
   if (overlay) overlay.classList.remove('visible');
 
-  // Apply Finsweet CMS filters based on quiz results
-  // Hearted categories → show those, ghosted → hide those
-  document.querySelectorAll('[fs-cmsfilter-field]').forEach(el => {
-    const field = el.getAttribute('fs-cmsfilter-field');
-    // Auto-click matching filter chips if they exist
-    if (hearted.includes(field) || ghosted.includes(field)) {
-      const filterEl = document.querySelector(`[fs-cmsfilter-field="${field}"]`);
-      if (filterEl && filterEl.closest('.filter-chip, .filter-options')) {
-        filterEl.click();
-      }
-    }
+  // Collect filter values to apply from hearted answers
+  const filtersToApply = {};
+  hearted.forEach(key => {
+    const mapping = quizToFilter[key];
+    if (!mapping) return;
+    if (!filtersToApply[mapping.field]) filtersToApply[mapping.field] = [];
+    filtersToApply[mapping.field].push(...mapping.values);
+  });
+
+  // Apply filters by clicking matching Finsweet filter elements
+  Object.entries(filtersToApply).forEach(([field, values]) => {
+    values.forEach(value => {
+      // Find filter checkboxes/radios/chips with matching field and value
+      const filterEls = document.querySelectorAll(
+        `[fs-cmsfilter-field="${field}"]`
+      );
+      filterEls.forEach(el => {
+        // Match by checkbox/radio value or text content
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          if (el.value === value && !el.checked) {
+            el.click();
+          }
+        } else if (el.textContent.trim() === value) {
+          el.click();
+        }
+      });
+    });
   });
 
   // Scroll to products
