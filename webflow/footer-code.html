@@ -239,7 +239,10 @@ document.querySelectorAll('.dhg').forEach(btn => {
 
         prompt.querySelector('.prompt-yes').addEventListener('click', async () => {
           prompt.remove();
-          await sb.auth.signInWithOAuth({ provider: 'google' });
+          await sb.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo: 'https://duckheartghost.com' }
+          });
         });
 
         prompt.querySelector('.prompt-no').addEventListener('click', () => {
@@ -358,7 +361,10 @@ document.querySelectorAll('.gallery-hero').forEach(gallery => {
 // Google OAuth
 document.querySelectorAll('.sign-in-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
-    await sb.auth.signInWithOAuth({ provider: 'google' });
+    await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: 'https://duckheartghost.com' }
+    });
   });
 });
 
