@@ -383,8 +383,24 @@ const quizToFilter = {
   dryness:     { field: 'skin-type', values: ['Dry', 'Dehydrated'] },
 };
 
-// Listen for quiz done event (inline embed) or postMessage (iframe embed)
-function applyQuizFilters({ hearted }) {
+// Quiz Results — receives postMessage from quiz iframe
+window.addEventListener('message', (e) => {
+  if (e.data?.type !== 'dhg-quiz-results') return;
+
+  const { answers, hearted, ghosted } = e.data;
+
+  // Save to localStorage
+  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers));
+  localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
+  localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
+
+  // Close the quiz modal
+  const modal = document.querySelector('#dhg-modal-overlay');
+  if (modal) modal.classList.remove('dhg-open');
+  const overlay = document.querySelector('.filter-overlay');
+  if (overlay) overlay.classList.remove('visible');
+
+  // Apply Finsweet filters from hearted answers
   const filtersToApply = {};
   hearted.forEach(key => {
     const mapping = quizToFilter[key];
@@ -393,7 +409,6 @@ function applyQuizFilters({ hearted }) {
     filtersToApply[mapping.field].push(...mapping.values);
   });
 
-  // Apply filters by clicking matching Finsweet filter elements
   Object.entries(filtersToApply).forEach(([field, values]) => {
     values.forEach(value => {
       const filterEls = document.querySelectorAll(
@@ -408,17 +423,12 @@ function applyQuizFilters({ hearted }) {
       });
     });
   });
-}
 
-// Inline embed — quiz dispatches custom event
-window.addEventListener('dhg-quiz-done', (e) => {
-  applyQuizFilters(e.detail);
-});
-
-// Iframe fallback — quiz sends postMessage
-window.addEventListener('message', (e) => {
-  if (e.data?.type !== 'dhg-quiz-results') return;
-  applyQuizFilters(e.data);
+  // Scroll to products
+  const productList = document.querySelector('.product-list-wrapper');
+  if (productList) {
+    productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 
 // Auth State Listener

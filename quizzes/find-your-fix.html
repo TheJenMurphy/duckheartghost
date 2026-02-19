@@ -1090,29 +1090,13 @@ function sendResults() {
     if (a === 'ghost') ghosted.push(q.key);
   });
 
-  // Save results to localStorage for Finsweet filtering
-  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers));
-  localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
-  localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
-
-  // Close the quiz modal (inline embed: direct DOM access)
-  const modal = document.querySelector('#dhg-modal-overlay');
-  if (modal) modal.classList.remove('dhg-open');
-
-  // Also try filter overlay in case that's the container
-  const overlay = document.querySelector('.filter-overlay');
-  if (overlay) overlay.classList.remove('visible');
-
-  // Scroll to products
-  const productList = document.querySelector('.product-list-wrapper');
-  if (productList) {
-    productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  // Dispatch custom event for footer code to pick up and apply filters
-  window.dispatchEvent(new CustomEvent('dhg-quiz-done', {
-    detail: { answers, hearted, ghosted }
-  }));
+  // Send to parent page — parent handles closing modal + applying filters
+  window.parent.postMessage({
+    type: 'dhg-quiz-results',
+    answers: answers,
+    hearted: hearted,
+    ghosted: ghosted
+  }, '*');
 }
 </script>
 </body>
