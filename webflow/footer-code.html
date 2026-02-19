@@ -116,15 +116,29 @@ try {
   );
 } catch(e) { console.warn('Supabase not loaded'); }
 
-// Affiliate shop links — force open in new tab
+// Affiliate shop links — wrap in Awin and open in new tab
+const AWIN_MID = '61441';
+const AWIN_AFF = '2480983';
+
 document.addEventListener('click', (e) => {
   const shopLink = e.target.closest('a.shop');
-  if (shopLink && shopLink.href) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.open(shopLink.href, '_blank');
+  if (!shopLink || !shopLink.href) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  let url = shopLink.href;
+
+  // If it's already an Awin link or a # placeholder, open as-is
+  if (url.includes('awin1.com')) {
+    window.open(url, '_blank');
     return;
   }
+  if (url === '#' || url.endsWith('#')) return;
+
+  // Wrap the direct product URL in the Awin affiliate format
+  const affiliateUrl = `https://www.awin1.com/cread.php?awinmid=${AWIN_MID}&awinaffid=${AWIN_AFF}&ued=${encodeURIComponent(url)}`;
+  window.open(affiliateUrl, '_blank');
 });
 
 // Section Expand/Collapse (event delegation for dynamic content)
