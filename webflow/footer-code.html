@@ -133,6 +133,8 @@ document.addEventListener('click', (e) => {
 
   const flipBtn = e.target.closest('.flip-btn');
   if (flipBtn) {
+    // Don't block actual links (shop/affiliate buttons)
+    if (e.target.closest('a[href]')) return;
     e.preventDefault();
     const card = flipBtn.closest('.card-wrap') || flipBtn.closest('.product-card');
     if (card) card.classList.toggle('flipped');
