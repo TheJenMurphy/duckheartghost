@@ -369,6 +369,41 @@ document.querySelectorAll('.sign-out-btn').forEach(btn => {
   });
 });
 
+// Quiz Results Listener — receives postMessage from quiz iframe
+window.addEventListener('message', (e) => {
+  if (e.data?.type !== 'dhg-quiz-results') return;
+
+  const { answers, hearted, ghosted } = e.data;
+
+  // Save quiz results to localStorage for Finsweet filtering
+  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers));
+  localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
+  localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
+
+  // Close the quiz modal
+  const overlay = document.querySelector('.filter-overlay');
+  if (overlay) overlay.classList.remove('visible');
+
+  // Apply Finsweet CMS filters based on quiz results
+  // Hearted categories → show those, ghosted → hide those
+  document.querySelectorAll('[fs-cmsfilter-field]').forEach(el => {
+    const field = el.getAttribute('fs-cmsfilter-field');
+    // Auto-click matching filter chips if they exist
+    if (hearted.includes(field) || ghosted.includes(field)) {
+      const filterEl = document.querySelector(`[fs-cmsfilter-field="${field}"]`);
+      if (filterEl && filterEl.closest('.filter-chip, .filter-options')) {
+        filterEl.click();
+      }
+    }
+  });
+
+  // Scroll to products
+  const productList = document.querySelector('.product-list-wrapper');
+  if (productList) {
+    productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+});
+
 // Auth State Listener
 sb.auth.onAuthStateChange((event, session) => {
   const signInBtns = document.querySelectorAll('.sign-in-btn');

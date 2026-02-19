@@ -1074,11 +1074,29 @@ function buildResult() {
       <div class="r-sec"><div class="r-sec-label avoid">🚫 Filtered out</div><div class="r-tags">${avoid.length?avoid.map(t=>`<span class="rtag avoid">${t}</span>`).join(''):'<span style="font-size:.7rem;color:var(--gray)">Nothing ghosted yet</span>'}</div></div>
       <div class="r-sec"><div class="r-sec-label explore">🐇 What to explore</div><div class="r-tags">${explore.map(t=>`<span class="rtag explore">${t}</span>`).join('')}</div></div>
       <div class="r-div"></div>
-      <button class="r-cta">${budgetPrefix}Explore Products →</button>
+      <button class="r-cta" onclick="sendResults()">${budgetPrefix}Explore Products →</button>
       <button class="restart-btn" onclick="restart()">Start over ↩</button>
       <div style="text-align:center;margin-top:10px;font-size:.72rem;color:var(--gray);letter-spacing:.04em;">Now go play. 🦆❤️👻</div>
     </div>
   `;
+}
+
+function sendResults() {
+  // Build filter data from quiz answers
+  const hearted = [], ghosted = [];
+  QUESTIONS.forEach(q => {
+    const a = answers[q.key];
+    if (a === 'heart') hearted.push(q.key);
+    if (a === 'ghost') ghosted.push(q.key);
+  });
+
+  // Send to parent Webflow page
+  window.parent.postMessage({
+    type: 'dhg-quiz-results',
+    answers: answers,
+    hearted: hearted,
+    ghosted: ghosted
+  }, '*');
 }
 </script>
 </body>
