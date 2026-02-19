@@ -108,29 +108,35 @@
 
 <script>
 // Supabase Init
-const sb = window.supabase.createClient(
-  'https://bfndiffxenplqfccwepd.supabase.co',
-  'sb_publishable_butYC0KJo_rP8vddepfNDg_4FYJ9Kur'
-);
+let sb;
+try {
+  sb = window.supabase.createClient(
+    'https://bfndiffxenplqfccwepd.supabase.co',
+    'sb_publishable_butYC0KJo_rP8vddepfNDg_4FYJ9Kur'
+  );
+} catch(e) { console.warn('Supabase not loaded'); }
 
-// Section Expand/Collapse
-document.querySelectorAll('[data-x]').forEach(el => {
-  el.addEventListener('click', () => el.classList.toggle('open'));
+// Section Expand/Collapse (event delegation for dynamic content)
+document.addEventListener('click', (e) => {
+  const expander = e.target.closest('[data-x]');
+  if (expander) expander.classList.toggle('open');
 });
 
-// Card Flip - Flip Hint
-document.querySelectorAll('.flip-hint').forEach(el => {
-  el.addEventListener('click', () => {
-    el.closest('.card-wrap').classList.add('flipped');
-  });
-});
+// Card Flip (event delegation — works with CMS Load dynamic cards)
+document.addEventListener('click', (e) => {
+  const hint = e.target.closest('.flip-hint');
+  if (hint) {
+    const card = hint.closest('.card-wrap') || hint.closest('.product-card');
+    if (card) card.classList.add('flipped');
+    return;
+  }
 
-// Card Flip - Flip Button (toggle both ways)
-document.querySelectorAll('.flip-btn').forEach(el => {
-  el.addEventListener('click', (e) => {
+  const flipBtn = e.target.closest('.flip-btn');
+  if (flipBtn) {
     e.preventDefault();
-    el.closest('.card-wrap').classList.toggle('flipped');
-  });
+    const card = flipBtn.closest('.card-wrap') || flipBtn.closest('.product-card');
+    if (card) card.classList.toggle('flipped');
+  }
 });
 
 // DHG Buttons - Duck / Heart / Ghost
@@ -157,7 +163,7 @@ document.querySelectorAll('.dhg').forEach(btn => {
     btn.parentElement.querySelectorAll('.dhg').forEach(b => b.classList.remove('on'));
 
     // Get user state
-    const { data: { user } } = await sb.auth.getUser();
+    const { data: { user } } = sb ? await sb.auth.getUser() : { data: { user: null } };
 
     // ── GHOST: burn it down ──
     if (action === 'ghost' && !wasOn) {
@@ -424,8 +430,9 @@ function closeQuizAndShowProducts() {
   document.body.style.position = '';
   document.body.style.top = '';
   document.body.style.width = '';
-  document.body.style.pointerEvents = '';
+  document.body.style.pointerEvents = 'auto';
   document.documentElement.style.overflow = '';
+  document.documentElement.style.pointerEvents = '';
   document.body.classList.remove('no-scroll', 'modal-open', 'overflow-hidden');
 
   // Apply Finsweet filters from hearted answers
@@ -481,7 +488,7 @@ window.addEventListener('message', (e) => {
 });
 
 // Auth State Listener
-sb.auth.onAuthStateChange((event, session) => {
+if (sb) sb.auth.onAuthStateChange((event, session) => {
   const signInBtns = document.querySelectorAll('.sign-in-btn');
   const signOutBtns = document.querySelectorAll('.sign-out-btn');
 
