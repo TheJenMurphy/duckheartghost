@@ -116,6 +116,17 @@ try {
   );
 } catch(e) { console.warn('Supabase not loaded'); }
 
+// Affiliate shop links — force open in new tab
+document.addEventListener('click', (e) => {
+  const shopLink = e.target.closest('a.shop');
+  if (shopLink && shopLink.href) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(shopLink.href, '_blank');
+    return;
+  }
+});
+
 // Section Expand/Collapse (event delegation for dynamic content)
 document.addEventListener('click', (e) => {
   const expander = e.target.closest('[data-x]');
