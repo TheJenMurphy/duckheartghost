@@ -369,10 +369,9 @@ document.querySelectorAll('.sign-out-btn').forEach(btn => {
   });
 });
 
-// Quiz Results Listener — receives postMessage from quiz iframe
+// Quiz "Explore Products" handler — called by onclick in the inline quiz
 // Maps quiz keys → Finsweet fs-cmsfilter-field values
 const quizToFilter = {
-  // Quiz key → { field: 'fs-cmsfilter-field name', values: ['CMS values to select'] }
   skincare:    { field: 'category', values: ['Skincare'] },
   makeup:      { field: 'category', values: ['Makeup'] },
   body:        { field: 'category', values: ['Body'] },
@@ -383,22 +382,28 @@ const quizToFilter = {
   dryness:     { field: 'skin-type', values: ['Dry', 'Dehydrated'] },
 };
 
-// Quiz Results — receives postMessage from quiz iframe
-window.addEventListener('message', (e) => {
-  if (e.data?.type !== 'dhg-quiz-results') return;
-
-  const { answers, hearted, ghosted } = e.data;
+window.sendResults = function() {
+  // Gather hearted/ghosted from the quiz's global answers + QUESTIONS
+  const hearted = [], ghosted = [];
+  if (typeof QUESTIONS !== 'undefined' && typeof answers !== 'undefined') {
+    QUESTIONS.forEach(q => {
+      const a = answers[q.key];
+      if (a === 'heart') hearted.push(q.key);
+      if (a === 'ghost') ghosted.push(q.key);
+    });
+  }
 
   // Save to localStorage
-  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers));
+  localStorage.setItem('dhg_quiz_answers', JSON.stringify(answers || {}));
   localStorage.setItem('dhg_quiz_hearted', JSON.stringify(hearted));
   localStorage.setItem('dhg_quiz_ghosted', JSON.stringify(ghosted));
 
   // Close the quiz modal
   const modal = document.querySelector('#dhg-modal-overlay');
-  if (modal) modal.classList.remove('dhg-open');
-  const overlay = document.querySelector('.filter-overlay');
-  if (overlay) overlay.classList.remove('visible');
+  if (modal) {
+    modal.classList.remove('dhg-open');
+    modal.style.display = 'none';
+  }
 
   // Apply Finsweet filters from hearted answers
   const filtersToApply = {};
@@ -425,11 +430,13 @@ window.addEventListener('message', (e) => {
   });
 
   // Scroll to products
-  const productList = document.querySelector('.product-list-wrapper');
-  if (productList) {
-    productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-});
+  setTimeout(() => {
+    const productList = document.querySelector('.product-list-wrapper');
+    if (productList) {
+      productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 300);
+};
 
 // Auth State Listener
 sb.auth.onAuthStateChange((event, session) => {
