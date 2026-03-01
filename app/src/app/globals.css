@@ -76,7 +76,7 @@ body {
 
 /* ══ CARD UNIT — one product, phone proportions ══ */
 .card-unit {
-  height: min(100dvh, min(827px, calc(380px * 1.78)));
+  height: min(100dvh, min(827px, calc(380px * 2.0)));
   display: flex; flex-direction: column;
   width: 100%; position: relative;
   box-shadow: 0 8px 40px rgba(0,0,0,.5);
