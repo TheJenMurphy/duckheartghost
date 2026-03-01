@@ -16,7 +16,7 @@
   --s-who:         #9955ff;
   --s-ingredients: #00c4b0;
   --s-certs:       #00aed4;
-  --soft-black: #1a1a1c;
+  --soft-black: #0a0a0a;
   --grey-mid:   #777777;
   --header-h: 47px;
 }
@@ -38,7 +38,7 @@ body {
 .card-header { flex-shrink: 0 }
 .site-header-inner {
   width: 100%;
-  background: rgba(40,40,44,.85);
+  background: rgba(20,20,22,.92);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 16px 16px 0 0;
@@ -222,7 +222,7 @@ body {
 /* ══ CARD FOOTER — frosted glass ══ */
 .card-footer {
   flex-shrink: 0;
-  background: rgba(40,40,44,.85);
+  background: rgba(20,20,22,.92);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   padding: 10px 14px 12px; border-radius: 0 0 16px 16px;
