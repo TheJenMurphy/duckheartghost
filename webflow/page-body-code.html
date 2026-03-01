@@ -1,0 +1,509 @@
+<script>
+(function() {
+
+  function toSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function parsePiped(text) {
+    const items = text.split(',')
+      .map(i => i.trim()
+        .replace(/^skin\s*types?\s*[:\-]\s*/i, '')
+        .replace(/^skin\s*concerns?\s*[:\-]\s*/i, '')
+        .replace(/^skin\s*care\s*[:\-]\s*/i, '')
+      )
+      .filter(i => i);
+    return items.join(' <span class="sep">|</span> ');
+  }
+
+  const BENEFITS = {
+    'Nourishing': 'Delivers essential nutrients and fatty acids that feed skin cells and support healthy function.',
+    'Softening': 'Smooths rough texture and makes skin feel supple and pliable to the touch.',
+    'Resurfacing': 'Accelerates cell turnover to reveal fresher, smoother skin beneath.',
+    'Exfoliating': 'Removes dead skin cells from the surface to improve texture and clarity.',
+    'UV-Protecting': 'Shields skin from UVA and UVB radiation to prevent sun damage and premature aging.',
+    'Pollution-Protecting': 'Forms a barrier against environmental toxins and free radicals from urban pollution.',
+    'Barrier-Strengthening': "Reinforces the skin's natural protective layer to lock in moisture and keep irritants out.",
+    'Antioxidant': 'Neutralizes free radicals that cause oxidative stress, aging, and environmental damage.',
+    'Acne-Fighting': 'Targets bacteria, excess oil, and clogged pores to reduce breakouts and prevent new ones.',
+    'Clarifying': 'Cuts through congestion and buildup to refine skin tone and improve overall clarity.',
+    'Pore Minimizing': 'Reduces the visible appearance of enlarged pores for a smoother, more refined look.',
+    'Oil-Controlling': 'Regulates sebum production to keep shine at bay throughout the day.',
+    'Healing': 'Supports skin repair and recovery, speeding the resolution of damage or irritation.',
+    'Redness-Reducing': 'Calms inflammation and visible redness for a more even, neutral complexion.',
+    'Calming': 'Soothes reactive or sensitized skin to reduce discomfort, stinging, or irritation.',
+    'Dark-Spot Correcting': 'Targets hyperpigmentation and melanin clusters to fade existing discoloration.',
+    'Tone-Evening': 'Improves overall skin uniformity by reducing patchiness, dullness, and uneven pigment.',
+    'Radiance-Boosting': "Enhances skin's natural luminosity for a healthy, lit-from-within glow.",
+    'Line-Reducing': 'Visibly softens the appearance of fine lines and wrinkles for a smoother surface.',
+    'Plumping': 'Increases skin volume and bounce by drawing in moisture and supporting collagen.',
+    'Moisturizing': 'Replenishes water content in the skin to maintain hydration and prevent dryness.',
+    'Blurring': 'Creates a soft-focus effect that diffuses imperfections and minimizes texture.',
+    'Smoothing': 'Levels uneven skin surface for a refined, velvety finish.',
+    'Soothing': 'Relieves temporary discomfort and sensitivity with gentle, calming actives.',
+    'Antiaging': 'Targets multiple signs of aging including lines, loss of firmness, and dullness.',
+    'Firming': 'Improves skin elasticity and density for a tighter, more lifted appearance.',
+    'Brightening': 'Reduces dullness and boosts radiance for a fresher, more luminous complexion.',
+    'Hydrating': 'Attracts and binds water to skin cells to maintain optimal moisture balance.',
+    'All-Shades': 'Formulated to work beautifully across all skin tones without ashiness, oxidation, or color distortion.'
+  };
+
+  // ── PRICE FORMATTING ──
+  document.querySelectorAll('.price-big, .meta-price').forEach(el => {
+    const num = parseFloat(el.textContent);
+    if (!isNaN(num)) el.textContent = '$' + num.toFixed(0);
+  });
+
+  document.querySelectorAll('.price').forEach(priceDiv => {
+    const priceBig = priceDiv.querySelector('.price-big');
+    const priceSm = priceDiv.querySelector('.price-sm');
+    const sizeEl = priceDiv.querySelector('.product-size');
+    if (priceBig && priceSm && sizeEl) {
+      const price = parseFloat(priceBig.textContent.replace('$', ''));
+      const ozMatch = sizeEl.textContent.toLowerCase().match(/([\d.]+)\s*oz/);
+      if (ozMatch && !isNaN(price)) {
+        const oz = parseFloat(ozMatch[1]);
+        if (oz > 0) priceSm.textContent = '$' + (price / oz).toFixed(2) + '/oz';
+      }
+    }
+  });
+
+  document.querySelectorAll('.benefits-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    const items = text.split(',').map(i => i.trim()).filter(i => i);
+    let html = '<div class="benefits-list">';
+    items.forEach(item => {
+      const def = BENEFITS[item];
+      html += `<span class="tooltip-pill"><span class="pill-label">${item}</span>${def ? `<span class="tp-tooltip">${def}</span>` : ''}</span>`;
+    });
+    html += '</div>';
+    el.outerHTML = html;
+  });
+
+  // ── SKIN TYPES / CONCERNS ──
+  document.querySelectorAll('.skintypes-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    el.outerHTML = `<div class="piped">${parsePiped(text)}</div>`;
+  });
+
+  document.querySelectorAll('.skinconcerns-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    el.outerHTML = `<div class="piped">${parsePiped(text)}</div>`;
+  });
+
+  // Ingredient category inference for tooltips
+  function inferCategory(name) {
+    const n = name.toLowerCase();
+    if (/vitamin\s*[a-z]/i.test(n) || n.includes('ascorbic') || n.includes('tocopherol') || n.includes('niacinamide')) return 'Vitamin';
+    if (n.includes('peptide') || n.includes('palmitoyl') || n.includes('matrixyl')) return 'Peptide';
+    if (n.includes('retinol') || n.includes('retinoid') || n.includes('bakuchiol')) return 'Retinoid';
+    if (n.includes('hyaluronic') || n.includes('glycerin')) return 'Humectant';
+    if (n.includes('ceramide')) return 'Lipid';
+    if (n.includes('salicylic') || n.includes('bha')) return 'BHA';
+    if (n.includes('glycolic') || n.includes('lactic') || n.includes('mandelic') || n.includes('aha')) return 'AHA';
+    if (n.includes('zinc') || n.includes('magnesium') || n.includes('copper') || n.includes('iron')) return 'Mineral';
+    if (n.includes('enzyme') || n.includes('papain') || n.includes('bromelain')) return 'Enzyme';
+    if (n.includes('squalane') || n.includes('squalene')) return 'Emollient';
+    if (n.includes('shea') || n.includes('cocoa butter') || n.includes('mango butter')) return 'Butter';
+    if (n.includes('oil') || n.includes('jojoba') || n.includes('rosehip') || n.includes('argan')) return 'Plant Oil';
+    if (n.includes('centella') || n.includes('cica') || n.includes('aloe')) return 'Botanical';
+    if (n.includes('collagen')) return 'Protein';
+    if (n.includes('spf') || n.includes('sunscreen') || n.includes('oxide')) return 'Sun Filter';
+    if (n.includes('niacinamide')) return 'Vitamin B3';
+    if (n.includes('acid')) return 'Acid';
+    if (n.includes('extract')) return 'Botanical Extract';
+    if (n.includes('kelp') || n.includes('algae') || n.includes('seaweed')) return 'Marine';
+    if (n.includes('charcoal') || n.includes('clay') || n.includes('kaolin')) return 'Detoxifier';
+    return '';
+  }
+
+  document.querySelectorAll('.key-actives-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    const items = text.split(',').map(i => i.trim()).filter(i => i);
+    let html = '<div class="key-actives-list">';
+    items.forEach(item => {
+      const colonIdx = item.indexOf(':');
+      if (colonIdx > -1) {
+        const name = item.slice(0, colonIdx).trim();
+        const desc = item.slice(colonIdx + 1).trim();
+        html += `<span class="tooltip-pill"><span class="pill-label">${name}</span><span class="tp-tooltip">${desc}</span></span>`;
+      } else {
+        const cat = inferCategory(item);
+        html += `<span class="tooltip-pill"><span class="pill-label">${item}</span>${cat ? `<span class="tp-tooltip">${cat}</span>` : ''}</span>`;
+      }
+    });
+    html += '</div>';
+    el.outerHTML = html;
+  });
+
+  // ── FULL INGREDIENTS ──
+  document.querySelectorAll('.ingredients-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    const items = text.split(',').map(i => i.trim()).filter(i => i);
+    let html = '<div class="ingredients-parsed">';
+    items.forEach(item => {
+      html += `<a href="/ingredients/${toSlug(item)}">${item}</a>`;
+    });
+    html += '</div>';
+    el.outerHTML = html;
+  });
+
+  // ── GALLERY SWIPE ──
+  document.querySelectorAll('.gallery-hero').forEach(gallery => {
+    const track = gallery.querySelector('.gallery-hero-track');
+    if (!track) return;
+    let isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', (e) => { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+    track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX) * 2; });
+    track.addEventListener('touchstart', (e) => { startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+    track.addEventListener('touchmove', (e) => { track.scrollLeft = scrollLeft - (e.touches[0].pageX - track.offsetLeft - startX) * 2; });
+  });
+
+  // ── SEE ALL INGREDIENTS TOGGLE ──
+  document.querySelectorAll('.see-all-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const allList = this.nextElementSibling;
+      if (allList && allList.classList.contains('all-ingredients')) {
+        allList.classList.toggle('open');
+        this.textContent = allList.classList.contains('open') ? 'Hide ingredients \u2190' : 'See all ingredients \u2192';
+      }
+    });
+  });
+
+  // ── CERTIFICATIONS ──
+  document.querySelectorAll('.ethics-raw').forEach(el => {
+    const text = el.textContent.trim();
+    if (!text) return;
+    const items = text.split(',').map(i => i.trim()).filter(i => i);
+    let html = '<div class="grid">';
+    const amberKw = ['maybe', 'partial', 'some', 'pending', 'unverified', 'not certified', 'claims'];
+    const redKw = ['not', 'no ', 'none', 'contains', 'includes', 'has ', 'tested on animals', 'animal testing', 'not vegan', 'not cruelty'];
+    items.forEach(item => {
+      const lower = item.toLowerCase();
+      const slug = lower.replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      let icon, iconClass;
+      if (redKw.some(kw => lower.includes(kw))) { icon = '\u2717'; iconClass = 'ind-red'; }
+      else if (amberKw.some(kw => lower.includes(kw))) { icon = '\u25b3'; iconClass = 'ind-amber'; }
+      else { icon = '\u2713'; iconClass = 'ind-green'; }
+      html += `<div class="grid-item"><span class="${iconClass}">${icon}</span> <a href="/regulators/${slug}">${item}</a></div>`;
+    });
+    html += '</div>';
+    el.outerHTML = html;
+  });
+
+  // ── CARD FLIP ──
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    const hint = card.querySelector('.flip-hint');
+    if (hint) {
+      hint.addEventListener('click', function(e) {
+        e.stopPropagation();
+        card.classList.toggle('flipped');
+      });
+    }
+  });
+
+})();
+</script>
+
+<!-- DHG Quiz Modal -->
+<style>
+#dhg-modal-overlay{display:none;pointer-events:none}
+#dhg-modal-overlay.dhg-open{display:flex!important;pointer-events:all}
+</style>
+
+<div id="dhg-modal-overlay" style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div class="shell">
+    <div class="rainbow-bar"></div>
+    <div class="top-bar">
+      <span class="top-brand">&#x1F986;&#x2764;&#xFE0F;&#x1F47B; Duck Heart Ghost</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="closeDHGModal()" style="background:none;border:1px solid rgba(255,255,255,.12);border-radius:6px;color:rgba(255,255,255,.3);font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;padding:4px 8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(255,255,255,.7)';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='rgba(255,255,255,.3)';this.style.borderColor='rgba(255,255,255,.12)'">[ CLOSE &#x2715; ]</button>
+        <button id="skip-btn" onclick="skipIntro()" style="display:block;background:none;border:1px solid rgba(255,255,255,.12);border-radius:6px;color:rgba(255,255,255,.3);font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;padding:4px 8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='rgba(255,255,255,.7)';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='rgba(255,255,255,.3)';this.style.borderColor='rgba(255,255,255,.12)'">[ SKIP ]</button>
+        <div class="top-dots">
+          <div class="top-dot active" id="dot-0"></div>
+          <div class="top-dot" id="dot-1"></div>
+          <div class="top-dot" id="dot-2"></div>
+          <div class="top-dot" id="dot-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screens">
+      <div class="screen active" id="s0">
+        <div class="console-wrap">
+          <div class="console">
+            <div class="console-screen">
+              <div class="console-screen-glow"></div>
+              <div class="console-screen-content" id="console-emoji">&#x1F986;</div>
+            </div>
+            <div class="console-dpad"><div class="dpad-h"></div><div class="dpad-v"></div></div>
+            <div class="console-btns">
+              <div class="cbtn cbtn-duck">&#x1F986;</div>
+              <div class="cbtn cbtn-heart">&#x2764;&#xFE0F;</div>
+              <div class="cbtn cbtn-ghost">&#x1F47B;</div>
+            </div>
+          </div>
+          <div class="console-glow"></div>
+        </div>
+        <div class="s0-title">Clean beauty.<br><span class="grd">You sort it.</span></div>
+        <div class="s0-sub" style="margin-top:10px;">Swipe through products. Duck the maybes. Heart the ones you love. Ghost everything else.</div>
+        <div class="s0-tap">TAP NEXT TO LEARN HOW &#x2192;</div>
+      </div>
+
+      <div class="screen" id="s1">
+        <div class="s1-label">// HOW IT WORKS</div>
+        <div class="s1-title">Three buttons.<br>All the power.</div>
+        <div class="s1-sub">Every card gets a verdict. No star ratings. No complicated scores. Just your vote &#x2014; informed.</div>
+        <div class="mechanic-demo">
+          <div class="mech-row duck"><div class="mech-emoji">&#x1F986;</div><div class="mech-text"><div class="mech-name">Duck it</div><div class="mech-desc">Maybe later. Not sure yet. Quietly waddles into your Meh pile.</div></div></div>
+          <div class="mech-row heart"><div class="mech-emoji">&#x2764;&#xFE0F;</div><div class="mech-text"><div class="mech-name">Heart it</div><div class="mech-desc">This is the one. Goes straight into your stash for keeps.</div></div></div>
+          <div class="mech-row ghost"><div class="mech-emoji">&#x1F47B;</div><div class="mech-text"><div class="mech-name">Ghost it</div><div class="mech-desc">You banished it. Gone &#x2014; until you change your mind.</div></div></div>
+        </div>
+      </div>
+
+      <div class="screen" id="s2">
+        <div class="s2-label">// THE RABBIT HOLE</div>
+        <div class="s2-title">Tap anything.<br>Fall deeper.</div>
+        <div class="s2-sub">Every card connects to more. Tap the brand. Tap an ingredient. End up somewhere you didn't expect.</div>
+        <div class="hole-trail">
+          <div class="trail-item"><div class="trail-icon">&#x1F9F4;</div><div class="trail-text"><div class="trail-type">Product</div><div class="trail-name">Retinol Serum</div></div><div class="trail-tap">tap ingredient &#x2192;</div></div>
+          <div style="height:8px;"></div>
+          <div class="trail-item"><div class="trail-icon">&#x1F52C;</div><div class="trail-text"><div class="trail-type">Ingredient</div><div class="trail-name">Retinol</div></div><div class="trail-tap">also in &#x2192;</div></div>
+          <div style="height:8px;"></div>
+          <div class="trail-item"><div class="trail-icon">&#x1F48A;</div><div class="trail-text"><div class="trail-type">Product</div><div class="trail-name">Eye Cream SPF 30</div></div><div class="trail-tap">tap ingredient &#x2192;</div></div>
+          <div style="height:8px;"></div>
+          <div class="trail-item"><div class="trail-icon">&#x1F52C;</div><div class="trail-text"><div class="trail-type">Ingredient</div><div class="trail-name">Niacinamide</div></div><div class="trail-tap">6,933 more &#x2192;</div></div>
+          <div style="height:8px;"></div>
+          <div class="trail-lost"><div style="font-size:1rem;">&#x1F407;</div><div class="trail-lost-text">...you are now deep in ingredient land. This is fine.</div></div>
+        </div>
+      </div>
+
+      <div class="screen" id="s3">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:0;">
+          <span style="font-size:3rem;display:block;margin-bottom:12px;animation:bob 2.5s ease-in-out infinite;">&#x1F407;</span>
+          <div style="font-size:1.55rem;font-weight:900;letter-spacing:-.03em;line-height:1.1;color:#f4f4f5;margin-bottom:8px;">Find your<br><span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">clean fix.</span></div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:24px;">Answer with &#x1F986;&#x2764;&#xFE0F;&#x1F47B; and we'll point you in the right direction.<br>No shopping cart. Just curiosity.</div>
+          <div style="display:flex;gap:8px;margin-bottom:24px;background:var(--surface);border-radius:14px;padding:12px;border:1px solid var(--border);">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(255,170,0,.3);background:rgba(255,170,0,.05);"><span style="font-size:1.5rem;">&#x1F986;</span><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--duck);">Duck</span><span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Maybe / meh</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(255,77,138,.3);background:rgba(255,77,138,.05);"><span style="font-size:1.5rem;">&#x2764;&#xFE0F;</span><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--heart);">Heart</span><span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Yes &#x2014; this is me</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:10px;border:1.5px solid rgba(168,85,247,.3);background:rgba(168,85,247,.05);"><span style="font-size:1.5rem;">&#x1F47B;</span><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--ghost);">Ghost</span><span style="font-size:.58rem;color:var(--muted);line-height:1.3;">Filter it out</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen" id="s-quiz"><div id="dhg-quiz-inner"></div></div>
+    </div>
+
+    <div class="bottom-nav" id="bottom-nav">
+      <button class="nav-back" id="nav-back" onclick="goBack()" disabled>&#x2190; Back</button>
+      <div class="nav-steps">
+        <div class="nav-step active" id="step-0"></div>
+        <div class="nav-step" id="step-1"></div>
+        <div class="nav-step" id="step-2"></div>
+        <div class="nav-step" id="step-3"></div>
+      </div>
+      <button class="nav-next" id="nav-next" onclick="goNext()"><span id="next-label">Next</span> <span id="next-arrow">&#x2192;</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openDHGModal() {
+  const m = document.getElementById('dhg-modal-overlay');
+  m.classList.add('dhg-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDHGModal() {
+  const m = document.getElementById('dhg-modal-overlay');
+  m.classList.remove('dhg-open');
+  document.body.style.overflow = '';
+}
+document.getElementById('dhg-modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDHGModal();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('#open-quiz, .open-quiz').forEach(btn => {
+    btn.addEventListener('click', openDHGModal);
+  });
+});
+
+let introStep = 0;
+const INTRO_SCREENS = ['s0','s1','s2','s3'];
+const TOTAL_INTRO = 4;
+
+function skipIntro() { launchQuiz(); }
+function goNext() {
+  if (introStep < TOTAL_INTRO - 1) { introStep++; showIntroScreen(introStep); }
+  else { launchQuiz(); }
+}
+function goBack() {
+  if (introStep > 0) { introStep--; showIntroScreen(introStep); }
+}
+function showIntroScreen(idx) {
+  INTRO_SCREENS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (i === idx) { el.classList.add('active'); el.classList.remove('exited'); }
+    else if (i < idx) { el.classList.remove('active'); el.classList.add('exited'); }
+    else { el.classList.remove('active'); el.classList.remove('exited'); }
+  });
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('dot-' + i); if (!dot) continue;
+    dot.classList.toggle('active', i === idx); dot.classList.toggle('done', i < idx);
+  }
+  for (let i = 0; i < 4; i++) {
+    const step = document.getElementById('step-' + i); if (!step) continue;
+    step.classList.toggle('active', i === idx); step.classList.toggle('done', i < idx);
+  }
+  document.getElementById('nav-back').disabled = idx === 0;
+  const nextLabel = document.getElementById('next-label');
+  const nextArrow = document.getElementById('next-arrow');
+  if (idx === TOTAL_INTRO - 1) { nextLabel.textContent = "I'm curious"; nextArrow.textContent = '\u{1F407}'; }
+  else { nextLabel.textContent = 'Next'; nextArrow.textContent = '\u2192'; }
+}
+function launchQuiz() {
+  INTRO_SCREENS.forEach(id => { const el = document.getElementById(id); el.classList.remove('active'); el.classList.add('exited'); });
+  document.getElementById('s-quiz').classList.add('active');
+  document.getElementById('bottom-nav').style.display = 'none';
+  document.querySelectorAll('.top-dot').forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+  startQuiz();
+}
+
+const emojis = ['\u{1F986}','\u2764\uFE0F','\u{1F47B}','\u{1F986}','\u2764\uFE0F','\u{1F47B}'];
+let emojiIdx = 0;
+setInterval(() => { emojiIdx = (emojiIdx + 1) % emojis.length; document.getElementById('console-emoji').textContent = emojis[emojiIdx]; }, 900);
+
+const QUESTIONS = [
+  { id:'cat-skincare', section:'Down the rabbit hole', emoji:'\u{1F9F4}', text:'Curious about skincare?', sub:'Serums, moisturizers, cleansers, SPF...', duck:'Could be interesting', heart:'Yes \u2014 rabbit hole me', ghost:'Not what I came for', key:'skincare', heartLabel:'Skincare' },
+  { id:'cat-makeup', section:'Down the rabbit hole', emoji:'\u{1F484}', text:'Into clean makeup?', sub:'Foundation, lip, eye, blush, primer...', duck:'Sometimes, yeah', heart:'Yes \u2014 show me everything', ghost:'Not my thing', key:'makeup', heartLabel:'Makeup' },
+  { id:'cat-body', section:'Down the rabbit hole', emoji:'\u{1F6C1}', text:'What about body?', sub:'Lotions, washes, deodorant, body SPF...', duck:'Sometimes', heart:'Yes \u2014 body care matters', ghost:'Not this time', key:'body', heartLabel:'Body' },
+  { id:'concern-acne', section:'Tell me about your skin', emoji:'\u{1F3AF}', text:'Are breakouts part of your story?', sub:'Salicylic acid, niacinamide, zinc territory', duck:'Here and there', heart:'Ugh yes \u2014 always', ghost:'Nope, not my skin', key:'acne', heartLabel:'Acne-prone' },
+  { id:'concern-aging', section:'Tell me about your skin', emoji:'\u231B', text:'Thinking about the long game?', sub:'Peptides, bakuchiol, firming...', duck:'Starting to think about it', heart:"Yes \u2014 it's on my mind", ghost:"Not where I'm at", key:'antiaging', heartLabel:'Anti-aging' },
+  { id:'concern-brightening', section:'Tell me about your skin', emoji:'\u2728', text:'Chasing glow or fighting dark spots?', sub:'Vitamin C, alpha arbutin, tranexamic acid', duck:'A little uneven', heart:'Yes \u2014 this is the goal', ghost:'Not a concern', key:'brightening', heartLabel:'Brightening' },
+  { id:'concern-sensitivity', section:'Tell me about your skin', emoji:'\u{1F339}', text:'Does your skin protest a lot?', sub:'Redness, reactivity \u2014 ceramides and centella', duck:'Sometimes it complains', heart:'Yes \u2014 very reactive', ghost:'Skin is pretty chill', key:'sensitivity', heartLabel:'Sensitive skin' },
+  { id:'concern-dryness', section:'Tell me about your skin', emoji:'\u{1F4A7}', text:'Dry, tight, thirsty?', sub:'Hyaluronic acid, glycerin, squalane', duck:'Seasonal dry patches', heart:'Yes \u2014 chronically parched', ghost:'Oily \u2014 opposite problem', key:'dryness', heartLabel:'Dry skin', ghostLabel:'Oily skin' },
+  { id:'avoid-fragrance', section:'Build your ghost list', emoji:'\u{1F338}', text:'Synthetic fragrance \u2014 friend or foe?', sub:'Listed as fragrance or parfum on labels', duck:'Depends on the product', heart:'Love a scented product', ghost:'Ghost it \u2014 always avoid', key:'fragrance', ghostLabel:'Fragrance' },
+  { id:'avoid-retinol', section:'Build your ghost list', emoji:'\u{1F9EA}', text:'Retinol \u2014 in or out?', sub:'Strong actives \u2014 not for everyone', duck:'Curious but cautious', heart:'On the retinol train', ghost:'Ghost it \u2014 not for me', key:'retinol', ghostLabel:'Retinol' },
+  { id:'avoid-essentialoils', section:'Build your ghost list', emoji:'\u{1F33F}', text:'Essential oils in formulas?', sub:'Tea tree, lavender, citrus \u2014 common irritants', duck:'Some yes, some no', heart:'I actually love them', ghost:'Ghost them \u2014 skin hates it', key:'essentialoils', ghostLabel:'Essential oils' },
+  { id:'avoid-silicones', section:'Build your ghost list', emoji:'\u{1F48E}', text:'Silicones \u2014 slip or skip?', sub:'Dimethicone, cyclomethicone \u2014 slip agents', duck:"Don't really care", heart:'Love the slip \u2014 keep them', ghost:'Ghost them \u2014 clean only', key:'silicones', ghostLabel:'Silicones' },
+  { id:'avoid-gluten', section:'Build your ghost list', emoji:'\u{1F33E}', text:'Gluten-derived ingredients?', sub:'Hydrolyzed wheat protein, wheat germ oil', duck:'Not sure if it affects me', heart:"No issue, doesn't matter", ghost:'Ghost it \u2014 I avoid gluten', key:'gluten', ghostLabel:'Gluten' },
+  { id:'life-vegan', section:'A little about you', emoji:'\u{1F331}', text:'Vegan formulas a must?', sub:'No beeswax, lanolin, carmine \u2014 plant-only', duck:'I prefer it but not strict', heart:'Yes \u2014 vegan only', ghost:'Not something I track', key:'vegan', heartLabel:'Vegan' },
+  { id:'life-pregnancy', section:'A little about you', emoji:'\u{1F930}', text:'Need pregnancy or nursing safe?', sub:'Filters retinoids, high-dose salicylic', duck:'Not right now', heart:'Yes \u2014 filter for safety', ghost:'Not relevant to me', key:'pregnancy', heartLabel:'Pregnancy safe' },
+  { id:'budget', section:'Last one', emoji:'\u{1F4B8}', text:'How do you feel about splurging?', sub:'Ghost it and it disappears from results', duck:"If it's really worth it", heart:'No limit \u2014 show me everything', ghost:'Ghost anything over $60', key:'over60', ghostLabel:'Over $60' },
+];
+
+let answers = {}, currentIdx = 0, history = [];
+
+function startQuiz() { currentIdx = 0; answers = {}; history = []; renderQuizShell(); showQuestion(0); }
+
+function renderQuizShell() {
+  document.getElementById('dhg-quiz-inner').innerHTML = `
+    <div class="q-prog" id="q-prog">
+      <div class="q-prog-track"><div class="q-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
+      <div class="q-prog-labels"><span class="q-prog-label" id="q-prog-label">Question 1 of ${QUESTIONS.length}</span><span class="q-prog-pct" id="q-prog-pct">0%</span></div>
+    </div>
+    <div id="q-content" style="flex:1;display:flex;flex-direction:column;"></div>`;
+}
+
+function showQuestion(idx) {
+  const q = QUESTIONS[idx];
+  const pct = Math.round((idx / QUESTIONS.length) * 100);
+  document.getElementById('q-prog-fill').style.width = pct + '%';
+  document.getElementById('q-prog-label').textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  document.getElementById('q-prog-pct').textContent = pct + '%';
+  const prev = answers[q.key];
+  document.getElementById('q-content').innerHTML = `
+    <div class="q-section">${q.section}</div>
+    <span class="q-emoji">${q.emoji}</span>
+    <div class="q-text">${q.text}</div>
+    <div class="q-sub">${q.sub}</div>
+    <div class="ghost-confirm" id="ghost-confirm">\u{1F47B} Ghosted \u2014 filtered from your results</div>
+    <div class="trio">
+      <button class="trio-btn duck-btn${prev==='duck'?' selected':''}" onclick="answer('duck')"><span class="t-icon">\u{1F986}</span><span class="t-name">Duck</span><span class="t-meaning">${q.duck}</span></button>
+      <button class="trio-btn heart-btn${prev==='heart'?' selected':''}" onclick="answer('heart')"><span class="t-icon">\u2764\uFE0F</span><span class="t-name">Heart</span><span class="t-meaning">${q.heart}</span></button>
+      <button class="trio-btn ghost-btn${prev==='ghost'?' selected':''}" onclick="answer('ghost')"><span class="t-icon">\u{1F47B}</span><span class="t-name">Ghost</span><span class="t-meaning">${q.ghost}</span></button>
+    </div>
+    <div style="margin-top:auto;padding-top:8px;">
+      <button class="restart-btn" onclick="quizBack()" style="visibility:${idx===0?'hidden':'visible'}">\u2190 Back</button>
+    </div>`;
+}
+
+function answer(choice) {
+  const q = QUESTIONS[currentIdx];
+  answers[q.key] = choice;
+  document.querySelectorAll('.trio-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.${choice}-btn`).classList.add('selected');
+  if (choice === 'ghost') { document.getElementById('ghost-confirm').classList.add('show'); setTimeout(advanceQuiz, 900); }
+  else { setTimeout(advanceQuiz, 380); }
+}
+function advanceQuiz() {
+  history.push(currentIdx);
+  if (currentIdx < QUESTIONS.length - 1) { currentIdx++; showQuestion(currentIdx); }
+  else { buildResult(); }
+}
+function quizBack() { if (history.length === 0) return; currentIdx = history.pop(); showQuestion(currentIdx); }
+function restart() { answers = {}; currentIdx = 0; history = []; showQuestion(0); document.getElementById('q-prog-fill').style.width = '0%'; }
+
+function buildResult() {
+  document.getElementById('q-prog-fill').style.width = '100%';
+  document.getElementById('q-prog-label').textContent = 'Done! \u{1F389}';
+  document.getElementById('q-prog-pct').textContent = '100%';
+  const hearted = [], ghosted = [];
+  QUESTIONS.forEach(q => { const a = answers[q.key]; if (a==='heart'&&q.heartLabel) hearted.push(q.heartLabel); if (a==='ghost'&&q.ghostLabel) ghosted.push(q.ghostLabel); });
+  const cats = ['skincare','makeup','body'].filter(c => answers[c]==='heart');
+  const primaryCat = cats[0] || (answers['skincare']!=='ghost' ? 'skincare' : 'body');
+  const concerns = ['acne','antiaging','brightening','sensitivity','dryness'].filter(c => answers[c]==='heart');
+  let icon='\u{1F3AF}', title='';
+  if (primaryCat==='skincare') {
+    if (!concerns.length){icon='\u{1F338}';title='Skincare Explorer';}
+    else if (concerns.includes('acne')&&concerns.includes('brightening')){icon='\u26A1';title='Acne + Brightening Fix';}
+    else if (concerns.includes('acne')){icon='\u{1F3AF}';title='Acne Fighter';}
+    else if (concerns.includes('antiaging')){icon='\u231B';title='Anti-Aging Explorer';}
+    else if (concerns.includes('brightening')){icon='\u2728';title='Brightening Explorer';}
+    else if (concerns.includes('sensitivity')){icon='\u{1F33F}';title='Calm & Repair';}
+    else if (concerns.includes('dryness')){icon='\u{1F4A7}';title='Hydration Station';}
+    else{icon='\u{1F9F4}';title='Skincare Explorer';}
+  } else if (primaryCat==='makeup'){icon='\u{1F484}';title='Clean Makeup Explorer';}
+  else{icon='\u{1F6C1}';title='Body Care Explorer';}
+  const seekMap={acne:['Salicylic Acid','Niacinamide','Zinc','Azelaic Acid'],antiaging:['Peptides','Bakuchiol','Vitamin C','Coenzyme Q10'],brightening:['Vitamin C','Alpha Arbutin','Tranexamic Acid','Niacinamide'],sensitivity:['Ceramides','Centella Asiatica','Panthenol','Oat Extract'],dryness:['Hyaluronic Acid','Glycerin','Squalane','Ceramides']};
+  let seek=[]; concerns.forEach(c=>{if(seekMap[c])seek.push(...seekMap[c]);});
+  if(!seek.length) seek=['Ceramides','Niacinamide','Hyaluronic Acid','Squalane'];
+  if(answers.vegan==='heart') seek.push('Plant-based Actives');
+  seek=[...new Set(seek)].slice(0,5);
+  const avoidMap={fragrance:'Synthetic Fragrance',retinol:'Retinol/Retinoids',essentialoils:'Essential Oils',gluten:'Gluten Derivatives',silicones:'Silicones',over60:'Products over $60'};
+  const avoid=ghosted.map(g=>Object.values(avoidMap).find(v=>v===g)||g).filter(Boolean);
+  const exploreMap={skincare:{acne:['BHA Serums','Niacinamide Serums','Clay Masks','Spot Treatments'],antiaging:['Peptide Moisturizers','Bakuchiol Serums','Firming Treatments'],brightening:['Vitamin C Serums','Dark Spot Correctors','Brightening Toners'],sensitivity:['Barrier Repair Creams','Calming Serums','Gentle Cleansers'],dryness:['Hydrating Serums','Rich Moisturizers','Face Oils'],default:['Clean Serums','Barrier Moisturizers','Gentle SPF']},makeup:{default:['Clean Foundations','Tinted Moisturizers','Clean Lip Products','Natural Mascaras']},body:{default:['Body Moisturizers','Body SPF','Clean Body Washes','Body Treatments']}};
+  const catEx=exploreMap[primaryCat]||exploreMap.skincare;
+  let explore=[]; concerns.forEach(c=>{if(catEx[c])explore.push(...catEx[c]);});
+  if(!explore.length) explore=[...(catEx.default||[])];
+  explore=[...new Set(explore)].slice(0,4);
+  let desc='';
+  if(answers.pregnancy==='heart') desc='Pregnancy-safe formulas, filtered and sorted.';
+  if(answers.vegan==='heart') desc='Vegan-friendly picks, clean ingredients only.';
+  const budgetPrefix=answers.over60==='ghost'?'Under $60 ':'';
+  const heartTags=hearted.length?hearted.map(t=>`<span class="dhg-sum-tag heart-tag">${t}</span>`).join(''):'<span style="font-size:.62rem;color:var(--gray)">None yet</span>';
+  const ghostTags=ghosted.length?ghosted.map(t=>`<span class="dhg-sum-tag ghost-tag">${t}</span>`).join(''):'<span style="font-size:.62rem;color:var(--gray)">Nothing ghosted</span>';
+  document.getElementById('q-content').innerHTML = `
+    <div class="result">
+      <div class="r-hero"><span class="r-icon">${icon}</span><div class="r-eyebrow">Your clean beauty fix</div><div class="r-title">${title}</div><div class="r-desc">${desc}</div></div>
+      <div class="dhg-summary"><div class="dhg-sum-col"><span class="dhg-sum-label hearts">\u2764\uFE0F Your Stash</span><div class="dhg-sum-items">${heartTags}</div></div><div class="dhg-sum-col"><span class="dhg-sum-label ghosts">\u{1F47B} You Banished</span><div class="dhg-sum-items">${ghostTags}</div></div></div>
+      <div class="r-div"></div>
+      <div class="r-sec"><div class="r-sec-label seek">\u{1F33F} Ingredients to seek</div><div class="r-tags">${seek.map(t=>`<span class="rtag seek">${t}</span>`).join('')}</div></div>
+      <div class="r-sec"><div class="r-sec-label avoid">\u{1F6AB} Filtered out</div><div class="r-tags">${avoid.length?avoid.map(t=>`<span class="rtag avoid">${t}</span>`).join(''):'<span style="font-size:.7rem;color:var(--gray)">Nothing ghosted yet</span>'}</div></div>
+      <div class="r-sec"><div class="r-sec-label explore">\u{1F407} What to explore</div><div class="r-tags">${explore.map(t=>`<span class="rtag explore">${t}</span>`).join('')}</div></div>
+      <div class="r-div"></div>
+      <button class="r-cta">${budgetPrefix}Explore Products \u2192</button>
+      <button class="restart-btn" onclick="restart()">Start over \u21A9</button>
+      <div style="text-align:center;margin-top:10px;font-size:.72rem;color:var(--gray);letter-spacing:.04em;">Now go play. \u{1F986}\u2764\uFE0F\u{1F47B}</div>
+    </div>`;
+}
+// Auto-open on load
+window.addEventListener('load', openDHGModal);
+</script>

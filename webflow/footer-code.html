@@ -514,6 +514,16 @@ window.addEventListener('message', (e) => {
   if (e.data?.type === 'dhg-quiz-results') closeQuizAndShowProducts();
 });
 
+// Emoji Favicon
+(function() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" x="50" font-size="80" text-anchor="middle" dominant-baseline="central">🦆</text></svg>`;
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/svg+xml';
+  link.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+  document.head.appendChild(link);
+})();
+
 // Auth State Listener
 if (sb) sb.auth.onAuthStateChange((event, session) => {
   const signInBtns = document.querySelectorAll('.sign-in-btn');
@@ -526,5 +536,60 @@ if (sb) sb.auth.onAuthStateChange((event, session) => {
     signInBtns.forEach(btn => btn.style.display = 'block');
     signOutBtns.forEach(btn => btn.style.display = 'none');
   }
+});
+
+// ── PILL OVERFLOW: show 5, rank by rarity, "+more" toggle ──
+window.addEventListener('load', function() {
+  var MAX = 5;
+
+  // Count frequency across all cards for rarity ranking
+  var freq = {};
+  document.querySelectorAll('.benefits-list .pill-label').forEach(function(el) {
+    var n = el.textContent.trim();
+    freq[n] = (freq[n] || 0) + 1;
+  });
+  document.querySelectorAll('.key-actives-list .tooltip-pill').forEach(function(el) {
+    var a = el.querySelector('a');
+    var n = a ? a.textContent.trim() : el.textContent.trim();
+    freq[n] = (freq[n] || 0) + 1;
+  });
+
+  // Process each pill list
+  document.querySelectorAll('.benefits-list, .key-actives-list').forEach(function(list) {
+    var pills = Array.from(list.querySelectorAll('.tooltip-pill'));
+    if (pills.length <= MAX) return;
+
+    // Sort: rarest first (most distinctive to this product)
+    pills.sort(function(a, b) {
+      var la = a.querySelector('.pill-label') || a.querySelector('a');
+      var lb = b.querySelector('.pill-label') || b.querySelector('a');
+      var na = la ? la.textContent.trim() : '';
+      var nb = lb ? lb.textContent.trim() : '';
+      return (freq[na] || 999) - (freq[nb] || 999);
+    });
+
+    // Re-append in rarity order
+    pills.forEach(function(p) { list.appendChild(p); });
+
+    // Hide extras beyond 5
+    pills.slice(MAX).forEach(function(p) { p.classList.add('pill-hidden'); });
+
+    // Add "+more" toggle button after 5th pill
+    var btn = document.createElement('span');
+    btn.className = 'pill-more';
+    btn.textContent = '+' + (pills.length - MAX) + ' more';
+    pills[MAX - 1].insertAdjacentElement('afterend', btn);
+  });
+
+  // Toggle handler
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.pill-more');
+    if (!btn) return;
+    var list = btn.closest('.benefits-list, .key-actives-list');
+    if (!list) return;
+    var expanded = list.classList.toggle('expanded');
+    var count = list.querySelectorAll('.pill-hidden').length;
+    btn.textContent = expanded ? 'Show less' : '+' + count + ' more';
+  });
 });
 </script>
