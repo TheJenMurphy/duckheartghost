@@ -6,17 +6,6 @@ import { useState } from "react";
 ───────────────────────────────────────── */
 
 const COLORS = {
-  // 9S Framework
-  stars:          "#ed8435",
-  source:         "#e35e2e",
-  safety:         "#e9455c",
-  support:        "#d94d85",
-  suitability:    "#bf5cc9",
-  structure:      "#886de1",
-  substance:      "#3f8def",
-  sustainability: "#79c2ef",
-  spend:          "#59c2d5",
-
   // Five Sections
   isItSafe:       "#e9455c",   // Safety red    — IS IT SAFE?
   whatItDoes:     "#ff4d8a",   // Pink          — WHAT IT DOES
@@ -455,19 +444,6 @@ function Section({ section, data, isOpen, onToggle }) {
           transition: "background 0.2s",
         }}
       >
-        {/* Color bar */}
-        <div style={{
-          width: 3,
-          height: 20,
-          borderRadius: 2,
-          background: section.color,
-          opacity: isOpen ? 1 : 0.3,
-          flexShrink: 0,
-          transition: "opacity 0.2s",
-        }} />
-
-        <span style={{ fontSize: 13 }}>{section.icon}</span>
-
         <span style={{
           fontSize: ".72rem",
           fontFamily: "'Outfit', sans-serif",
@@ -612,46 +588,6 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
 
       {/* ── Thick rule ── */}
       <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} />
-
-      {/* ── 9S Mini Icon Row ── */}
-      <div style={{
-        display: "flex",
-        justifyContent: "center",
-        gap: 5,
-        padding: "10px 16px 8px",
-      }}>
-        {[
-          { key: "stars",          emoji: "⭐", label: "Stars" },
-          { key: "source",         emoji: "🌿", label: "Source" },
-          { key: "safety",         emoji: "🛡️", label: "Safety" },
-          { key: "support",        emoji: "💬", label: "Support" },
-          { key: "suitability",    emoji: "🎯", label: "Suitability" },
-          { key: "structure",      emoji: "🧪", label: "Structure" },
-          { key: "substance",      emoji: "🔬", label: "Substance" },
-          { key: "sustainability", emoji: "🌎", label: "Sustainability" },
-          { key: "spend",          emoji: "💰", label: "Spend" },
-        ].map(({ key, emoji, label }) => (
-          <div
-            key={key}
-            title={label}
-            style={{
-              width: 26,
-              height: 26,
-              borderRadius: "50%",
-              background: `${COLORS[key]}18`,
-              border: `1.5px solid ${COLORS[key]}55`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 10,
-              cursor: "default",
-              flexShrink: 0,
-            }}
-          >
-            {emoji}
-          </div>
-        ))}
-      </div>
 
       {/* ── Five Sections ── */}
       <div>
