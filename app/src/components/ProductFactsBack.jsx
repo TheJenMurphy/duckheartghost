@@ -1,7 +1,12 @@
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 
-/* ── 9S Color System ── */
-const S9 = {
+/* ─────────────────────────────────────────
+   DUCK HEART GHOST · Product Facts Back
+   Final Color System · March 2026
+───────────────────────────────────────── */
+
+const COLORS = {
+  // 9S Framework
   stars:          "#ed8435",
   source:         "#e35e2e",
   safety:         "#e9455c",
@@ -11,417 +16,674 @@ const S9 = {
   substance:      "#3f8def",
   sustainability: "#79c2ef",
   spend:          "#59c2d5",
+
+  // Five Sections
+  isItSafe:       "#e9455c",   // Safety red    — IS IT SAFE?
+  whatItDoes:     "#ff4d8a",   // Pink          — WHAT IT DOES
+  whoItsFor:      "#9955ff",   // Purple        — WHO IT'S FOR
+  whatItIs:       "#3f8def",   // Blue          — WHAT IT IS (header)
+  whatsTheDeal:   "#00c4b0",   // Clutch teal   — WHAT'S THE DEAL?
+
+  // Pills inside WHAT IT IS
+  ingredients:    "#44ddee",   // Aqua  — ingredient pills (rabbit hole links)
+  packaging:      "#3f8def",   // Blue  — packaging / formula pills
+
+  // Navigation — ALL links out to other cards/pages
+  rabbitHole:     "#ff8c2a",
+
+  // Neutrals
+  white:          "#ffffff",
+  grey:           "#777777",
+  divider:        "rgba(255,255,255,.12)",
+  bg:             "#000000",
 };
 
-/* ── Five Drawer Colors (mapped from 9S) ── */
-const DRAWERS = [
-  { key: "receipts", label: "Receipts",  emoji: "🧾", color: S9.stars,          desc: "Stars · Source · Safety" },
-  { key: "science",  label: "Science",   emoji: "🔬", color: S9.substance,      desc: "Substance · Structure" },
-  { key: "match",    label: "Match",     emoji: "🎯", color: S9.suitability,    desc: "Suitability · Support" },
-  { key: "impact",   label: "Impact",    emoji: "🌿", color: S9.sustainability, desc: "Sustainability" },
-  { key: "deal",     label: "Deal",      emoji: "💰", color: S9.spend,          desc: "Spend" },
+/* ─────────────────────────────────────────
+   FIVE SECTIONS — ordered Safety → Deal
+   Color progression: red → pink → purple → blue → teal
+───────────────────────────────────────── */
+const SECTIONS = [
+  { key: "safe",  label: "IS IT SAFE?",      color: COLORS.isItSafe,     icon: "🛡️" },
+  { key: "does",  label: "WHAT IT DOES",      color: COLORS.whatItDoes,   icon: "✨" },
+  { key: "for",   label: "WHO IT'S FOR",      color: COLORS.whoItsFor,    icon: "🎯" },
+  { key: "is",    label: "WHAT IT IS",        color: COLORS.whatItIs,     icon: "🔬" },
+  { key: "deal",  label: "WHAT'S THE DEAL?",  color: COLORS.whatsTheDeal, icon: "💰" },
 ];
 
-/* ── Sample product data for back ── */
+/* ─────────────────────────────────────────
+   SAMPLE PRODUCT DATA
+───────────────────────────────────────── */
 const sampleProduct = {
   name: "BeachPlease Cream Blush",
   brand: "Tower 28",
+  brandSlug: "tower-28",
   price: "$20",
+  pricePerOz: "$142.86/oz",
+  priceTier: "Accessible",
+  size: "0.14 oz",
   category: "Blush",
-  subcategory: "Cream",
-  verified: "Feb 2026",
+  type: "Cream",
+  verified: "Mar 2026",
 
-  drawers: {
-    receipts: {
-      stars: [
-        { label: "4.6 ★ Sephora", tooltip: "Based on 2,400+ reviews on Sephora.com" },
-        { label: "4.8 ★ Credo", tooltip: "Based on 180 reviews on Credo Beauty" },
-        { label: "Allure Best of Beauty", tooltip: "Winner 2023 Allure Best of Beauty Awards" },
+  sections: {
+    safe: {
+      ewgScore: "1",
+      ewgLabel: "Low Hazard",
+      certifications: [
+        { label: "EWG Verified",          tooltip: "Meets EWG's strictest standards for ingredient safety" },
+        { label: "Dermatologist Tested",  tooltip: "Clinically tested by board-certified dermatologists" },
+        { label: "Fragrance Free",        tooltip: "Contains no added fragrance or parfum" },
       ],
-      source: [
-        { label: "Women Owned", tooltip: "Founded by Amy Liu in 2019" },
-        { label: "Made in USA", tooltip: "Manufactured in Los Angeles, CA" },
-        { label: "BIPOC Founded", tooltip: "Amy Liu is a Chinese-American founder" },
-      ],
-      safety: [
-        { label: "Pregnancy Safe", tooltip: "No retinoids, salicylic acid, or harmful ingredients for pregnancy" },
-        { label: "Sensitive Safe", tooltip: "NEA accepted — formulated for sensitive & eczema-prone skin" },
-        { label: "Allergy Tested", tooltip: "Dermatologist tested and approved for reactive skin" },
+      regulations: [
+        { label: "EU Compliant",          tooltip: "Meets EU cosmetic safety regulations (1,600+ banned ingredients)" },
+        { label: "California Safe",       tooltip: "Complies with California Toxic-Free Cosmetics Act" },
       ],
     },
-    science: {
-      structure: [
-        { label: "Cream", tooltip: "Cream-to-powder finish blends seamlessly" },
-        { label: "Buildable", tooltip: "Sheer to medium coverage, layer for intensity" },
-        { label: "Multi-use", tooltip: "Works on cheeks, lips, and eyelids" },
-      ],
-      substance: [
-        { label: "Aloe Vera", tooltip: "Soothing botanical, calms redness — rabbit hole →" },
-        { label: "Green Tea", tooltip: "Antioxidant protection — rabbit hole →" },
-        { label: "Apricot Oil", tooltip: "Vitamin E rich, nourishing emollient — rabbit hole →" },
+
+    does: {
+      benefits: [
+        { label: "Buildable Color",       tooltip: "Sheer to medium coverage depending on how much you layer" },
+        { label: "Natural Flush",         tooltip: "Mimics the look of naturally flushed skin" },
+        { label: "Hydrating",             tooltip: "Jojoba oil keeps skin moisturized throughout the day" },
+        { label: "Long-wearing",          tooltip: "Up to 8 hours wear time in clinical testing" },
+        { label: "Non-comedogenic",       tooltip: "Won't clog pores — tested and confirmed" },
       ],
     },
-    match: {
-      suitability: [
-        { label: "All Skin Types", tooltip: "Tested across oily, dry, combination, and sensitive" },
-        { label: "Light–Deep", tooltip: "6 shades ranging from fair to deep skin tones" },
-        { label: "Warm & Cool", tooltip: "Shade range covers warm, neutral, and cool undertones" },
+
+    for: {
+      skinTypes: [
+        { label: "Dry Skin",              tooltip: "Cream formula is especially flattering on dry skin" },
+        { label: "Normal Skin",           tooltip: "Works well with normal skin types" },
+        { label: "Sensitive Skin",        tooltip: "Free of known irritants, suitable for sensitive skin" },
       ],
-      support: [
-        { label: "Hydrating", tooltip: "Adds moisture without caking or drying" },
-        { label: "Long Lasting", tooltip: "Wears 6-8 hours without touchup" },
-        { label: "Brightening", tooltip: "Natural radiant finish, not glittery" },
+      personas: [
+        { label: "Clean Beauty Curious",  tooltip: "Great entry point for people new to clean beauty" },
+        { label: "Minimalist",            tooltip: "Does double duty as blush + lip color" },
       ],
-    },
-    impact: {
-      sustainability: [
-        { label: "Recyclable", tooltip: "Compact is made from post-consumer recycled plastic" },
-        { label: "Leaping Bunny", tooltip: "Certified cruelty-free by Leaping Bunny" },
-        { label: "Clean at Sephora", tooltip: "Meets Sephora Clean standards — no parabens, sulfates, phthalates" },
+      notFor: [
+        { label: "Oily Skin",             tooltip: "Cream formulas may not last as long on oily skin — set with powder" },
       ],
     },
+
+    is: {
+      keyIngredients: [
+        {
+          label: "Castor Seed Oil",
+          inci: "Ricinus Communis Seed Oil",
+          slug: "castor-seed-oil",
+          tooltip: "Ricinus Communis Seed Oil — Emollient base. Gives the formula its glide.",
+        },
+        {
+          label: "Jojoba Oil",
+          inci: "Simmondsia Chinensis Seed Oil",
+          slug: "jojoba-oil",
+          tooltip: "Simmondsia Chinensis Seed Oil — Technically a wax ester. Mimics skin's own sebum.",
+        },
+        {
+          label: "Caprylic/Capric Triglyceride",
+          inci: "Caprylic/Capric Triglyceride",
+          slug: "caprylic-capric-triglyceride",
+          tooltip: "Caprylic/Capric Triglyceride — Lightweight emollient from coconut oil.",
+        },
+      ],
+      formulaBase: [
+        { label: "Oil-based",   tooltip: "Lipophilic base — won't oxidize or change color on skin" },
+        { label: "Anhydrous",   tooltip: "No water in the formula — no preservatives needed" },
+      ],
+      packaging: [
+        { label: "Compact",     tooltip: "Small plastic compact with built-in mirror" },
+        { label: "Travel-size", tooltip: "0.14oz qualifies as TSA carry-on friendly" },
+        { label: "Plastic",     tooltip: "Outer case is plastic — not currently refillable" },
+      ],
+    },
+
     deal: {
-      spend: [
-        { label: "Accessible · $20", tooltip: "Under $25 price point" },
-        { label: "Credo · $20", tooltip: "Available at Credo Beauty with affiliate link" },
-        { label: "Sephora · $20", tooltip: "Available at Sephora — Clean at Sephora badge" },
-        { label: "0.17 oz", tooltip: "Standard blush compact size, lasts 4-6 months daily use" },
+      price: "$20",
+      pricePerOz: "$142.86/oz",
+      priceTier: "Accessible",
+      retailers: [
+        { label: "Credo Beauty",     url: "#", tooltip: "Ships free over $50. Credo Clean Standard verified." },
+        { label: "Tower 28 Direct",  url: "#", tooltip: "Buy direct from the brand. Subscribe & save 15%." },
+        { label: "Sephora",          url: "#", tooltip: "In-store and online. Free samples with orders." },
       ],
+      affiliateNote: "DHG earns a small commission when you shop these links — disclosed because that's the whole point.",
     },
   },
-
-  realTalk: [
-    { label: "🦆 Shade range could be wider", type: "duck" },
-    { label: "❤️ Best drugstore-priced clean blush", type: "heart" },
-    { label: "👻 Packaging feels cheap for the price", type: "ghost" },
-  ],
-  conflicts: "Tower 28 affiliate · Credo affiliate",
 };
 
-/* ── Main Component ── */
-export default function ProductFactsBack() {
-  const [openDrawer, setOpenDrawer] = useState(null);
-  const [flipped, setFlipped] = useState(true); // start showing the back
-  const cardRef = useRef(null);
-
-  const toggleDrawer = (key) => {
-    setOpenDrawer(openDrawer === key ? null : key);
-  };
-
-  const rainbow = Object.values(S9);
+/* ─────────────────────────────────────────
+   PILL COMPONENT
+───────────────────────────────────────── */
+function Pill({ label, color, tooltip, isLink }) {
+  const [showTip, setShowTip] = useState(false);
 
   return (
-    <div style={{
-      display: "flex", justifyContent: "center", alignItems: "flex-start",
-      minHeight: "100vh", background: "#181819",
-      fontFamily: "'DM Sans', -apple-system, sans-serif",
-      padding: "40px 20px",
-    }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <span
+        onMouseEnter={() => setShowTip(true)}
+        onMouseLeave={() => setShowTip(false)}
+        style={{
+          display: "inline-block",
+          padding: "4px 10px",
+          borderRadius: 9999,
+          fontSize: ".72rem",
+          fontFamily: "'Outfit', sans-serif",
+          fontWeight: 600,
+          color: isLink ? COLORS.rabbitHole : color,
+          background: isLink ? "rgba(255,140,42,.12)" : `${color}18`,
+          border: `1px solid ${isLink ? COLORS.rabbitHole : color}40`,
+          cursor: isLink ? "pointer" : "default",
+          whiteSpace: "nowrap",
+          transition: "all 0.15s ease",
+        }}
+      >
+        {isLink ? `${label} →` : label}
+      </span>
 
-      <div ref={cardRef} style={{
-        width: 375, borderRadius: 20, overflow: "hidden",
-        background: "#000",
-        border: "1px solid rgba(255,255,255,0.06)",
-        boxShadow: "0 24px 80px rgba(0,0,0,0.6)",
-      }}>
-        {/* Rainbow bar */}
-        <div style={{ height: 3, background: `linear-gradient(90deg, ${rainbow.join(", ")})` }} />
-
-        {/* Back Header */}
+      {showTip && tooltip && (
         <div style={{
-          padding: "14px 20px 12px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-        }}>
-          <div>
-            <div style={{
-              fontFamily: "'Space Mono', monospace", fontSize: 9,
-              color: "rgba(255,255,255,.3)", textTransform: "uppercase",
-              letterSpacing: 2, marginBottom: 2,
-            }}>
-              Product Facts
-            </div>
-            <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>
-              {sampleProduct.name}
-            </div>
-            <div style={{ fontSize: ".82rem", color: "rgba(255,255,255,.4)", marginTop: 2 }}>
-              {sampleProduct.brand} · {sampleProduct.price}
-            </div>
-          </div>
-          <button
-            onClick={() => setFlipped(f => !f)}
-            style={{
-              width: 32, height: 32, borderRadius: "50%",
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.4)", fontSize: 14,
-              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            }}
-          >
-            ↻
-          </button>
-        </div>
-
-        {/* 9S Mini Icons Row */}
-        <div style={{
-          display: "flex", justifyContent: "center", gap: 4,
-          padding: "10px 16px 6px",
-        }}>
-          {Object.entries(S9).map(([name, color]) => (
-            <div key={name} style={{
-              width: 28, height: 28, borderRadius: "50%",
-              background: `${color}22`,
-              border: `1.5px solid ${color}55`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 8, fontWeight: 700, color: color,
-              textTransform: "uppercase", letterSpacing: 0,
-              fontFamily: "'Space Mono', monospace",
-            }}>
-              {name.charAt(0).toUpperCase()}
-            </div>
-          ))}
-        </div>
-
-        {/* ── Five Drawers ── */}
-        <div style={{ padding: "6px 0" }}>
-          {DRAWERS.map((drawer) => {
-            const isOpen = openDrawer === drawer.key;
-            const drawerData = sampleProduct.drawers[drawer.key];
-
-            return (
-              <div key={drawer.key}>
-                {/* Drawer Header */}
-                <button
-                  onClick={() => toggleDrawer(drawer.key)}
-                  style={{
-                    width: "100%", padding: "10px 20px",
-                    background: isOpen ? `${drawer.color}12` : "transparent",
-                    border: "none", borderTop: "1px solid rgba(255,255,255,0.04)",
-                    cursor: "pointer",
-                    display: "flex", alignItems: "center", gap: 10,
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {/* Color accent bar */}
-                  <div style={{
-                    width: 3, height: 24, borderRadius: 2,
-                    background: drawer.color,
-                    opacity: isOpen ? 1 : 0.4,
-                    transition: "opacity 0.2s",
-                  }} />
-
-                  <span style={{ fontSize: 16 }}>{drawer.emoji}</span>
-
-                  <div style={{ flex: 1, textAlign: "left" }}>
-                    <div style={{
-                      fontSize: ".82rem", fontWeight: 700, color: isOpen ? drawer.color : "rgba(255,255,255,.7)",
-                      letterSpacing: ".03em", transition: "color 0.2s",
-                    }}>
-                      {drawer.label}
-                    </div>
-                    <div style={{
-                      fontSize: ".65rem", color: "rgba(255,255,255,.25)",
-                      fontFamily: "'Space Mono', monospace", letterSpacing: ".5px",
-                    }}>
-                      {drawer.desc}
-                    </div>
-                  </div>
-
-                  {/* Chevron */}
-                  <span style={{
-                    fontSize: 12, color: "rgba(255,255,255,.3)",
-                    transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
-                    transition: "transform 0.2s",
-                  }}>
-                    ▶
-                  </span>
-                </button>
-
-                {/* Drawer Content */}
-                <div style={{
-                  maxHeight: isOpen ? 400 : 0,
-                  overflow: "hidden",
-                  transition: "max-height 0.3s ease",
-                  background: "rgba(255,255,255,0.02)",
-                }}>
-                  <div style={{ padding: "8px 20px 14px" }}>
-                    {Object.entries(drawerData).map(([category, pills]) => (
-                      <div key={category} style={{ marginBottom: 10 }}>
-                        {/* Category label with 9S color */}
-                        <div style={{
-                          fontSize: ".65rem", fontWeight: 700,
-                          color: S9[category],
-                          textTransform: "uppercase",
-                          letterSpacing: "1.5px",
-                          fontFamily: "'Space Mono', monospace",
-                          marginBottom: 6,
-                          display: "flex", alignItems: "center", gap: 6,
-                        }}>
-                          <span style={{
-                            width: 6, height: 6, borderRadius: "50%",
-                            background: S9[category],
-                            display: "inline-block",
-                          }} />
-                          {category}
-                        </div>
-
-                        {/* Pills */}
-                        <div style={{
-                          display: "flex", flexWrap: "wrap", gap: 5,
-                        }}>
-                          {pills.map((pill) => (
-                            <PillWithTooltip
-                              key={pill.label}
-                              label={pill.label}
-                              tooltip={pill.tooltip}
-                              color={S9[category]}
-                              cardRef={cardRef}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ── Real Talk Section ── */}
-        <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          padding: "12px 20px",
+          position: "absolute",
+          bottom: "calc(100% + 6px)",
+          left: 0,
+          zIndex: 200,
+          background: "rgba(255,255,255,.96)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(0,0,0,.1)",
+          borderRadius: 12,
+          padding: "8px 12px",
+          minWidth: 180,
+          maxWidth: 240,
+          pointerEvents: "none",
+          boxShadow: "0 4px 20px rgba(0,0,0,.3)",
         }}>
           <div style={{
-            fontSize: ".7rem", fontWeight: 700,
-            color: "rgba(255,255,255,.3)",
-            textTransform: "uppercase",
-            letterSpacing: "1.5px",
-            fontFamily: "'Space Mono', monospace",
-            marginBottom: 8,
+            fontSize: ".72rem",
+            color: "#333",
+            fontFamily: "'Outfit', sans-serif",
+            lineHeight: 1.5,
           }}>
-            Real Talk
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-            {sampleProduct.realTalk.map((tag, i) => (
-              <div key={i} style={{
-                fontSize: ".78rem",
-                color: tag.type === "duck" ? "#c6a350"
-                     : tag.type === "heart" ? "#e9455c"
-                     : "#886de1",
-                padding: "4px 0",
-                lineHeight: 1.4,
-              }}>
-                {tag.label}
-              </div>
-            ))}
+            {tooltip}
           </div>
         </div>
-
-        {/* ── Conflict Disclosure ── */}
-        <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.04)",
-          padding: "10px 20px 14px",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-        }}>
-          <div style={{
-            fontSize: ".65rem",
-            color: "rgba(255,255,255,.2)",
-            fontFamily: "'Space Mono', monospace",
-          }}>
-            🧂 {sampleProduct.conflicts}
-          </div>
-          <div style={{
-            fontSize: ".6rem",
-            color: "rgba(255,255,255,.15)",
-            fontFamily: "'Space Mono', monospace",
-          }}>
-            Verified {sampleProduct.verified}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
 
-/* ── Pill with Tooltip ── */
-function PillWithTooltip({ label, tooltip, color, cardRef }) {
-  const [showTip, setShowTip] = useState(false);
-  const pillRef = useRef(null);
-  const [tipStyle, setTipStyle] = useState({});
+/* ─────────────────────────────────────────
+   SUB-LABEL (Space Mono category labels)
+───────────────────────────────────────── */
+function SubLabel({ text }) {
+  return (
+    <div style={{
+      fontSize: ".6rem",
+      fontFamily: "'Space Mono', monospace",
+      color: COLORS.grey,
+      textTransform: "uppercase",
+      letterSpacing: ".05em",
+      marginBottom: 5,
+    }}>
+      {text}
+    </div>
+  );
+}
 
-  const handleEnter = useCallback(() => {
-    setShowTip(true);
-    // Position tooltip
-    if (pillRef.current && cardRef.current) {
-      const pillRect = pillRef.current.getBoundingClientRect();
-      const cardRect = cardRef.current.getBoundingClientRect();
-      const tipWidth = 220;
-      let left = 0;
-      if (pillRect.left + tipWidth > cardRect.right - 12) {
-        left = cardRect.right - pillRect.left - tipWidth - 12;
-      }
-      setTipStyle({ left });
-    }
-  }, [cardRef]);
+/* ─────────────────────────────────────────
+   SECTION CONTENT — per section type
+───────────────────────────────────────── */
+function SectionContent({ sectionKey, data }) {
+  if (sectionKey === "safe") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {/* EWG Score */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: ".95rem",
+            fontWeight: 700,
+            color: COLORS.isItSafe,
+          }}>
+            EWG {data.ewgScore}
+          </span>
+          <span style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: ".65rem",
+            color: COLORS.grey,
+            textTransform: "uppercase",
+            letterSpacing: ".05em",
+          }}>
+            {data.ewgLabel}
+          </span>
+        </div>
 
-  const isRabbitHole = tooltip.includes("rabbit hole");
+        {/* Certifications */}
+        <div>
+          <SubLabel text="Certifications" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {data.certifications.map((c, i) => (
+              <Pill key={i} label={c.label} color={COLORS.isItSafe} tooltip={c.tooltip} />
+            ))}
+          </div>
+        </div>
+
+        {/* Regulations */}
+        <div>
+          <SubLabel text="Regulatory" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {data.regulations.map((r, i) => (
+              <Pill key={i} label={r.label} color={COLORS.isItSafe} tooltip={r.tooltip} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (sectionKey === "does") {
+    return (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+        {data.benefits.map((b, i) => (
+          <Pill key={i} label={b.label} color={COLORS.whatItDoes} tooltip={b.tooltip} />
+        ))}
+      </div>
+    );
+  }
+
+  if (sectionKey === "for") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {data.skinTypes.map((s, i) => (
+            <Pill key={i} label={s.label} color={COLORS.whoItsFor} tooltip={s.tooltip} />
+          ))}
+          {data.personas.map((p, i) => (
+            <Pill key={i} label={p.label} color={COLORS.whoItsFor} tooltip={p.tooltip} />
+          ))}
+        </div>
+
+        {data.notFor.length > 0 && (
+          <div>
+            <SubLabel text="Not ideal for" />
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+              {data.notFor.map((n, i) => (
+                <Pill key={i} label={n.label} color={COLORS.grey} tooltip={n.tooltip} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (sectionKey === "is") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+
+        {/* Key Ingredients — AQUA rabbit hole links */}
+        <div>
+          <SubLabel text="Key Ingredients" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {data.keyIngredients.map((ing, i) => (
+              <Pill
+                key={i}
+                label={ing.label}
+                color={COLORS.ingredients}
+                tooltip={ing.tooltip}
+                isLink={true}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Formula Base — BLUE */}
+        <div>
+          <SubLabel text="Formula Base" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {data.formulaBase.map((f, i) => (
+              <Pill key={i} label={f.label} color={COLORS.packaging} tooltip={f.tooltip} />
+            ))}
+          </div>
+        </div>
+
+        {/* Packaging — BLUE */}
+        <div>
+          <SubLabel text="Packaging" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {data.packaging.map((p, i) => (
+              <Pill key={i} label={p.label} color={COLORS.packaging} tooltip={p.tooltip} />
+            ))}
+          </div>
+        </div>
+
+      </div>
+    );
+  }
+
+  if (sectionKey === "deal") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+
+        {/* Price block */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+          <span style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontWeight: 900,
+            fontSize: "1.3rem",
+            color: "rgba(255,255,255,.75)",
+          }}>
+            {data.price}
+          </span>
+          <span style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: ".72rem",
+            color: COLORS.grey,
+          }}>
+            {data.pricePerOz} · {data.priceTier}
+          </span>
+        </div>
+
+        {/* Retailer links — rabbit hole orange */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {data.retailers.map((r, i) => (
+            <a
+              key={i}
+              href={r.url}
+              title={r.tooltip}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "9px 12px",
+                borderRadius: 8,
+                background: "rgba(255,140,42,.06)",
+                border: "1px solid rgba(255,140,42,.25)",
+                textDecoration: "none",
+                transition: "background 0.15s",
+              }}
+            >
+              <span style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: ".8rem",
+                fontWeight: 600,
+                color: COLORS.rabbitHole,
+              }}>
+                {r.label}
+              </span>
+              <span style={{ fontSize: 12, color: COLORS.rabbitHole }}>→</span>
+            </a>
+          ))}
+        </div>
+
+        {/* Affiliate disclosure */}
+        <div style={{
+          fontSize: ".6rem",
+          fontFamily: "'Space Mono', monospace",
+          color: COLORS.grey,
+          lineHeight: 1.6,
+          paddingTop: 6,
+          borderTop: `1px solid ${COLORS.divider}`,
+        }}>
+          {data.affiliateNote}
+        </div>
+
+      </div>
+    );
+  }
+
+  return null;
+}
+
+/* ─────────────────────────────────────────
+   SECTION WRAPPER
+───────────────────────────────────────── */
+function Section({ section, data, isOpen, onToggle }) {
+  return (
+    <div style={{ borderTop: `1px solid ${COLORS.divider}` }}>
+
+      {/* Section header / toggle */}
+      <button
+        onClick={onToggle}
+        style={{
+          width: "100%",
+          padding: "10px 16px",
+          background: isOpen ? `${section.color}0e` : "transparent",
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          transition: "background 0.2s",
+        }}
+      >
+        {/* Color bar */}
+        <div style={{
+          width: 3,
+          height: 20,
+          borderRadius: 2,
+          background: section.color,
+          opacity: isOpen ? 1 : 0.3,
+          flexShrink: 0,
+          transition: "opacity 0.2s",
+        }} />
+
+        <span style={{ fontSize: 13 }}>{section.icon}</span>
+
+        <span style={{
+          fontSize: ".72rem",
+          fontFamily: "'Outfit', sans-serif",
+          fontWeight: 700,
+          letterSpacing: ".06em",
+          textTransform: "uppercase",
+          color: isOpen ? section.color : "rgba(255,255,255,.45)",
+          flex: 1,
+          textAlign: "left",
+          transition: "color 0.2s",
+        }}>
+          {section.label}
+        </span>
+
+        <span style={{
+          fontSize: 9,
+          color: "rgba(255,255,255,.2)",
+          transform: isOpen ? "rotate(90deg)" : "none",
+          transition: "transform 0.2s",
+          display: "inline-block",
+        }}>
+          ▶
+        </span>
+      </button>
+
+      {/* Collapsible content */}
+      <div style={{
+        maxHeight: isOpen ? 500 : 0,
+        overflow: "hidden",
+        transition: "max-height 0.3s ease",
+      }}>
+        <div style={{ padding: "2px 16px 14px" }}>
+          <SectionContent sectionKey={section.key} data={data} />
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   MAIN COMPONENT
+   Props:
+     product   — CMS-bound product object (defaults to sampleProduct)
+     onFlipBack — callback to flip card back to front
+───────────────────────────────────────── */
+export default function ProductFactsBack({ product = sampleProduct, onFlipBack }) {
+  // IS IT SAFE? open by default — safety first
+  const [openSection, setOpenSection] = useState("safe");
+
+  const toggleSection = (key) => {
+    setOpenSection(openSection === key ? null : key);
+  };
 
   return (
-    <span
-      ref={pillRef}
-      style={{ position: "relative", display: "inline-block" }}
-      onMouseEnter={handleEnter}
-      onMouseLeave={() => setShowTip(false)}
-    >
-      <span style={{
-        display: "inline-block",
-        padding: "3px 10px",
-        borderRadius: 20,
-        fontSize: ".72rem",
-        fontWeight: 500,
-        background: `${color}15`,
-        color: `${color}`,
-        border: `1px solid ${color}33`,
-        cursor: "pointer",
-        transition: "all 0.15s ease",
-        whiteSpace: "nowrap",
-      }}>
-        {label}
-        {isRabbitHole && <span style={{ marginLeft: 3, fontSize: ".6rem" }}>🐇</span>}
-      </span>
+    <div style={{
+      width: "100%",
+      maxWidth: 380,
+      background: COLORS.bg,
+      color: COLORS.white,
+      fontFamily: "'Outfit', sans-serif",
+      overflowY: "auto",
+      maxHeight: "calc(100dvh - 90px)", // room for header + footer
+      // Scrollbar hidden
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
+    }}>
 
-      {/* Tooltip */}
-      {showTip && (
-        <span style={{
-          position: "absolute",
-          bottom: "calc(100% + 6px)",
-          left: tipStyle.left || 0,
-          width: 220,
-          padding: "8px 10px",
-          borderRadius: 8,
-          background: "rgba(20,20,25,0.95)",
-          border: `1px solid ${color}44`,
-          backdropFilter: "blur(12px)",
-          zIndex: 100,
-          boxShadow: `0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px ${color}22`,
+      {/* ── Header ── */}
+      <div style={{ padding: "14px 16px 10px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            {/* "Product Facts" label */}
+            <div style={{
+              fontFamily: "'Space Mono', monospace",
+              fontSize: ".6rem",
+              color: COLORS.grey,
+              textTransform: "uppercase",
+              letterSpacing: ".1em",
+              marginBottom: 4,
+            }}>
+              Product Facts
+            </div>
+
+            {/* Product name */}
+            <div style={{
+              fontSize: "1.1rem",
+              fontWeight: 900,
+              color: COLORS.white,
+              lineHeight: 1.2,
+            }}>
+              {product.name}
+            </div>
+
+            {/* Brand — rabbit hole link */}
+            <a
+              href={`/brands/${product.brandSlug}`}
+              style={{
+                fontSize: ".85rem",
+                fontWeight: 700,
+                color: COLORS.rabbitHole,
+                textDecoration: "none",
+                display: "inline-block",
+                marginTop: 2,
+              }}
+            >
+              {product.brand} →
+            </a>
+          </div>
+
+          {/* Flip back button */}
+          <button
+            onClick={onFlipBack}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,.06)",
+              border: "1px solid rgba(255,255,255,.1)",
+              color: "rgba(255,255,255,.4)",
+              fontSize: 14,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            ↺
+          </button>
+        </div>
+
+        {/* Meta row */}
+        <div style={{
+          fontSize: ".68rem",
+          color: "rgba(255,255,255,.35)",
+          marginTop: 6,
         }}>
-          <div style={{
-            fontSize: ".7rem", fontWeight: 700, color: color,
-            marginBottom: 3, letterSpacing: ".03em",
-          }}>
-            {label}
+          {product.category} · {product.type}&nbsp;&nbsp;|&nbsp;&nbsp;{product.size}&nbsp;&nbsp;|&nbsp;&nbsp;{product.price}
+        </div>
+      </div>
+
+      {/* ── Thick rule ── */}
+      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} />
+
+      {/* ── 9S Mini Icon Row ── */}
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        gap: 5,
+        padding: "10px 16px 8px",
+      }}>
+        {[
+          { key: "stars",          emoji: "⭐", label: "Stars" },
+          { key: "source",         emoji: "🌿", label: "Source" },
+          { key: "safety",         emoji: "🛡️", label: "Safety" },
+          { key: "support",        emoji: "💬", label: "Support" },
+          { key: "suitability",    emoji: "🎯", label: "Suitability" },
+          { key: "structure",      emoji: "🧪", label: "Structure" },
+          { key: "substance",      emoji: "🔬", label: "Substance" },
+          { key: "sustainability", emoji: "🌎", label: "Sustainability" },
+          { key: "spend",          emoji: "💰", label: "Spend" },
+        ].map(({ key, emoji, label }) => (
+          <div
+            key={key}
+            title={label}
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: `${COLORS[key]}18`,
+              border: `1.5px solid ${COLORS[key]}55`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 10,
+              cursor: "default",
+              flexShrink: 0,
+            }}
+          >
+            {emoji}
           </div>
-          <div style={{
-            fontSize: ".68rem", color: "rgba(255,255,255,.6)",
-            lineHeight: 1.45,
-          }}>
-            {tooltip}
-          </div>
+        ))}
+      </div>
+
+      {/* ── Five Sections ── */}
+      <div>
+        {SECTIONS.map((section) => (
+          <Section
+            key={section.key}
+            section={section}
+            data={product.sections[section.key]}
+            isOpen={openSection === section.key}
+            onToggle={() => toggleSection(section.key)}
+          />
+        ))}
+      </div>
+
+      {/* ── Verified footer ── */}
+      <div style={{
+        textAlign: "center",
+        padding: "12px 16px 16px",
+        borderTop: `1px solid ${COLORS.divider}`,
+        marginTop: 4,
+      }}>
+        <span style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: ".65rem",
+          color: COLORS.grey,
+          letterSpacing: ".06em",
+          textTransform: "uppercase",
+        }}>
+          Verified {product.verified}
         </span>
-      )}
-    </span>
+      </div>
+
+    </div>
   );
 }
