@@ -93,7 +93,7 @@ export default function BrandCard({ brand }: { brand: Brand }) {
                 ))}
               </div>
             </div>
-            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none", pattingTop: 16 }}>
+            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none", paddingTop: 16 }}>
               {/* Vote hint or results */}
               {!voted ? (
                 <div className="vote-hint">vote to see if the hive agrees</div>
