@@ -203,15 +203,21 @@ export default function BrandCard({ brand }: { brand: Brand }) {
         </div>
       </div>
 
-      {/* ── Footer — no Shop button ── */}
+	{/* ── Footer ── */}
       <div className="card-footer">
-        <div className="dhg-buttons" style={{ marginBottom: 0 }}>
+        <div className="dhg-buttons">
           {([["duck", "🦆"], ["heart", "❤️"], ["ghost", "👻"]] as const).map(([key, emoji]) => (
             <button key={key} className={`dhg-btn ${key}`} onClick={() => castVote(key)}>
               <div className="dhg-btn-inner">{emoji}</div>
             </button>
           ))}
         </div>
+	<button className="shop-btn">
+          <div className="shop-btn-inner">
+            <span>👜</span>
+            <span className="shop-label">Shop &amp; Support</span>
+          </div>
+        </button>
       </div>
     </div>
   );
