@@ -134,11 +134,12 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
                 AKA &ldquo;<span style={{ color: "rgba(255,255,255,.6)" }}>{ingredient.aka}</span>&rdquo;
               </div>
 
-	<div className="card-meta">
+<div className="card-meta">
                 <span>{ingredient.type}</span>
                 <span className="meta-dot" />
                 <span>{ingredient.kind}</span>
-                <span className="meta-dot" />
+              </div>
+              <div className="card-meta" style={{ marginTop: 2 }}>
                 <span>{ingredient.origin}</span>
               </div>
 
