@@ -104,7 +104,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             <div className="front-body">
               {!voted ? (
-                <div className="vote-hint">Vote — then see if the hive agrees.</div>
+                <div className="vote-hint">vote to see if the hive agrees</div>
               ) : (
                 <div style={{ marginBottom: 8 }}>
                   <div className="vote-bar">

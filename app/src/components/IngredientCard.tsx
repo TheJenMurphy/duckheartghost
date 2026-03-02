@@ -101,7 +101,7 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
             <div className="front-body">
               {/* Vote hint or results */}
               {!voted ? (
-                <div className="vote-hint">Vote — then see if the hive agrees.</div>
+                <div className="vote-hint">vote to see if the hive agrees</div>
               ) : (
                 <div style={{ marginBottom: 8 }}>
                   <div className="vote-bar">
@@ -134,33 +134,12 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
                 AKA &ldquo;<span style={{ color: "rgba(255,255,255,.6)" }}>{ingredient.aka}</span>&rdquo;
               </div>
 
-              {/* Type / Kind / Origin — spacious grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px", marginBottom: 4 }}>
-                <div>
-                  <div style={{ fontFamily: "var(--font-space-mono), 'Space Mono', monospace", fontSize: ".6rem", color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 3 }}>
-                    Type
-                  </div>
-                  <div style={{ fontSize: ".9rem", color: "rgba(255,255,255,.8)", fontWeight: 500, display: "flex", alignItems: "center", gap: 5 }}>
-                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: ingredient.type === "Botanical" ? "var(--clutch)" : "var(--ghost)", display: "inline-block" }} />
-                    {ingredient.type}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontFamily: "var(--font-space-mono), 'Space Mono', monospace", fontSize: ".6rem", color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 3 }}>
-                    Kind
-                  </div>
-                  <div style={{ fontSize: ".9rem", color: "rgba(255,255,255,.8)", fontWeight: 500 }}>
-                    {ingredient.kind}
-                  </div>
-                </div>
-                <div style={{ gridColumn: "1 / -1" }}>
-                  <div style={{ fontFamily: "var(--font-space-mono), 'Space Mono', monospace", fontSize: ".6rem", color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 3 }}>
-                    Origin
-                  </div>
-                  <div style={{ fontSize: ".9rem", color: "rgba(255,255,255,.8)", fontWeight: 500 }}>
-                    {ingredient.origin}
-                  </div>
-                </div>
+	<div className="card-meta">
+                <span>{ingredient.type}</span>
+                <span className="meta-dot" />
+                <span>{ingredient.kind}</span>
+                <span className="meta-dot" />
+                <span>{ingredient.origin}</span>
               </div>
 
               {/* Tap for Facts */}
