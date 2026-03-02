@@ -180,8 +180,14 @@ export default function ProductCard({ product }: { product: Product }) {
                   </div>
                 </div>
               )}
-              <div className="product-name">{product.name}</div>
-              <div className="brand-name">{product.brand}</div>
+	<div style={{
+                fontSize: "1.45rem", fontWeight: 800, color: "#fff",
+                letterSpacing: "-.03em", lineHeight: 1.15, marginBottom: 3,
+              }}>{product.name}</div>
+              <a href={`/brands/${product.brand.toLowerCase().replace(/\s+/g, '-')}`} style={{
+                fontSize: ".95rem", color: "var(--rabbit)", fontWeight: 700,
+                textDecoration: "none", marginBottom: 4, display: "inline-block",
+              }}>{product.brand} →</a>
               <div className="card-meta">
                 <span>{product.price}</span>
                 <span className="meta-dot" />
