@@ -205,9 +205,9 @@ function Pill({ label, color, tooltip, isLink }) {
 function SubLabel({ text }) {
   return (
     <div style={{
-      fontSize: ".6rem",
+      fontSize: ".68rem",
       fontFamily: "'Space Mono', monospace",
-      color: COLORS.grey,
+      color: "rgba(255,255,255,.5)",
       textTransform: "uppercase",
       letterSpacing: ".05em",
       marginBottom: 5,
@@ -236,8 +236,8 @@ function SectionContent({ sectionKey, data }) {
           </span>
           <span style={{
             fontFamily: "'Space Mono', monospace",
-            fontSize: ".65rem",
-            color: COLORS.grey,
+            fontSize: ".72rem",
+            color: "rgba(255,255,255,.5)",
             textTransform: "uppercase",
             letterSpacing: ".05em",
           }}>
@@ -405,9 +405,9 @@ function SectionContent({ sectionKey, data }) {
 
         {/* Affiliate disclosure */}
         <div style={{
-          fontSize: ".6rem",
+          fontSize: ".68rem",
           fontFamily: "'Space Mono', monospace",
-          color: COLORS.grey,
+          color: "rgba(255,255,255,.4)",
           lineHeight: 1.6,
           paddingTop: 6,
           borderTop: `1px solid ${COLORS.divider}`,
@@ -445,12 +445,12 @@ function Section({ section, data, isOpen, onToggle }) {
         }}
       >
         <span style={{
-          fontSize: ".72rem",
+          fontSize: ".82rem",
           fontFamily: "'Outfit', sans-serif",
           fontWeight: 700,
           letterSpacing: ".06em",
           textTransform: "uppercase",
-          color: isOpen ? section.color : "rgba(255,255,255,.45)",
+          color: isOpen ? section.color : "rgba(255,255,255,.7)",
           flex: 1,
           textAlign: "left",
           transition: "color 0.2s",
@@ -460,7 +460,7 @@ function Section({ section, data, isOpen, onToggle }) {
 
         <span style={{
           fontSize: 9,
-          color: "rgba(255,255,255,.2)",
+          color: "rgba(255,255,255,.5)",
           transform: isOpen ? "rotate(90deg)" : "none",
           transition: "transform 0.2s",
           display: "inline-block",
@@ -516,22 +516,23 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
       <div style={{ padding: "14px 16px 10px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            {/* "Product Facts" label */}
+            {/* "Product Facts" — big, Nutrition Facts style */}
             <div style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: ".6rem",
-              color: COLORS.grey,
-              textTransform: "uppercase",
-              letterSpacing: ".1em",
-              marginBottom: 4,
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: "2rem",
+              fontWeight: 900,
+              color: COLORS.white,
+              letterSpacing: "-.02em",
+              lineHeight: 1,
+              marginBottom: 6,
             }}>
               Product Facts
             </div>
 
             {/* Product name */}
             <div style={{
-              fontSize: "1.1rem",
-              fontWeight: 900,
+              fontSize: "1.25rem",
+              fontWeight: 700,
               color: COLORS.white,
               lineHeight: 1.2,
             }}>
@@ -542,12 +543,12 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
             <a
               href={`/brands/${product.brandSlug}`}
               style={{
-                fontSize: ".85rem",
+                fontSize: ".95rem",
                 fontWeight: 700,
                 color: COLORS.rabbitHole,
                 textDecoration: "none",
                 display: "inline-block",
-                marginTop: 2,
+                marginTop: 3,
               }}
             >
               {product.brand} →
@@ -562,8 +563,8 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
               height: 32,
               borderRadius: "50%",
               background: "rgba(255,255,255,.06)",
-              border: "1px solid rgba(255,255,255,.1)",
-              color: "rgba(255,255,255,.4)",
+              border: "1px solid rgba(255,255,255,.15)",
+              color: "rgba(255,255,255,.6)",
               fontSize: 14,
               cursor: "pointer",
               display: "flex",
@@ -578,16 +579,16 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
 
         {/* Meta row */}
         <div style={{
-          fontSize: ".68rem",
-          color: "rgba(255,255,255,.35)",
-          marginTop: 6,
+          fontSize: ".75rem",
+          color: "rgba(255,255,255,.55)",
+          marginTop: 8,
         }}>
           {product.category} · {product.type}&nbsp;&nbsp;|&nbsp;&nbsp;{product.size}&nbsp;&nbsp;|&nbsp;&nbsp;{product.price}
         </div>
       </div>
 
-      {/* ── Thick rule ── */}
-      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} />
+      {/* ── Thick rule — Nutrition Facts style ── */}
+      <div style={{ height: 4, background: "#ffffff", margin: "0 16px" }} />
 
       {/* ── Five Sections ── */}
       <div>
@@ -611,8 +612,8 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
       }}>
         <span style={{
           fontFamily: "'Space Mono', monospace",
-          fontSize: ".65rem",
-          color: COLORS.grey,
+          fontSize: ".7rem",
+          color: "rgba(255,255,255,.5)",
           letterSpacing: ".06em",
           textTransform: "uppercase",
         }}>
