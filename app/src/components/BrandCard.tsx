@@ -136,7 +136,7 @@ export default function BrandCard({ brand }: { brand: Brand }) {
               </div>
 
               {/* Tap for Facts */}
-              <div className="flip-hint" onClick={flipCard} style={{ cursor: "pointer", marginTop 14 }}>
+              <div className="flip-hint" onClick={flipCard} style={{ cursor: "pointer", marginTop 14: }}>
                 Tap ↺ for Facts
               </div>
             </div>

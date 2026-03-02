@@ -150,7 +150,7 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
           {/* ======= BACK — Ingredient Facts ======= */}
           <div className="card-slide back">
             <div className="back-body">
-              <div className="back-title">Product Facts</div>
+              <div className="back-title">Ingredient Facts</div>
               <div className="back-rule" />
               <div className="back-product">{ingredient.inci}</div>
               <div className="back-brand">AKA &ldquo;{ingredient.aka}&rdquo;</div>
