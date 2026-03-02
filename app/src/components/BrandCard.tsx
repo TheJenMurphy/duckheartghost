@@ -93,7 +93,7 @@ export default function BrandCard({ brand }: { brand: Brand }) {
                 ))}
               </div>
             </div>
-            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none" }}>
+            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none", pattingTop: 16 }}>
               {/* Vote hint or results */}
               {!voted ? (
                 <div className="vote-hint">vote to see if the hive agrees</div>
@@ -130,7 +130,7 @@ export default function BrandCard({ brand }: { brand: Brand }) {
               </div>
 
               {/* Meta — stacked */}
-              <div style={{ fontSize: ".78rem", color: "#aaa", display: "flex", flexDirection: "column", gap: 2 }}>
+              <div style={{ fontSize: ".78rem", color: "#aaa", display: "flex", flexDirection: "column", gap: 6 }}>
                 <span>Est. {brand.founded} · {brand.location}</span>
                 <span>{brand.priceRange}</span>
               </div>
