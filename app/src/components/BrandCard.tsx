@@ -142,10 +142,10 @@ export default function BrandCard({ brand }: { brand: Brand }) {
             </div>
           </div>
 
-          {/* ======= BACK — The 411 ======= */}
+          {/* ======= BACK — Brand Facts ======= */}
           <div className="card-slide back">
             <div className="back-body">
-              <div className="back-title">The 411</div>
+              <div className="back-title">Brand Facts</div>
               <div className="back-rule" />
               <div className="back-product">{brand.name}</div>
               <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.45)", marginBottom: 3 }}>
