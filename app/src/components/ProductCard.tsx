@@ -102,7 +102,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 ))}
               </div>
             </div>
-            <div className="front-body">
+            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none", paddingTop: 16 }}>
               {!voted ? (
                 <div className="vote-hint" style={{ paddingBottom: 0, marginBottom: 12 }}>vote to see if the hive agrees</div>
               ) : (

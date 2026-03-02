@@ -98,7 +98,7 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
                 ))}
               </div>
             </div>
-            <div className="front-body">
+            <div className="front-body" style={{ justifyContent: "flex-start", flex: "none", paddingTop: 16 }}>
               {/* Vote hint or results */}
               {!voted ? (
                 <div className="vote-hint" style={{ paddingBottom: 0, marginBottom: 12 }}>vote to see if the hive agrees</div>
