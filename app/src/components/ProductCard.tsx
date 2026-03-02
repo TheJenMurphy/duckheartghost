@@ -104,7 +104,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             <div className="front-body">
               {!voted ? (
-                <div className="vote-hint">vote to see if the hive agrees</div>
+                <div className="vote-hint" style={{ paddingBottom: 0, marginBottom: 12 }}>vote to see if the hive agrees</div>
               ) : (
                 <div style={{ marginBottom: 8 }}>
                   <div className="vote-bar">
@@ -198,9 +198,9 @@ export default function ProductCard({ product }: { product: Product }) {
               <div
                 className="flip-hint"
                 onClick={flipCard}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", marginTop: 14 }}
               >
-                Tap ↺ for Product Facts
+                Tap ↺ for Facts
               </div>
             </div>
           </div>

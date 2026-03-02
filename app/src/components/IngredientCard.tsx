@@ -101,7 +101,7 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
             <div className="front-body">
               {/* Vote hint or results */}
               {!voted ? (
-                <div className="vote-hint">vote to see if the hive agrees</div>
+                <div className="vote-hint" style={{ paddingBottom: 0, marginBottom: 12 }}>vote to see if the hive agrees</div>
               ) : (
                 <div style={{ marginBottom: 8 }}>
                   <div className="vote-bar">
@@ -141,7 +141,7 @@ export default function IngredientCard({ ingredient }: { ingredient: Ingredient 
               </div>
 
               {/* Tap for Facts */}
-              <div className="flip-hint" onClick={flipCard} style={{ cursor: "pointer" }}>
+              <div className="flip-hint" onClick={flipCard} style={{ cursor: "pointer", marginTop: 14 }}>
                 Tap ↺ for Facts
               </div>
             </div>
