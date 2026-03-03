@@ -7,17 +7,16 @@ export default function TestBackPage() {
       minHeight: "100dvh",
       background: "#1a1a1c",
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       justifyContent: "center",
       padding: "20px",
     }}>
-      {/* Rainbow bar at top like the real card header */}
       <div style={{
         width: "100%",
         maxWidth: 380,
         borderRadius: 16,
-        overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,.6)",
+        overflow: "visible",
       }}>
         {/* Fake card header */}
         <div style={{

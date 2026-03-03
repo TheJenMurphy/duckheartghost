@@ -165,7 +165,7 @@ function Pill({ label, color, tooltip }) {
           fontWeight: 600,
           color: color,
           background: "transparent",
-          border: `1px solid ${color}30`,
+          border: `1.5px solid ${color}50`,
           whiteSpace: "nowrap",
           cursor: "default",
         }}
