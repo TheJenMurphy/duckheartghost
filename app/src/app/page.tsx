@@ -1,146 +1,125 @@
-import ProductCard, { type Product } from "@/components/ProductCard";
-
-const products: Product[] = [
-  {
-    id: "westman-cleanser",
-    name: "Vital Cleansing Foam",
-    brand: "Westman Atelier",
-    price: "$48",
-    pricePerUnit: "$12.00/oz · Mid-range",
-    category: "Cleanser",
-    type: "Skincare",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400",
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400",
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400",
-    ],
-    voteData: { duck: 42, heart: 31, ghost: 27 },
-    editorialTags: [
-      { emoji: "🔥", label: "Hot", color: "#ff8c2a", bgColor: "rgba(255,140,42,.15)", borderColor: "rgba(255,140,42,.3)" },
-      { emoji: "📱", label: "Viral", color: "#44ddee", bgColor: "rgba(68,221,238,.15)", borderColor: "rgba(68,221,238,.3)" },
-      { emoji: "🐇", label: "Rabbit Hole", color: "#9955ff", bgColor: "rgba(153,85,255,.15)", borderColor: "rgba(153,85,255,.3)" },
-    ],
-    whatItDoes: [
-      { label: "Hydrating", tooltip: "Increases water content in skin layers." },
-      { label: "Brightening", tooltip: "Reduces dullness and evens skin tone." },
-      { label: "Calming", tooltip: "Reduces visible redness and irritation." },
-      { label: "Firming", tooltip: "Helps improve skin elasticity over time." },
-      { label: "Pore-refining", tooltip: "Minimizes the appearance of enlarged pores." },
-    ],
-    whoItsFor: [
-      { label: "All", tooltip: "Formulated to work across all skin types without irritation." },
-      { label: "Sensitive", tooltip: "Tested and suitable for reactive or easily irritated skin." },
-      { label: "Dry", tooltip: "Provides extra moisture for skin that lacks natural oils." },
-    ],
-    keyIngredients: [
-      { label: "Niacinamide", tooltip: "Vitamin B3. Reduces pores, brightens, and improves skin barrier." },
-      { label: "Hyaluronic Acid", tooltip: "Holds up to 1000x its weight in water. Deep hydration." },
-      { label: "Ceramide NP", tooltip: "Lipid that seals the skin barrier and prevents moisture loss." },
-    ],
-    certifications: [
-      { label: "EWG Score: 2", tooltip: "Rated low hazard (1–2) by the Environmental Working Group." },
-      { label: "Clean at Sephora ✓", tooltip: "Free from 50+ ingredients Sephora considers harmful." },
-      { label: "Leaping Bunny ✓", tooltip: "Certified cruelty-free. No animal testing at any stage." },
-    ],
-    metaBack: ["Skincare · Hair", "Synthetic · Botanical", "$48 · 4 fl oz"],
-    verified: "Feb 2026",
-  },
-  {
-    id: "dior-lip-oil",
-    name: "Addict Lip Glow Oil",
-    brand: "Dior",
-    price: "$40",
-    pricePerUnit: "$6.67/ml · Premium",
-    category: "Lip Oil",
-    type: "Makeup",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400",
-      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400",
-      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400",
-    ],
-    voteData: { duck: 55, heart: 28, ghost: 17 },
-    editorialTags: [
-      { emoji: "💎", label: "Luxe", color: "#9955ff", bgColor: "rgba(153,85,255,.15)", borderColor: "rgba(153,85,255,.3)" },
-      { emoji: "📱", label: "Viral", color: "#44ddee", bgColor: "rgba(68,221,238,.15)", borderColor: "rgba(68,221,238,.3)" },
-    ],
-    whatItDoes: [
-      { label: "Hydrating", tooltip: "Cherry oil delivers intense moisture to lips." },
-      { label: "Color-enhancing", tooltip: "Reacts with lip chemistry for a custom shade." },
-      { label: "Plumping", tooltip: "Creates a visibly fuller pout with glossy finish." },
-      { label: "Smoothing", tooltip: "Fills fine lines on lips for a smooth surface." },
-    ],
-    whoItsFor: [
-      { label: "All", tooltip: "Works for every skin tone and lip type." },
-      { label: "Dry Lips", tooltip: "Specifically formulated to combat dry, flaky lips." },
-      { label: "Sensitive", tooltip: "Fragrance-free and allergy tested." },
-    ],
-    keyIngredients: [
-      { label: "Cherry Oil", tooltip: "Antioxidant-rich oil that softens and protects." },
-      { label: "Jojoba Oil", tooltip: "Mimics skin's natural sebum for balanced moisture." },
-      { label: "Squalane", tooltip: "Lightweight emollient that locks in hydration." },
-    ],
-    certifications: [
-      { label: "Derm Tested ✓", tooltip: "Dermatologist tested for safety and efficacy." },
-      { label: "Ophth. Approved ✓", tooltip: "Ophthalmologist approved. Safe near eyes." },
-      { label: "Non-Comedogenic ✓", tooltip: "Won't clog pores or cause breakouts." },
-    ],
-    metaBack: ["Makeup · Lip", "Natural · Synthetic", "$40 · 6ml"],
-    verified: "Feb 2026",
-  },
-  {
-    id: "neutrogena-hydro",
-    name: "Hydro Boost Water Gel",
-    brand: "Neutrogena",
-    price: "$19",
-    pricePerUnit: "$0.40/g · Value",
-    category: "Moisturizer",
-    type: "Skincare",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400",
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400",
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400",
-    ],
-    voteData: { duck: 38, heart: 45, ghost: 17 },
-    editorialTags: [
-      { emoji: "🔥", label: "Hot", color: "#ff8c2a", bgColor: "rgba(255,140,42,.15)", borderColor: "rgba(255,140,42,.3)" },
-      { emoji: "💰", label: "Best Value", color: "#00c4b0", bgColor: "rgba(0,196,176,.15)", borderColor: "rgba(0,196,176,.3)" },
-    ],
-    whatItDoes: [
-      { label: "Hydrating", tooltip: "Hyaluronic acid attracts and holds moisture." },
-      { label: "Oil-control", tooltip: "Lightweight gel absorbs without greasy residue." },
-      { label: "Barrier repair", tooltip: "Strengthens natural skin barrier over time." },
-      { label: "Soothing", tooltip: "Calms dry, tight, uncomfortable skin instantly." },
-    ],
-    whoItsFor: [
-      { label: "Normal", tooltip: "Balanced skin that needs everyday hydration." },
-      { label: "Dry", tooltip: "Quenches dehydrated skin with deep moisture." },
-      { label: "Combination", tooltip: "Hydrates dry zones without overloading oily areas." },
-      { label: "Sensitive", tooltip: "Fragrance-free and non-irritating formula." },
-    ],
-    keyIngredients: [
-      { label: "Hyaluronic Acid", tooltip: "Holds 1000x its weight in water for deep hydration." },
-      { label: "Glycerin", tooltip: "Humectant that draws moisture into the skin." },
-      { label: "Dimethicone", tooltip: "Silicone that seals in moisture and smooths skin." },
-    ],
-    certifications: [
-      { label: "Derm Recommended ✓", tooltip: "One of the most dermatologist-recommended brands." },
-      { label: "Oil-Free ✓", tooltip: "Contains no oils. Ideal for acne-prone skin." },
-      { label: "Non-Comedogenic ✓", tooltip: "Formulated to not clog pores." },
-      { label: "Fragrance-Free ✓", tooltip: "No added fragrance. Reduces irritation risk." },
-    ],
-    metaBack: ["Skincare · Face", "Synthetic · Botanical", "$19 · 1.7 oz"],
-    verified: "Feb 2026",
-  },
-];
-
-export default function Home() {
+export default function PrivacyPage() {
   return (
-    <div className="card-feed">
-      {products.map((p) => (
-        <div className="snap-item" key={p.id}>
-          <ProductCard product={p} />
-        </div>
-      ))}
+    <div style={{
+      maxWidth: 680,
+      margin: "0 auto",
+      padding: "60px 24px",
+      fontFamily: "'Outfit', sans-serif",
+      color: "rgba(255,255,255,.85)",
+      background: "#000",
+      minHeight: "100dvh",
+    }}>
+      <div style={{ fontSize: ".75rem", fontFamily: "'Space Mono', monospace", color: "#ff8c2a", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>
+        Legal
+      </div>
+
+      <h1 style={{ fontSize: "2.2rem", fontWeight: 900, letterSpacing: "-.02em", marginBottom: 8, lineHeight: 1.1 }}>
+        Privacy Policy
+      </h1>
+
+      <p style={{ fontSize: ".85rem", color: "rgba(255,255,255,.4)", marginBottom: 48, fontFamily: "'Space Mono', monospace" }}>
+        Last updated: March 2026
+      </p>
+
+      <Section title="The short version">
+        <p>Duck Heart Ghost collects the minimum data needed to work. We don't sell your data. We don't share your individual votes with brands or retailers. Your Ghost votes are private — they are never visible to other users, brands, or anyone else.</p>
+      </Section>
+
+      <Section title="What we collect">
+        <p>When you create an account:</p>
+        <ul>
+          <li>Email address</li>
+          <li>Password (encrypted — we never see it)</li>
+        </ul>
+        <p>When you use the platform:</p>
+        <ul>
+          <li>Your Duck, Heart, and Ghost votes</li>
+          <li>Products you've saved</li>
+          <li>Preferences set during onboarding</li>
+        </ul>
+        <p>Automatically:</p>
+        <ul>
+          <li>Basic analytics (page views, session data via Vercel Analytics)</li>
+          <li>Standard server logs</li>
+        </ul>
+      </Section>
+
+      <Section title="What we don't collect">
+        <ul>
+          <li>We do not collect payment information (no purchases happen on DHG)</li>
+          <li>We do not build advertising profiles</li>
+          <li>We do not track you across other websites</li>
+        </ul>
+      </Section>
+
+      <Section title="Your Ghost votes">
+        <p>Ghost votes are personal filter signals — they tell DHG what to hide from your feed. They are:</p>
+        <ul>
+          <li>Never shown to other users</li>
+          <li>Never shared with brands or retailers</li>
+          <li>Never used in community percentage displays</li>
+          <li>Only used to personalize your own experience</li>
+        </ul>
+        <p>We may use aggregated, anonymized Ghost data (e.g. "X% of users filtered out this product") for internal product improvement only.</p>
+      </Section>
+
+      <Section title="Affiliate links & conflict of interest">
+        <p>Duck Heart Ghost earns a commission when you purchase through retailer links on product cards. This relationship is disclosed on every single card — because that's the whole point.</p>
+        <p>When you click an affiliate link, the retailer may set their own cookies and collect data per their own privacy policy. We don't control that.</p>
+        <p>DHG will never accept payment from brands to influence how their products are presented, rated, or ranked.</p>
+      </Section>
+
+      <Section title="How we store your data">
+        <p>Your account data is stored in Supabase, a secure cloud database. Votes and preferences are stored server-side and tied to your account. We use industry-standard encryption in transit and at rest.</p>
+      </Section>
+
+      <Section title="Your rights">
+        <ul>
+          <li><strong>Access:</strong> You can request a copy of your data at any time</li>
+          <li><strong>Deletion:</strong> You can delete your account and all associated data</li>
+          <li><strong>Correction:</strong> You can update your email and preferences in your account settings</li>
+          <li><strong>Portability:</strong> You can request your vote history in a readable format</li>
+        </ul>
+        <p>To exercise any of these rights, email us at <a href="mailto:hello@duckheartghost.com" style={{ color: "#ff8c2a" }}>hello@duckheartghost.com</a></p>
+      </Section>
+
+      <Section title="Children">
+        <p>Duck Heart Ghost is not directed at children under 13. We do not knowingly collect data from children under 13. If you believe a child has provided us data, contact us and we will delete it.</p>
+      </Section>
+
+      <Section title="Changes to this policy">
+        <p>If we make material changes we'll notify you by email or with a notice on the platform. The date at the top of this page always reflects the most recent update.</p>
+      </Section>
+
+      <Section title="Contact">
+        <p>Questions? <a href="mailto:hello@duckheartghost.com" style={{ color: "#ff8c2a" }}>hello@duckheartghost.com</a></p>
+      </Section>
+
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <h2 style={{
+        fontWeight: 700,
+        color: "#44ddee",
+        textTransform: "uppercase",
+        letterSpacing: ".05em",
+        marginBottom: 16,
+        fontFamily: "'Space Mono', monospace",
+        fontSize: ".8rem",
+      }}>
+        {title}
+      </h2>
+      <div style={{
+        fontSize: ".95rem",
+        lineHeight: 1.8,
+        color: "rgba(255,255,255,.75)",
+      }}>
+        {children}
+      </div>
     </div>
   );
 }
