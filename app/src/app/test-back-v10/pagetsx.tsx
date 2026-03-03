@@ -1,5 +1,5 @@
 "use client";
-import ProductFactsBack from "../../components/ProductFactsBack";
+import ProductFactsBack from "../../components/ProductFactsBack_v11";
 
 export default function TestBackPage() {
   return (
