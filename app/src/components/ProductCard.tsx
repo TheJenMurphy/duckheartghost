@@ -42,7 +42,9 @@ export default function ProductCard({ product }: { product: Product }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const segRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const flipCard = () => setFlipped((f) => !f);
+ const [initialSection, setInitialSection] = useState<string>("safe");
+const flipCard = () => setFlipped((f) => !f);
+const openShop = () => { setInitialSection("deal"); setFlipped(true); };
 
   const castVote = (vote: string) => {
     setVoted(vote);
@@ -274,12 +276,12 @@ export default function ProductCard({ product }: { product: Product }) {
             </button>
           ))}
         </div>
-        <button className="shop-btn">
-          <div className="shop-btn-inner">
-            <span>👜</span>
-            <span className="shop-label">Shop &amp; Support</span>
-          </div>
-        </button>
+<button className="shop-btn" onClick={openShop}>
+  <div className="shop-btn-inner">
+    <span>👜</span>
+    <span className="shop-label">SHOP</span>
+  </div>
+</button>
       </div>
     </div>
   );
