@@ -130,20 +130,16 @@ const sampleProduct = {
 /* ── PILL ── */
 function Pill({ label, color, tooltip }) {
   const [showTip, setShowTip] = useState(false);
-  const [tipBelow, setTipBelow] = useState(false);
   const pillRef = useRef(null);
   const tipRef = useRef(null);
 
   const handleMouseEnter = () => {
-    // Check if pill is in top half of screen — if so, show tooltip below
-    if (pillRef.current) {
-      const rect = pillRef.current.getBoundingClientRect();
-      setTipBelow(rect.top < window.innerHeight / 2);
-    }
     setShowTip(true);
+    // After render, nudge tooltip if it overflows right edge
     requestAnimationFrame(() => {
       if (!tipRef.current || !pillRef.current) return;
       const tip = tipRef.current.getBoundingClientRect();
+      const pill = pillRef.current.getBoundingClientRect();
       const vw = window.innerWidth;
       if (tip.right > vw - 12) {
         tipRef.current.style.left = "auto";
@@ -181,9 +177,7 @@ function Pill({ label, color, tooltip }) {
           ref={tipRef}
           style={{
             position: "absolute",
-            ...(tipBelow
-              ? { top: "calc(100% + 8px)" }
-              : { bottom: "calc(100% + 8px)" }),
+            bottom: "calc(100% + 8px)",
             left: 0,
             zIndex: 9999,
             background: "rgba(18,18,20,.97)",
