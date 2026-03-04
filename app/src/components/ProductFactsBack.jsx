@@ -407,13 +407,6 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
           <Section key={section.key} section={section} data={product.sections[section.key]} isOpen={openSection === section.key} onToggle={() => toggleSection(section.key)} />
         ))}
       </div>
-
-      <div style={{ textAlign: "center", padding: "10px 16px 14px", borderTop: "1px solid rgba(255,255,255,.15)", marginTop: 4 }}>
-        <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".72rem", color: "rgba(255,255,255,.5)", letterSpacing: ".06em", textTransform: "uppercase" }}>
-          Verified {product.verified}
-        </span>
-      </div>
-
     </div>
   );
 }
