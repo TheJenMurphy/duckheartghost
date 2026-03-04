@@ -56,63 +56,49 @@ export default function TestBackPage() {
         <div style={{
           background: "rgba(40,40,44,.85)",
           backdropFilter: "blur(40px)",
-          padding: "12px 20px 16px",
+          padding: "12px 20px",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
+          justifyContent: "space-between",
           gap: 12,
           borderRadius: "0 0 16px 16px",
         }}>
-          {/* Row 1: Vote buttons */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
-            {[
-              { emoji: "🦆", color: "#ffaa00" },
-              { emoji: "❤️", color: "#ff4466" },
-              { emoji: "👻", color: "#9955ff" },
-            ].map(({ emoji, color }) => (
-              <button key={emoji} style={{
-                width: 52,
-                height: 52,
-                borderRadius: "50%",
-                background: "#000",
-                border: `2px solid ${color}`,
-                fontSize: "1.35rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}>
-                {emoji}
-              </button>
-            ))}
-          </div>
-          {/* Row 2: Shop & Support — rainbow border + gradient text */}
-          <div style={{
-            width: "100%",
-            padding: 2,
-            borderRadius: 9999,
-            background: "linear-gradient(90deg, #ffaa00 0%, #ff8c2a 11%, #ff5533 22%, #ff4466 31%, #ff4d8a 40%, #d946ef 52%, #9955ff 64%, #3399ff 75%, #44ddee 87%, #00c4b0 100%)",
-          }}>
-            <button style={{
-              width: "100%",
-              padding: "12px 0",
-              borderRadius: 9999,
+          {[
+            { emoji: "🦆", color: "#ffaa00" },
+            { emoji: "❤️", color: "#ff4466" },
+            { emoji: "👻", color: "#9955ff" },
+          ].map(({ emoji, color }) => (
+            <button key={emoji} style={{
+              width: 52,
+              height: 52,
+              borderRadius: "50%",
               background: "#000",
-              border: "none",
-              fontSize: ".9rem",
-              fontWeight: 700,
-              fontFamily: "'Outfit', sans-serif",
+              border: `2px solid ${color}`,
+              fontSize: "1.35rem",
               cursor: "pointer",
-              letterSpacing: ".03em",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundImage: "linear-gradient(90deg, #ffaa00 0%, #ff8c2a 11%, #ff5533 22%, #ff4466 31%, #ff4d8a 40%, #d946ef 52%, #9955ff 64%, #3399ff 75%, #44ddee 87%, #00c4b0 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
             }}>
-              🛍️ Shop &amp; Support
+              {emoji}
             </button>
-          </div>
+          ))}
+          <button style={{
+            flex: 1,
+            padding: "12px 0",
+            borderRadius: 9999,
+            background: "#000",
+            border: "2px solid #00c4b0",
+            color: "#00c4b0",
+            fontSize: ".8rem",
+            fontWeight: 700,
+            fontFamily: "'Outfit', sans-serif",
+            cursor: "pointer",
+            letterSpacing: ".03em",
+          }}>
+            Shop & Support →
+          </button>
         </div>
       </div>
     </div>
