@@ -400,7 +400,7 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
         </div>
       </div>
 
-      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} />
+      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} /></div>
 
       <div>
         {SECTIONS.map((section) => (
