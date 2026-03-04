@@ -154,7 +154,7 @@ function Pill({ label, color, tooltip }) {
           display: "inline-block",
           padding: "5px 12px",
           borderRadius: 9999,
-          fontSize: "1rem",
+          fontSize: ".88rem",
           fontFamily: "'Outfit', sans-serif",
           fontWeight: 600,
           color: color,
@@ -186,7 +186,7 @@ function Pill({ label, color, tooltip }) {
             boxShadow: "0 4px 24px rgba(0,0,0,.6)",
           }}
         >
-          <div style={{ fontSize: ".95rem", color: "rgba(255,255,255,.9)", fontFamily: "'Outfit', sans-serif", lineHeight: 1.5 }}>
+          <div style={{ fontSize: ".82rem", color: "rgba(255,255,255,.9)", fontFamily: "'Outfit', sans-serif", lineHeight: 1.5 }}>
             {tooltip}
           </div>
         </div>
@@ -199,7 +199,7 @@ function Pill({ label, color, tooltip }) {
 function SubLabel({ text }) {
   return (
     <div style={{
-      fontSize: ".82rem",
+      fontSize: ".72rem",
       fontFamily: "'Space Mono', monospace",
       color: "rgba(255,255,255,.5)",
       textTransform: "uppercase",
@@ -218,7 +218,7 @@ function SectionContent({ sectionKey, data }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "1rem", fontWeight: 700, color: COLORS.isItSafe }}>EWG {data.ewgScore}</span>
-        <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".88rem", color: "rgba(255,255,255,.5)", textTransform: "uppercase", letterSpacing: ".05em" }}>{data.ewgLabel}</span>
+        <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".78rem", color: "rgba(255,255,255,.5)", textTransform: "uppercase", letterSpacing: ".05em" }}>{data.ewgLabel}</span>
       </div>
       <div>
         <SubLabel text="Certifications" />
@@ -298,13 +298,13 @@ function SectionContent({ sectionKey, data }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {data.keyIngredients.map((ing, i) => <Pill key={i} label={ing.label} color={COLORS.ingredients} tooltip={ing.tooltip} />)}
           </div>
-          <div onClick={() => setShowAll(!showAll)} style={{ marginTop: 10, fontSize: "1rem", fontWeight: 700, color: COLORS.rabbitHole, cursor: "pointer", display: "inline-block" }}>
+          <div onClick={() => setShowAll(!showAll)} style={{ marginTop: 10, fontSize: ".88rem", fontWeight: 700, color: COLORS.rabbitHole, cursor: "pointer", display: "inline-block" }}>
             {showAll ? "Hide ingredients ↑" : "See all ingredients →"}
           </div>
           {showAll && (
             <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 5, paddingLeft: 4, borderLeft: `2px solid ${COLORS.ingredients}40` }}>
               {data.allIngredients.map((ing, i) => (
-                <a key={i} href={`/ingredients/${ing.slug}`} style={{ fontSize: "1rem", fontFamily: "'Outfit', sans-serif", color: COLORS.ingredients, textDecoration: "none", padding: "2px 0 2px 10px", display: "block" }}>
+                <a key={i} href={`/ingredients/${ing.slug}`} style={{ fontSize: ".85rem", fontFamily: "'Outfit', sans-serif", color: COLORS.ingredients, textDecoration: "none", padding: "2px 0 2px 10px", display: "block" }}>
                   {ing.label} →
                 </a>
               ))}
@@ -334,28 +334,28 @@ function SectionContent({ sectionKey, data }) {
           <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: "1.5rem", color: "rgba(255,255,255,.85)" }}>{data.price}</span>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
-          <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "rgba(255,255,255,.5)" }}>{data.pricePerOz}</span>
+          <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".88rem", color: "rgba(255,255,255,.5)" }}>{data.pricePerOz}</span>
         </div>
         <div style={{ flex: 1, textAlign: "right" }}>
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".82rem", color: "rgba(255,255,255,.4)", textTransform: "uppercase" }}>{data.priceTier}</span>
+          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".72rem", color: "rgba(255,255,255,.4)", textTransform: "uppercase" }}>{data.priceTier}</span>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         {data.retailers.map((r, i) => r.active ? (
           <a key={i} href={r.url} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px", borderRadius: 10, background: "linear-gradient(90deg,#ffaa00,#ff8c2a,#ff5533,#ff4466,#ff6eb0,#d946ef,#9955ff,#3399ff,#44ddee,#00c4b0)", textDecoration: "none" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "9px 14px", borderRadius: 8, background: "#000" }}>
-<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 700, color: COLORS.white }}>👜  {r.label}</span>
+<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 700, color: COLORS.white }}>👜  {r.label}</span>
               <span style={{ fontSize: 13, color: COLORS.white }}>→</span>
             </div>
           </a>
         ) : (
           <div key={i} style={{ display: "flex", alignItems: "center", padding: "9px 14px", borderRadius: 8, border: "1px solid rgba(255,255,255,.12)" }}>
-            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "rgba(255,255,255,.25)" }}>{r.label}</span>
+            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 600, color: "rgba(255,255,255,.25)" }}>{r.label}</span>
           </div>
         ))}
       </div>
-      <div style={{ fontSize: ".82rem", fontFamily: "'Space Mono', monospace", color: "rgba(255,255,255,.4)", lineHeight: 1.6, paddingTop: 8, borderTop: "1px solid rgba(255,255,255,.15)" }}>
-        {data.affiliateNote}
+      <div style={{ fontSize: ".72rem", fontFamily: "'Space Mono', monospace", color: "rgba(255,255,255,.4)", lineHeight: 1.6, paddingTop: 8, borderTop: "1px solid rgba(255,255,255,.15)" }}>
+        🧂 {data.affiliateNote}
       </div>
     </div>
   );
@@ -368,12 +368,12 @@ function Section({ section, data, isOpen, onToggle }) {
   return (
     <div style={{ borderTop: "1px solid rgba(255,255,255,.15)" }}>
       <button onClick={onToggle} style={{ width: "100%", padding: "11px 16px", background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, transition: "background 0.2s" }}>
-        <span style={{ fontSize: "1rem", fontFamily: "'Outfit', sans-serif", fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: isOpen ? section.color : "rgba(255,255,255,.7)", flex: 1, textAlign: "left", transition: "color 0.2s" }}>
+        <span style={{ fontSize: ".9rem", fontFamily: "'Outfit', sans-serif", fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: isOpen ? section.color : "rgba(255,255,255,.7)", flex: 1, textAlign: "left", transition: "color 0.2s" }}>
           {section.label}
         </span>
-        <svg width="10" height="10" viewBox="0 0 10 10" style={{ fill: isOpen ? section.color : "rgba(255,255,255,.5)", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s, fill 0.2s", flexShrink: 0 }}>
-          <polygon points="0,0 10,5 0,10" />
-        </svg>
+        <span style={{ fontSize: 14, color: isOpen ? section.color : "rgba(255,255,255,.5)", transform: isOpen ? "rotate(90deg)" : "none", transition: "transform 0.2s, color 0.2s", display: "inline-block", lineHeight: 1 }}>
+          ▶
+        </span>
       </button>
       <div style={{ maxHeight: isOpen ? 700 : 0, overflow: "hidden", transition: "max-height 0.35s ease" }}>
         <div style={{ padding: "2px 16px 16px" }}>
@@ -403,9 +403,9 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
           {product.brand} →
         </a>
       </div>
-      <div style={{ padding: "4px 16px 10px" }}>
-        <div style={{ fontSize: "1rem", color: "rgba(255,255,255,.55)", marginTop: 0, letterSpacing: "normal", lineHeight: 1.8, wordSpacing: ".2em" }}>
-          {product.category}{" · "}{product.type}{" · "}{product.formulation}{" · "}{product.packaging}{" · "}{product.size}
+      <div style={{ padding: "12px 16px 10px" }}>
+        <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.55)", marginTop: 10, letterSpacing: ".01em", lineHeight: 1.8 }}>
+          {product.category} · {product.type} · {product.formulation} · {product.packaging} · {product.size}
         </div>
       </div>
 
