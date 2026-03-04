@@ -9,15 +9,18 @@ export default function TestBackPage() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      padding: "20px",
     }}>
       <div style={{
         width: "100%",
         maxWidth: 380,
-        height: "min(100dvh, min(827px, calc(380px * 2.0)))",
-        display: "flex",
-        flexDirection: "column",
+        height: "100%",
+        maxHeight: "820px",
+        borderRadius: 16,
         overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,.6)",
+        display: "flex",
+        flexDirection: "column",
       }}>
         {/* Card header — fixed */}
         <div className="card-header" style={{ flexShrink: 0 }}>
@@ -39,7 +42,6 @@ export default function TestBackPage() {
           overflowY: "auto",
           overflowX: "hidden",
           WebkitOverflowScrolling: "touch",
-          background: "#000",
         }}>
           <ProductFactsBack onFlipBack={() => alert("flip back!")} />
         </div>
