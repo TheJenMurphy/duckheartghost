@@ -141,8 +141,7 @@ function Pill({ label, color, tooltip }) {
     if (pillRef.current) {
       const rect = pillRef.current.getBoundingClientRect();
       setTipBelow(rect.top < 200);
-      // If pill is in the right half of the screen, anchor tooltip to right edge
-      setTipRight(rect.left > window.innerWidth / 2);
+      setTipRight(window.innerWidth - rect.left < 236);
     }
     setShowTip(true);
   };
