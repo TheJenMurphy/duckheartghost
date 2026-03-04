@@ -403,8 +403,8 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
           {product.brand} →
         </a>
       </div>
-      <div style={{ padding: "12px 16px 10px" }}>
-        <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.55)", marginTop: 10, letterSpacing: ".01em", lineHeight: 1.8 }}>
+      <div style={{ padding: "4px 16px 10px" }}>
+        <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.55)", marginTop: 0, letterSpacing: ".01em", lineHeight: 1.8 }}>
           {product.category} · {product.type} · {product.formulation} · {product.packaging} · {product.size}
         </div>
       </div>
