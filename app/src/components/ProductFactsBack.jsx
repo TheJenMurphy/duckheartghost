@@ -28,6 +28,7 @@ const sampleProduct = {
   brand: "Tower 28",
   brandSlug: "tower-28",
   price: "$20",
+  Spf: 30,
   pricePerOz: "$142.86/oz",
   priceTier: "Accessible",
   size: "0.14 oz",
@@ -51,6 +52,7 @@ const sampleProduct = {
       ],
     },
     does: {
+      spf: 30,
       benefits: [
         { label: "Buildable Color", tooltip: "Sheer to medium coverage depending on how much you layer" },
         { label: "Natural Flush",   tooltip: "Mimics the look of naturally flushed skin" },
@@ -255,6 +257,14 @@ function SectionContent({ sectionKey, data }) {
           {data.coverage.map((c, i) => <Pill key={i} label={c.label} color={COLORS.whatItDoes} tooltip={c.tooltip} />)}
         </div>
       </div>
+      {data.spf && (
+        <div>
+          <SubLabel text="Sun Protection" />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            <Pill label={`SPF ${data.spf}`} color={COLORS.whatItDoes} tooltip={`SPF ${data.spf} sun protection`} />
+          </div>
+        </div>
+      )}
     </div>
   );
 
