@@ -131,18 +131,28 @@ const sampleProduct = {
 function Pill({ label, color, tooltip }) {
   const [showTip, setShowTip] = useState(false);
   const [tipBelow, setTipBelow] = useState(false);
-  const [tipRight, setTipRight] = useState(false);
   const pillRef = useRef(null);
   const tipRef = useRef(null);
 
   const handleMouseEnter = () => {
+    // Check if pill is in top half of screen — if so, show tooltip below
     if (pillRef.current) {
       const rect = pillRef.current.getBoundingClientRect();
-      setTipBelow(rect.top < 200);
-      // If pill is in the right half of the screen, anchor tooltip to right edge
-      setTipRight(rect.left > window.innerWidth / 2);
+      setTipBelow(rect.top < window.innerHeight / 2);
     }
     setShowTip(true);
+    requestAnimationFrame(() => {
+      if (!tipRef.current || !pillRef.current) return;
+      const tip = tipRef.current.getBoundingClientRect();
+      const vw = window.innerWidth;
+      if (tip.right > vw - 12) {
+        tipRef.current.style.left = "auto";
+        tipRef.current.style.right = "0";
+      } else {
+        tipRef.current.style.left = "0";
+        tipRef.current.style.right = "auto";
+      }
+    });
   };
 
   return (
@@ -174,7 +184,7 @@ function Pill({ label, color, tooltip }) {
             ...(tipBelow
               ? { top: "calc(100% + 8px)" }
               : { bottom: "calc(100% + 8px)" }),
-            ...(tipRight ? { right: 0 } : { left: 0 }),
+            left: 0,
             zIndex: 9999,
             background: "rgba(18,18,20,.97)",
             backdropFilter: "blur(16px)",
@@ -395,6 +405,21 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
       <div style={{ padding: "12px 16px 10px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: "2rem", fontWeight: 900, color: COLORS.white, letterSpacing: "-.02em", lineHeight: 1, marginBottom: 6 }}>
+              Product Facts
+            </div>
+            <div style={{ height: 2, background: "#ffffff", marginBottom: 10 }} />
+            <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "rgba(255,255,255,.6)", lineHeight: 1.2 }}>
+              {product.name}
+            </div>
+            <a href={`/brands/${product.brandSlug}`} style={{ fontSize: "1rem", fontWeight: 700, color: COLORS.rabbitHole, textDecoration: "none", display: "inline-block", marginTop: 4 }}>
+              {product.brand} →
+            </a>
+          </div>
+          <button onClick={onFlipBack} style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.15)", color: "rgba(255,255,255,.6)", fontSize: 15, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            ↺
+          </button>
+        </div>
         <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.55)", marginTop: 10, letterSpacing: ".01em", lineHeight: 1.8 }}>
           {product.category} · {product.type} · {product.formulation} · {product.packaging} · {product.size}
         </div>
