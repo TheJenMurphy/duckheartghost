@@ -132,26 +132,15 @@ function Pill({ label, color, tooltip }) {
   const [showTip, setShowTip] = useState(false);
   const [tipBelow, setTipBelow] = useState(false);
   const [tipRight, setTipRight] = useState(false);
-  const [tipStyle, setTipStyle] = useState({});
   const pillRef = useRef(null);
   const tipRef = useRef(null);
 
   const handleMouseEnter = () => {
     if (pillRef.current) {
       const rect = pillRef.current.getBoundingClientRect();
-      const tipWidth = 220;
-      const spaceAbove = rect.top;
-      const spaceRight = window.innerWidth - rect.left;
-      setTipBelow(spaceAbove < 120);
-      setTipRight(spaceRight < tipWidth + 16);
-      setTipStyle({
-        position: "fixed",
-        top: spaceAbove < 120 ? rect.bottom + 8 : rect.top - 8,
-        ...(spaceRight < tipWidth + 16 ? { right: window.innerWidth - rect.right } : { left: rect.left }),
-        transform: spaceAbove < 120 ? "none" : "translateY(-100%)",
-        width: tipWidth,
-        zIndex: 9999,
-      });
+      setTipBelow(rect.top < 200);
+      // If pill is in the right half of the screen, anchor tooltip to right edge
+      setTipRight(rect.left > window.innerWidth / 2);
     }
     setShowTip(true);
   };
@@ -181,12 +170,18 @@ function Pill({ label, color, tooltip }) {
         <div
           ref={tipRef}
           style={{
-            ...tipStyle,
+            position: "absolute",
+            ...(tipBelow
+              ? { top: "calc(100% + 8px)" }
+              : { bottom: "calc(100% + 8px)" }),
+            ...(tipRight ? { right: 0 } : { left: 0 }),
+            zIndex: 9999,
             background: "rgba(18,18,20,.97)",
             backdropFilter: "blur(16px)",
             border: `1px solid ${color}40`,
             borderRadius: 12,
             padding: "10px 14px",
+            width: 220,
             pointerEvents: "none",
             boxShadow: "0 4px 24px rgba(0,0,0,.6)",
           }}
@@ -349,7 +344,7 @@ function SectionContent({ sectionKey, data }) {
         {data.retailers.map((r, i) => r.active ? (
           <a key={i} href={r.url} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px", borderRadius: 10, background: "linear-gradient(90deg,#ffaa00,#ff8c2a,#ff5533,#ff4466,#ff6eb0,#d946ef,#9955ff,#3399ff,#44ddee,#00c4b0)", textDecoration: "none" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "9px 14px", borderRadius: 8, background: "#000" }}>
-<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 700, color: COLORS.white }}>👜 {r.label}</span>
+<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 700, color: COLORS.white }}>👜  {r.label}</span>
               <span style={{ fontSize: 13, color: COLORS.white }}>→</span>
             </div>
           </a>
