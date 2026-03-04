@@ -393,14 +393,12 @@ export default function ProductFactsBack({ product = sampleProduct, onFlipBack }
     <div style={{ width: "100%", maxWidth: 380, background: COLORS.bg, color: COLORS.white, fontFamily: "'Outfit', sans-serif" }}>
 
       <div style={{ padding: "12px 16px 10px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div style={{ flex: 1 }}>
         <div style={{ fontSize: ".85rem", color: "rgba(255,255,255,.55)", marginTop: 10, letterSpacing: ".01em", lineHeight: 1.8 }}>
           {product.category} · {product.type} · {product.formulation} · {product.packaging} · {product.size}
         </div>
       </div>
 
-      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} /></div>
+      <div style={{ height: 1, background: "rgba(255,255,255,.2)", margin: "0 16px" }} />
 
       <div>
         {SECTIONS.map((section) => (
