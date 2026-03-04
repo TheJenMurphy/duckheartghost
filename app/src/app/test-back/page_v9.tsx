@@ -4,7 +4,7 @@ import ProductFactsBack from "../../components/ProductFactsBack";
 export default function TestBackPage() {
   return (
     <div style={{
-      height: "100dvh",
+      minHeight: "100dvh",
       background: "#1a1a1c",
       display: "flex",
       alignItems: "center",
@@ -14,16 +14,12 @@ export default function TestBackPage() {
       <div style={{
         width: "100%",
         maxWidth: 380,
-        height: "100%",
-        maxHeight: "820px",
         borderRadius: 16,
         overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,.6)",
-        display: "flex",
-        flexDirection: "column",
       }}>
-        {/* Card header — fixed */}
-        <div className="card-header" style={{ flexShrink: 0 }}>
+        {/* Card header — same as ProductCard */}
+        <div className="card-header">
           <div className="site-header-inner">
             <div className="rainbow-bar" />
             <div className="nav-inner">
@@ -36,18 +32,11 @@ export default function TestBackPage() {
           </div>
         </div>
 
-        {/* Scrollable middle */}
-        <div style={{
-          flex: 1,
-          overflowY: "auto",
-          overflowX: "hidden",
-          WebkitOverflowScrolling: "touch",
-        }}>
-          <ProductFactsBack onFlipBack={() => alert("flip back!")} />
-        </div>
+        {/* The card back filling */}
+        <ProductFactsBack onFlipBack={() => alert("flip back!")} />
 
-        {/* Card footer — fixed */}
-        <div className="card-footer" style={{ flexShrink: 0 }}>
+        {/* Card footer — same as ProductCard */}
+        <div className="card-footer">
           <div className="dhg-buttons">
             <button className="dhg-btn duck"><div className="dhg-btn-inner">🦆</div></button>
             <button className="dhg-btn heart"><div className="dhg-btn-inner">❤️</div></button>
