@@ -103,7 +103,6 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div style={{ marginBottom: 48 }}>
       <h2 style={{
-        fontSize: "1.1rem",
         fontWeight: 700,
         color: "#44ddee",
         textTransform: "uppercase",
