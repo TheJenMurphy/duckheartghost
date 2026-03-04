@@ -105,18 +105,12 @@ export default function TestBackPage() {
               fontFamily: "'Outfit', sans-serif",
               cursor: "pointer",
               letterSpacing: ".03em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundImage: "linear-gradient(90deg, #ffaa00 0%, #ff8c2a 11%, #ff5533 22%, #ff4466 31%, #ff4d8a 40%, #d946ef 52%, #9955ff 64%, #3399ff 75%, #44ddee 87%, #00c4b0 100%)",
             }}>
-              <span style={{
-                backgroundImage: "linear-gradient(90deg, #ffaa00 0%, #ff8c2a 11%, #ff5533 22%, #ff4466 31%, #ff4d8a 40%, #d946ef 52%, #9955ff 64%, #3399ff 75%, #44ddee 87%, #00c4b0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                🛍️ Shop &amp; Support
-              </span>
+              🛍️ Shop &amp; Support
             </button>
           </div>
         </div>
