@@ -132,6 +132,7 @@ function Pill({ label, color, tooltip }) {
   const [showTip, setShowTip] = useState(false);
   const [tipBelow, setTipBelow] = useState(false);
   const [tipRight, setTipRight] = useState(false);
+  const [tipStyle, setTipStyle] = useState({});
   const pillRef = useRef(null);
   const tipRef = useRef(null);
 
@@ -143,6 +144,14 @@ function Pill({ label, color, tooltip }) {
       const spaceRight = window.innerWidth - rect.left;
       setTipBelow(spaceAbove < 120);
       setTipRight(spaceRight < tipWidth + 16);
+      setTipStyle({
+        position: "fixed",
+        top: spaceAbove < 120 ? rect.bottom + 8 : rect.top - 8,
+        ...(spaceRight < tipWidth + 16 ? { right: window.innerWidth - rect.right } : { left: rect.left }),
+        transform: spaceAbove < 120 ? "none" : "translateY(-100%)",
+        width: tipWidth,
+        zIndex: 9999,
+      });
     }
     setShowTip(true);
   };
@@ -172,19 +181,12 @@ function Pill({ label, color, tooltip }) {
         <div
           ref={tipRef}
           style={{
-            position: "absolute",
-            ...(tipBelow
-              ? { top: "calc(100% + 8px)" }
-              : { bottom: "calc(100% + 8px)" }),
-            ...(tipRight ? { right: 0 } : { left: 0 }),
-            zIndex: 9999,
+            ...tipStyle,
             background: "rgba(18,18,20,.97)",
             backdropFilter: "blur(16px)",
             border: `1px solid ${color}40`,
             borderRadius: 12,
             padding: "10px 14px",
-            width: 220,
-            maxWidth: "calc(100vw - 32px)",
             pointerEvents: "none",
             boxShadow: "0 4px 24px rgba(0,0,0,.6)",
           }}
