@@ -371,7 +371,7 @@ function Section({ section, data, isOpen, onToggle }) {
         <span style={{ fontSize: ".9rem", fontFamily: "'Outfit', sans-serif", fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: isOpen ? section.color : "rgba(255,255,255,.7)", flex: 1, textAlign: "left", transition: "color 0.2s" }}>
           {section.label}
         </span>
-        <span style={{ fontSize: 14, color: isOpen ? section.color : "rgba(255,255,255,.5)", transform: isOpen ? "rotate(90deg)" : "none", transition: "transform 0.2s, color 0.2s", display: "inline-block", lineHeight: 1 }}>
+        <span style={{ fontSize: 14, color: isOpen ? section.color : "rgba(255,255,255,.5)", transform: isOpen ? "rotate(90deg)" : "none", transition: "transform 0.2s, color 0.2s", display: "inline-block", lineHeight: 1, fontStyle: "normal", WebkitTextStroke: 0 }}>
           ▶
         </span>
       </button>
