@@ -344,7 +344,7 @@ function SectionContent({ sectionKey, data }) {
         {data.retailers.map((r, i) => r.active ? (
           <a key={i} href={r.url} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px", borderRadius: 10, background: "linear-gradient(90deg,#ffaa00,#ff8c2a,#ff5533,#ff4466,#ff6eb0,#d946ef,#9955ff,#3399ff,#44ddee,#00c4b0)", textDecoration: "none" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "9px 14px", borderRadius: 8, background: "#000" }}>
-<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 700, color: COLORS.white }}>👜  {r.label}</span>
+<span style={{ fontFamily: "'Outfit', sans-serif", fontSize: ".9rem", fontWeight: 700, color: COLORS.white }}>👜&nbsp; {r.label}</span>
               <span style={{ fontSize: 13, color: COLORS.white }}>→</span>
             </div>
           </a>
