@@ -138,9 +138,11 @@ function Pill({ label, color, tooltip }) {
   const handleMouseEnter = () => {
     if (pillRef.current) {
       const rect = pillRef.current.getBoundingClientRect();
-      setTipBelow(rect.top < 200);
-      // If pill is in the right half of the screen, anchor tooltip to right edge
-      setTipRight(rect.left > window.innerWidth / 2);
+      const tipWidth = 220;
+      const spaceAbove = rect.top;
+      const spaceRight = window.innerWidth - rect.left;
+      setTipBelow(spaceAbove < 120);
+      setTipRight(spaceRight < tipWidth + 16);
     }
     setShowTip(true);
   };
@@ -182,6 +184,7 @@ function Pill({ label, color, tooltip }) {
             borderRadius: 12,
             padding: "10px 14px",
             width: 220,
+            maxWidth: "calc(100vw - 32px)",
             pointerEvents: "none",
             boxShadow: "0 4px 24px rgba(0,0,0,.6)",
           }}
