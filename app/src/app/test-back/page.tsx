@@ -1,8 +1,8 @@
 import ProductFactsBack from "../../components/ProductFactsBack";
-import { getFirstPublishedProduct } from "../../lib/webflow";
+import { getProductBySlug } from "../../lib/webflow";
 
 export default async function TestBackPage() {
-  const product = await getFirstPublishedProduct();
+  const product = await getProductBySlug("skin-savior-waterless-beauty-balm");
 
   return (
     <div style={{
