@@ -3,7 +3,10 @@ const COLLECTION_ID = "697d3803e654519eef084068";
 
 function parsePills(str: string | undefined): { label: string; tooltip: string }[] {
   if (!str) return [];
-  return str.split(",").map(s => s.trim()).filter(Boolean).map(label => ({ label, tooltip: "" }));
+  return str.split(",").map(s => s.trim()).filter(Boolean).map(s => {
+    const [name, ...rest] = s.split(":");
+    return { label: name.trim(), tooltip: rest.join(":").trim() };
+  });
 }
 
 function getPriceTier(price: number): string {
