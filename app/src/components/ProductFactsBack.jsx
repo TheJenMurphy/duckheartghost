@@ -135,7 +135,9 @@ function Pill({ label, color, tooltip }) {
   const [tipStyle, setTipStyle] = useState({});
   const pillRef = useRef(null);
 
-  const handleMouseEnter = () => {
+  const handleTap = () => {
+    if (!tooltip) return;
+    if (showTip) { setShowTip(false); return; }
     if (pillRef.current) {
       const rect = pillRef.current.getBoundingClientRect();
       const tipWidth = 220;
@@ -153,7 +155,7 @@ function Pill({ label, color, tooltip }) {
   return (
     <div ref={pillRef} style={{ position: "relative", display: "inline-block" }}>
       <span
-        onClick={handleMouseEnter}
+        onClick={handleTap}
         onMouseLeave={() => setShowTip(false)}
         style={{
           display: "inline-block",
