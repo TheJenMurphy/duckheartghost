@@ -106,8 +106,8 @@ function mapWebflowToProduct(f: any) {
     size: size,
     category: "",
     type: "",
-    formulation: f["formulation"] || "",
-    packaging: f["packaging"] || "",
+    formulation: "",
+    packaging: "",
     verified: "Mar 2026",
     sections: {
       safe: {
@@ -119,8 +119,8 @@ function mapWebflowToProduct(f: any) {
       does: {
         spf: f["spf-value"] || null,
         benefits: parsePills(f["support-attributes"]),
-        finish: f["finish"] ? [{ label: f["finish"], tooltip: "" }] : [],
-        coverage: f["coverage"] ? [{ label: f["coverage"], tooltip: "" }] : [],
+        finish: [],
+        coverage: [],
       },
       for: {
         skinTypes,
@@ -131,12 +131,10 @@ function mapWebflowToProduct(f: any) {
       },
       is: {
         keyIngredients: parsePills(f["key-actives"]).map(p => ({ ...p, slug: p.label.toLowerCase().replace(/\s+/g, "-") })),
-        allIngredients: stripHtml(f["ingredients-2"]).split(",").map((s: string) => s.trim()).filter(Boolean).map((label: string) => ({
-          label,
-          slug: label.toLowerCase().replace(/\s+/g, "-"),
-        })),
+        allIngredients: [],
+        rawIngredients: stripHtml(f["ingredients-2"]),
         formulaBase: parsePills(f["formula-base"]),
-        packaging: f["packaging"] ? [{ label: f["packaging"], tooltip: "" }] : [],
+        packaging: [],
       },
       deal: {
         price: price ? `$${price}` : "",
