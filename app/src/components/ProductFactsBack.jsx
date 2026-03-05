@@ -153,7 +153,7 @@ function Pill({ label, color, tooltip }) {
   return (
     <div ref={pillRef} style={{ position: "relative", display: "inline-block" }}>
       <span
-        onMouseEnter={handleMouseEnter}
+        onClick={handleMouseEnter}
         onMouseLeave={() => setShowTip(false)}
         style={{
           display: "inline-block",
@@ -212,22 +212,22 @@ function SectionContent({ sectionKey, data }) {
 
   if (sectionKey === "safe") return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {data.ewgScore && <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{ fontFamily: "'Space Mono', monospace", fontSize: "1rem", fontWeight: 700, color: COLORS.isItSafe }}>EWG {data.ewgScore}</span>
         <span style={{ fontFamily: "'Space Mono', monospace", fontSize: ".88rem", color: "rgba(255,255,255,.5)", textTransform: "uppercase", letterSpacing: ".05em" }}>{data.ewgLabel}</span>
-      </div>
-      <div>
+      </div>}
+      {data.certifications?.length > 0 && <div>
         <SubLabel text="Certifications" />
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.certifications.map((c, i) => <Pill key={i} label={c.label} color={COLORS.isItSafe} tooltip={c.tooltip} />)}
         </div>
-      </div>
-      <div>
+      </div>}
+      {data.regulations?.length > 0 && <div>
         <SubLabel text="Regulatory" />
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.regulations.map((r, i) => <Pill key={i} label={r.label} color={COLORS.isItSafe} tooltip={r.tooltip} />)}
         </div>
-      </div>
+      </div>}
     </div>
   );
 
@@ -239,18 +239,18 @@ function SectionContent({ sectionKey, data }) {
           {data.benefits.map((b, i) => <Pill key={i} label={b.label} color={COLORS.whatItDoes} tooltip={b.tooltip} />)}
         </div>
       </div>
-      <div>
+      {data.finish?.length > 0 && <div>
         <SubLabel text="Finish" />
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.finish.map((f, i) => <Pill key={i} label={f.label} color={COLORS.whatItDoes} tooltip={f.tooltip} />)}
         </div>
-      </div>
-      <div>
+      </div>}
+      {data.coverage?.length > 0 && <div>
         <SubLabel text="Coverage" />
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.coverage.map((c, i) => <Pill key={i} label={c.label} color={COLORS.whatItDoes} tooltip={c.tooltip} />)}
         </div>
-      </div>
+      </div>}
       {data.spf && (
         <div>
           <SubLabel text="Sun Protection" />
@@ -276,7 +276,7 @@ function SectionContent({ sectionKey, data }) {
           {data.skinConcerns.map((s, i) => <Pill key={i} label={s.label} color={COLORS.whoItsFor} tooltip={s.tooltip} />)}
         </div>
       </div>
-      <div>
+      {data.personas?.length > 0 && <div>
         <SubLabel text="Best For" />
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.personas.map((p, i) => <Pill key={i} label={p.label} color={COLORS.whoItsFor} tooltip={p.tooltip} />)}
