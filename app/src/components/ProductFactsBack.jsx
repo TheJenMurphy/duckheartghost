@@ -390,7 +390,7 @@ function Section({ section, data, isOpen, onToggle }) {
 
 /* ── MAIN ── */
 export default function ProductFactsBack({ product = sampleProduct, onFlipBack = undefined }) {
-  const [openSection, setOpenSection] = useState("safe");
+  const [openSection, setOpenSection] = useState("is");
   const toggleSection = (key) => setOpenSection(openSection === key ? null : key);
 
   return (
