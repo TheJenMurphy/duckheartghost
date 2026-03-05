@@ -114,7 +114,7 @@ function mapWebflowToProduct(f: any) {
     pricePerOz: getPricePerOz(price, size),
     priceTier: getPriceTier(price),
     size: size,
-    category: f["category"] || "",
+    category: "",
     type: f["product-type"] || "",
     formulation: f["formulation"] || "",
     packaging: f["packaging"] || "",
