@@ -1,9 +1,7 @@
+"use client";
 import ProductFactsBack from "../../components/ProductFactsBack";
-import { getFirstPublishedProduct } from "../../lib/webflow";
 
-export default async function TestBackPage() {
-  const product = await getFirstPublishedProduct();
-
+export default function TestBackPage() {
   return (
     <div style={{
       height: "100dvh",
@@ -43,7 +41,7 @@ export default async function TestBackPage() {
           WebkitOverflowScrolling: "touch",
           background: "#000",
         }}>
-          <ProductFactsBack product={product || undefined} onFlipBack={() => {}} />
+          <ProductFactsBack onFlipBack={() => alert("flip back!")} />
         </div>
 
         {/* Card footer — fixed */}
@@ -60,6 +58,7 @@ export default async function TestBackPage() {
             </div>
           </button>
         </div>
+
       </div>
     </div>
   );
