@@ -297,6 +297,11 @@ function SectionContent({ sectionKey, data }) {
     const [showAll, setShowAll] = useState(false);
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {data.description && (
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "rgba(255,255,255,.7)", lineHeight: 1.5, margin: 0, maxHeight: 120, overflowY: "auto" }}>
+            {data.description}
+          </p>
+        )}
         <div>
           <SubLabel text="Key Ingredients" />
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>

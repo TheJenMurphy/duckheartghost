@@ -136,6 +136,7 @@ function mapWebflowToProduct(f: any) {
       }),
         allIngredients: [],
         rawIngredients: stripHtml(f["ingredients-2"]),
+        description: stripHtml(f["what-it-is-2"]) || "",
         formulaBase: parsePills(f["formula-base"]),
         packaging: [],
       },
