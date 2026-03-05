@@ -315,18 +315,18 @@ function SectionContent({ sectionKey, data }) {
             </div>
           )}
         </div>
-        <div>
+        {data.formulaBase?.length > 0 && <div>
           <SubLabel text="Formula Base" />
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {data.formulaBase.map((f, i) => <Pill key={i} label={f.label} color={COLORS.packaging} tooltip={f.tooltip} />)}
           </div>
-        </div>
-        <div>
+        </div>}
+        {data.packaging?.length > 0 && <div>
           <SubLabel text="Packaging" />
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {data.packaging.map((p, i) => <Pill key={i} label={p.label} color={COLORS.packaging} tooltip={p.tooltip} />)}
           </div>
-        </div>
+        </div>}
       </div>
     );
   }
