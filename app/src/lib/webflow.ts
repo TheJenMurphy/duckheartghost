@@ -82,7 +82,7 @@ function mapWebflowToProduct(f: any) {
   const size = f["size"] || "";
 
   const safetyRaw = parsePills(f["safety-attributes"]);
-  const certKeywords = ["verified", "tested", "free", "certified", "vegan", "cruelty", "organic", "natural", "clean"];
+  const certKeywords = ["verified", "tested", "free", "certified", "vegan", "cruelty", "organic", "natural", "clean", "ecocert", "cosmos", "usda", "leaping bunny", "b corp", "made safe", "ewg"];
   const certifications = safetyRaw.filter(p => certKeywords.some(k => p.label.toLowerCase().includes(k)));
   const regulations = safetyRaw.filter(p => !certKeywords.some(k => p.label.toLowerCase().includes(k)));
 
