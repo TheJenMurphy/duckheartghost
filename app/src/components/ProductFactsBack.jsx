@@ -281,7 +281,7 @@ function SectionContent({ sectionKey, data }) {
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {data.personas.map((p, i) => <Pill key={i} label={p.label} color={COLORS.whoItsFor} tooltip={p.tooltip} />)}
         </div>
-      </div>
+      </div>}
       {data.notFor.length > 0 && (
         <div>
           <SubLabel text="Not Ideal For" />
