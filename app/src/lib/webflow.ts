@@ -115,7 +115,7 @@ function mapWebflowToProduct(f: any) {
     priceTier: getPriceTier(price),
     size: size,
     category: "",
-    type: f["product-type"] || "",
+    category: "",
     formulation: f["formulation"] || "",
     packaging: f["packaging"] || "",
     verified: "Mar 2026",
