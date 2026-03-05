@@ -43,7 +43,7 @@ export default async function TestBackPage() {
           WebkitOverflowScrolling: "touch",
           background: "#000",
         }}>
-          <ProductFactsBack product={product || undefined} onFlipBack={() => {}} />
+          <ProductFactsBack product={product || undefined}  />
         </div>
 
         {/* Card footer — fixed */}
