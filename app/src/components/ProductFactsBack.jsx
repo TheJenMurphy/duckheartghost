@@ -18,7 +18,7 @@ const COLORS = {
 
 const SECTIONS = [
   { key: "safe",  label: "IS IT SAFE?",       color: COLORS.isItSafe     },
-  { key: "does",  label: "WHAT DOES IT DO?",  color: COLORS.whatItDoes   },
+  { key: "does",  label: "WHAT'S IT DO?",  color: COLORS.whatItDoes   },
   { key: "for",   label: "WHO'S IT FOR?",      color: COLORS.whoItsFor    },
   { key: "is",    label: "WHAT IS IT?",        color: COLORS.whatItIs     },
   { key: "deal",  label: "WHAT'S THE DEAL?",  color: COLORS.whatsTheDeal },
