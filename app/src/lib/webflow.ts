@@ -133,10 +133,9 @@ function mapWebflowToProduct(f: any) {
         shadeCount: f["shade-count"] || null,
       },
       is: {
-        keyIngredients: parsePills(f["key-actives"]).map(p => {
-        const [name, ...rest] = p.label.split(":");
-        return { label: name.trim(), tooltip: rest.join(":").trim(), slug: name.trim().toLowerCase().replace(/\s+/g, "-") };
-      }),
+        keyIngredients: parsePills(f["key-actives"]).map(p => ({
+          ...p, slug: p.label.toLowerCase().replace(/\s+/g, "-")
+        })),
         allIngredients: [],
         rawIngredients: stripHtml(f["ingredients-2"]),
         description: stripHtml(f["what-it-is-2"]) || "",
